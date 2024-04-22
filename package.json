@@ -1,0 +1,31 @@
+{
+  "name": "dating-app",
+  "version": "1.0.0",
+  "description": "app to find TRUE love",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Team 01 - Agile Web Development",
+  "contributors": [
+    {
+      "name": "Margarita Boiko",
+      "email": ""
+    },
+    {
+      "name": "Vladyslav Kyselov",
+      "email": ""
+    },
+    {
+      "name": "Anh Phuc Hoang",
+      "email": "phuchoang.vnde@gmail.com"
+    }
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-ejs-layouts": "^2.5.1",
+    "http-status-codes": "^2.3.0"
+  }
+}
