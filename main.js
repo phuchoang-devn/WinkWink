@@ -9,6 +9,22 @@ const app = express();
 app.set("port", process.env.PORT || 3000);
 app.set("view engine", "ejs");
 
+const middleware = (req, res, next) =>{
+	console.log("middleware")
+	next()
+	return
+}
+app.use(middleware)
+
+const auth = (req, res, next) => {
+	if(req.query.singnedin === 'true'){
+		next()
+	}
+	res.send('please login')
+}
+
+app.use(auth);
+
 // TODO: middleware - layout module
 app.use(layouts);
 
@@ -16,8 +32,12 @@ app.use(layouts);
 
 app.use('/api', apiRouter);
 app.use('', pageRouter);
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // TODO: middleware - error handlers
+app.use(errorController.respondNoResourceFound);
+app.use(errorController.respondInternalError);
 
 app.listen(app.get("port"), () => {
 	console.log(
