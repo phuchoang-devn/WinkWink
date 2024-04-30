@@ -1,43 +1,39 @@
 import express from "express";
-import layouts from "express-ejs-layouts";
 
-import apiRouter from "./routers/apiRouter";
-import pageRouter from "./routers/pageRouter";
+import apiRouter from "./api/routers/apiRouter.js";
+import {
+	respondNoResourceFound,
+	respondInternalError
+} from "./api/controllers/errorController.js"
 
 const app = express();
 
 app.set("port", process.env.PORT || 3000);
-app.set("view engine", "ejs");
 
-const middleware = (req, res, next) =>{
-	console.log("middleware")
-	next()
-	return
-}
-app.use(middleware)
-
+/*
 const auth = (req, res, next) => {
 	if(req.query.singnedin === 'true'){
 		next()
 	}
 	res.send('please login')
 }
-
 app.use(auth);
+*/
 
-// TODO: middleware - layout module
-app.use(layouts);
-
-// TODO: middleware - URL-encoded and JSON
-
-app.use('/api', apiRouter);
-app.use('', pageRouter);
+// URL-encoded and JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// TODO: middleware - error handlers
-app.use(errorController.respondNoResourceFound);
-app.use(errorController.respondInternalError);
+if (!process.env.DEV) {
+	const path = "./client/build/";
+	app.use(express.static(path));
+}
+
+app.use('/api', apiRouter);
+
+// error handlers
+app.use(respondNoResourceFound);
+app.use(respondInternalError);
 
 app.listen(app.get("port"), () => {
 	console.log(

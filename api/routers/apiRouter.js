@@ -3,7 +3,7 @@ import { Router } from 'express';
 import { 
     handleLogin, 
     handleRegister 
-} from '../controllers/apiController';
+} from '../controllers/apiController.js';
 
 
 const apiRouter = Router();
