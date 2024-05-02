@@ -21,7 +21,12 @@ const AuthLogin = ({ setShowLogin,isSignUp}) => {
 
                 if (user) {
                     if (user.password === password) {
-                        navigate("/nopage");
+                        if (user.userId !==null){
+                            navigate("/HomeMain");
+                        }
+                        else{
+                            navigate("/HomeProfile");
+                        }
                     } else {
                         setError("Incorrect password");
                     }

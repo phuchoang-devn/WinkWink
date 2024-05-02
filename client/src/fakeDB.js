@@ -58,6 +58,12 @@ export const accounts = [
         "email": "user10@example.com",
         "password": "password10",
         "userId": "d91030d8-efb7-4d7e-8967-96cb94f86da2"
+    },
+    {
+        "id": "1fe485b3-77e6-42b6-8f9b-0eaa1e7ee7d6",
+        "email": "userTest@example.com",
+        "password": "password1",
+        "userId": null
     }
 ];
 
