@@ -1,0 +1,12 @@
+footer{
+    width: 100%;
+    background-color: var(--colorVeryDark);
+    color: var(--colorLight);
+    text-align: center;
+    display: flex;
+    flex-flow: column;
+    gap: 10px;
+    justify-content: center;
+    font-size: 12px;
+    padding: 10px;
+}

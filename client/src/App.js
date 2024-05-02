@@ -1,4 +1,4 @@
-import './App.css';
+
 import { Home, Auth } from './components';
 import { AuthProvider, useAuth } from './context_providers/auth_provider';
 

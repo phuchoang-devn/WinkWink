@@ -1,7 +1,7 @@
-import HomeLayout from "./layout";
-import HomeMain from "./main";
-import HomeProfile from "./profile";
-import HomeSetting from "./setting";
+import HomeLayout from "./HomeLayout";
+import HomeMain from "./HomeMain";
+import HomeProfile from "./HomeProfile";
+import HomeSetting from "./HomeSetting";
 
 export {
     HomeLayout,

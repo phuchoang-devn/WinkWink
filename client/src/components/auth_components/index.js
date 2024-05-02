@@ -1,7 +1,7 @@
-import AuthLayout from "./layout";
-import AuthMain from "./main";
-import AuthLogin from "./login";
-import AuthRegister from "./register";
+import AuthLayout from "./AuthLayout";
+import AuthMain from "./AuthMain";
+import AuthLogin from "./AuthLogin";
+import AuthRegister from "./AuthRegister";
 
 export {
     AuthLayout,
