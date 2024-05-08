@@ -1,0 +1,61 @@
+.register{
+    position: absolute;
+    width: 560px;
+    height: 600px;
+    background-color: var(--colorLight);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+{/*
+    top: 300px;
+    right: 280px;
+    z-index: 2;*/
+}
+}
+.register .login__info{
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 90%;
+    gap: 20px;
+}
+.register button{
+    margin: 0;
+    padding: 0;
+    float: right;
+}
+
+.register h2{
+    margin: 0;
+
+}
+.login__info p{
+    max-width: 30ch;
+}
+.login__info form{
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.login__info form input:not(:last-child){
+    width: 300px;
+}
+
+.login__info input{
+    padding: 10px;
+    font-size: 17px;
+}
+
+.login__info form .form-btn{
+    margin-top: 30px;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 20px;
+    padding: 6px 10px;
+    background-color: var(--colorMiddle);
+    width: 100px;
+}

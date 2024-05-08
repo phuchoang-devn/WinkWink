@@ -18,6 +18,7 @@ const Auth = (props) => {
                 <Route path="*" element={<NoPage />} />
             </Route>
         </Routes>
+
     );
 }
 
