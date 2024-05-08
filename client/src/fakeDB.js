@@ -58,6 +58,12 @@ export const accounts = [
         "email": "user10@example.com",
         "password": "password10",
         "userId": "d91030d8-efb7-4d7e-8967-96cb94f86da2"
+    },
+    {
+        "id": "1fe485b3-77e6-42b6-8f9b-0eaa1e7ee7d6",
+        "email": "test@example.com",
+        "password": "password",
+        "userId": null
     }
 ];
 
@@ -71,9 +77,9 @@ export const users = [
         "profileImage": "user1.jpg",
         "age": 28,
         "sex": "male",
-        "city": "NYC",
+        "country": "AR",
         "interests": "Reading, hiking, photography",
-        "language": ["eng"],
+        "languages": ["en"],
         "accountId": "b87fdd1e-e20d-4c6f-9e8c-501d23f92a39"
     },
     {
@@ -85,9 +91,9 @@ export const users = [
         "profileImage": "user2.jpg",
         "age": 35,
         "sex": "female",
-        "city": "LAX",
+        "country": "BD",
         "interests": "Traveling, cooking, yoga",
-        "language": ["eng"],
+        "languages": ["en"],
         "accountId": "65e11a07-7b2a-47d5-97b7-c1f3643d654e"
     },
     {
@@ -99,9 +105,9 @@ export const users = [
         "profileImage": "user3.jpg",
         "age": 24,
         "sex": "male",
-        "city": "SFO",
+        "country": "UA",
         "interests": "Gaming, programming, music",
-        "language": ["eng"],
+        "languages": ["en", "uk"],
         "accountId": "a9f1a85c-2d22-4c43-baf3-8bfa61fb83c6"
     },
     {
@@ -113,9 +119,9 @@ export const users = [
         "profileImage": "user4.jpg",
         "age": 31,
         "sex": "female",
-        "city": "SEA",
+        "country": "UA",
         "interests": "Painting, cycling, movies",
-        "language": ["eng"],
+        "languages": ["en", "uk"],
         "accountId": "893857d1-2ec3-47ae-9d42-f58231e23947"
     },
     {
@@ -127,9 +133,9 @@ export const users = [
         "profileImage": "user5.jpg",
         "age": 29,
         "sex": "male",
-        "city": "CHI",
+        "country": "UA",
         "interests": "Sports, movies, traveling",
-        "language": ["eng"],
+        "languages": ["en"],
         "accountId": "cd1e80d0-413b-4fae-92d1-104774b99a6c"
     },
     {
@@ -141,9 +147,9 @@ export const users = [
         "profileImage": "user6.jpg",
         "age": 26,
         "sex": "female",
-        "city": "ATL",
+        "country": "UA",
         "interests": "Reading, hiking, movies",
-        "language": ["eng"],
+        "languages": ["en"],
         "accountId": "f1fd9a45-0d8e-487c-bc7c-4f78602ad05a"
     },
     {
@@ -155,9 +161,9 @@ export const users = [
         "profileImage": "user7.jpg",
         "age": 33,
         "sex": "male",
-        "city": "DAL",
+        "country": "UA",
         "interests": "Cooking, sports, music",
-        "language": ["eng"],
+        "languages": ["en"],
         "accountId": "e421b90e-0c64-4daa-b02b-66c5bbfd4c8b"
     },
     {
@@ -169,9 +175,9 @@ export const users = [
         "profileImage": "user8.jpg",
         "age": 30,
         "sex": "female",
-        "city": "MIA",
+        "country": "UA",
         "interests": "Yoga, reading, painting",
-        "language": ["eng"],
+        "languages": ["en"],
         "accountId": "ff4358b7-9a32-44d0-ae3f-7d547ab2f28c"
     },
     {
@@ -183,9 +189,9 @@ export const users = [
         "profileImage": "user9.jpg",
         "age": 27,
         "sex": "male",
-        "city": "DEN",
+        "country": "UA",
         "interests": "Photography, traveling, sports",
-        "language": ["eng"],
+        "languages": ["en"],
         "accountId": "9a5e872f-9a4b-4a86-b8b8-0a0e84ae8c3a"
     },
     {
@@ -197,9 +203,9 @@ export const users = [
         "profileImage": "user10.jpg",
         "age": 32,
         "sex": "female",
-        "city": "HOU",
+        "country": "UA",
         "interests": "Movies, cooking, gardening",
-        "language": ["eng"],
+        "languages": ["en"],
         "accountId": "d91030d8-efb7-4d7e-8967-96cb94f86da2"
     }
 ];

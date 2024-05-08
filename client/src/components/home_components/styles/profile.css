@@ -1,0 +1,110 @@
+.my-profile__form {
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem
+}
+
+.my-profile__form :where(label) {
+    font-size: 0.75rem;
+}
+
+.my-profile__left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.my-profile__image {
+    height: 400px;
+    width: 400px;
+    border-radius: 50%;
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.my-profile__image-input {
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+.my-profile__image-input > label{
+    height: 100%;
+    width: 100%;
+    color: white;
+    font-size: 1.5rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.my-profile__image-input > input{
+    display: none;
+}
+
+.my-profile__name {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.my-profile__button-group {
+    display: flex;
+    gap: 2rem;
+}
+
+.my-profile__right {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem
+}
+
+.my-profile__age-and-sex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.my-profile__languages-container {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 1rem;
+}
+
+.my-profile__choosen-language-and-delete {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.my-profile__choosen-language {
+    flex-grow: 1;
+    text-align: center;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+.my-profile__language_delete {
+    height: 2rem;
+    width: 2rem;
+}
+
+.my-profile__language_delete > path{
+    filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.5));
+    fill: rgb(203, 0, 0);
+}
+
+.my-profile__interests {
+    
+}
+
+.my-profile__interests-input {
+    display: block;
+}
+
