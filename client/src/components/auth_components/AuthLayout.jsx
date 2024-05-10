@@ -1,9 +1,10 @@
 import {Header} from "../main-components/header/Header";
 import {Footer} from "../main-components/footer/Footer";
 import './styles/authLayout.css';
-import homeImg from "../../image/home/Group.svg";
+import homeImg from "../../static/image/home/Group.svg";
 import AuthMain from "./AuthMain";
 import {useState} from "react";
+import { Outlet } from "react-router-dom";
 const AuthLayout = (props) => {
     const [showLogin, setShowLogin] = useState(false);
     return(
@@ -22,7 +23,7 @@ const AuthLayout = (props) => {
                 </div>
             </main>
             <Footer/>
-            
+           
         </>
 );
 }

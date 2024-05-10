@@ -1,8 +1,7 @@
 import './styles/authLayout.css'
 import {useState} from "react";
-import logoSmall from "../../image/home/logo-small.svg"
+import logoSmall from "../../static/image/home/logo-color.svg"
 import './styles/authLayout.css'
-import AuthLogin from "./AuthLogin"
 import AuthRegister from "./AuthRegister";
 const AuthMain = (props) => {
     const [showLogin, setShowLogin] = useState(false);

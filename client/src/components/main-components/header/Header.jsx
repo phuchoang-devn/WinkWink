@@ -1,4 +1,4 @@
-import logoBig from "../../../image/home/logo-color.svg"
+import logoBig from "../../../static/image/home/logo-big.svg"
 
 import "./header.css";
 import AuthLogin from "../../auth_components/AuthLogin";
