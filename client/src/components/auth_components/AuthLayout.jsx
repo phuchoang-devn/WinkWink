@@ -22,6 +22,9 @@ const AuthLayout = (props) => {
                     <AuthMain />
                 </div>
             </main>
+
+            <Outlet />
+            
             <Footer/>
            
         </>

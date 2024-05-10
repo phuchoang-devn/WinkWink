@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import defauftImage from "../../svg/default-user-image.svg"
+import defauftImage from "../../image/profile/default-user-image.svg"
 
 const useImage = (imageData) => {
     const [image, setImage] = useState(imageData);
