@@ -19,7 +19,9 @@ const useImage = (imageData) => {
         fileReader.readAsDataURL(image);
     }, [image]);
 
-    return [image, setImage, profileImageDiv];
+    const isImageChanged = image !== imageData;
+
+    return [image, setImage, profileImageDiv, isImageChanged];
 }
 
 export default useImage;

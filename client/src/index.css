@@ -15,6 +15,7 @@
   --colorLight:#F8E7F6;
   --colorWhite:#F5F5F5;
   --colorVeryDark:#1E1E1E;
+  --colorError: #D32F2F
 }
 *,
 *::before,

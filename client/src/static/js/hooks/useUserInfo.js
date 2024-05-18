@@ -1,23 +1,44 @@
 import { countries, languages } from "countries-list";
 import { useImmerReducer } from 'use-immer';
+var _ = require('lodash');
 
 const UserInfoChange = {
-    RESET: "all values",
+    RESET: "reset",
     FIRST_NAME: "first name",
     LAST_NAME: "last name",
     AGE: "age",
     SEX: "sex",
     COUNTRY: "country",
     INTERESTS: "interests",
-    ADD_LANGUAGE: "add language",
-    REMOVE_LANGUAGE: "remove language"
+    LANGUAGE: "language",
+    PREF_AGE: "preference of age",
+    PREF_SEX: "preference of sex"
 }
 
 const modifyInitialInfo = (info) => {
+    if (!info) return {
+        name: {
+            first: "",
+            last: ""
+        },
+        age: null,
+        sex: "",
+        country: undefined,
+        languages: [],
+        interests: "",
+        preferences: {
+            age: {
+                from: 18,
+                to: 100
+            },
+            sex: ""
+        }
+    }
+
     return {
         ...info,
-        country: countries[info.country]?.name,
-        languages: info.languages?.map(l => languages[l].name) ?? []
+        country: countries[info.country].name,
+        languages: info.languages.map(l => languages[l].name)
     };
 }
 
@@ -26,7 +47,9 @@ const useUserInfo = (info) => {
 
     const handleChangeValue = (type) => {
         switch (type) {
-            case UserInfoChange.REMOVE_LANGUAGE:
+            case UserInfoChange.LANGUAGE:
+            case UserInfoChange.COUNTRY:
+            case UserInfoChange.PREF_AGE:
                 return value => dispatchUserInfo({ type, value });
             case UserInfoChange.RESET:
                 return () => dispatchUserInfo({ type });
@@ -41,9 +64,9 @@ const useUserInfo = (info) => {
 
     const userInfoReducer = (info, action) => {
         switch (action.type) {
-            case UserInfoChange.RESET: 
+            case UserInfoChange.RESET:
                 return initialUserInfo;
-    
+
             case UserInfoChange.FIRST_NAME: {
                 info.name.first = action.value;
                 break;
@@ -64,16 +87,21 @@ const useUserInfo = (info) => {
                 info.country = action.value;
                 break;
             }
-            case UserInfoChange.ADD_LANGUAGE: {
-                info.languages = [...info.languages, action.value];
+            case UserInfoChange.LANGUAGE: {
+                info.languages = action.value;
                 break;
             }
-            case UserInfoChange.REMOVE_LANGUAGE: {
-                info.languages = info.languages.filter(language => language !== action.value);
-                break;
-            }
-            case UserInfoChange.INTERESTS:{
+            case UserInfoChange.INTERESTS: {
                 info.interests = action.value;
+                break;
+            }
+            case UserInfoChange.PREF_AGE: {
+                info.preferences.age.from = action.value[0];
+                info.preferences.age.to = action.value[1];
+                break;
+            }
+            case UserInfoChange.PREF_SEX: {
+                info.preferences.sex = action.value;
                 break;
             }
             default: {
@@ -87,7 +115,9 @@ const useUserInfo = (info) => {
         initialUserInfo
     );
 
-    return [userInfo, handleChangeValue];
+    const isInfoChanged = !_.isEqual(userInfo, initialUserInfo);
+
+    return [userInfo, handleChangeValue, isInfoChanged];
 
 }
 

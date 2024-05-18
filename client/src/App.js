@@ -1,6 +1,6 @@
-
 import { Home, Auth } from './components';
 import { AuthProvider, useAuth } from './static/js/context_providers/auth_provider';
+import { MyThemeProvider } from './static/js/context_providers/theme_provider';
 
 import {
   BrowserRouter
@@ -8,11 +8,13 @@ import {
 
 function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <MainPage />
-      </AuthProvider>
-    </BrowserRouter>
+    <MyThemeProvider>
+      <BrowserRouter>
+        <AuthProvider>
+          <MainPage />
+        </AuthProvider>
+      </BrowserRouter>
+    </MyThemeProvider>
   );
 }
 

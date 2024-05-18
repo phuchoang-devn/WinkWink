@@ -80,7 +80,14 @@ export const users = [
         "country": "AR",
         "interests": "Reading, hiking, photography",
         "languages": ["en"],
-        "accountId": "b87fdd1e-e20d-4c6f-9e8c-501d23f92a39"
+        "accountId": "b87fdd1e-e20d-4c6f-9e8c-501d23f92a39",
+        "preferences": {
+            "age": {
+                "from": 25,
+                "to": 40
+            },
+            "sex": "female"
+        }
     },
     {
         "id": "f9a2a859-6a64-4cf1-87d5-18d5cb47a1e2",
