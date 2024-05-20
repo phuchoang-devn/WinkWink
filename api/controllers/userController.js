@@ -1,0 +1,1 @@
+// all with url /api/my/{id}

@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
-import { 
-    handleLogin, 
-    handleRegister 
-} from '../controllers/apiController.js';
+import {
+  handleLogin,
+  handleRegister
+} from '../controllers/accountController.js';
 
 
 const apiRouter = Router();
@@ -17,25 +17,25 @@ apiRouter.post('/register', (req, res) => {
   //logic
 })
 apiRouter.get('/profiles', (req, res) => {
-    //logic
-  })
-  apiRouter.post('/action', (req, res) => {
-    //logic
-  })
-  apiRouter.post('/chat', (req, res) => {
-    //logic
-  })
-  apiRouter.delete('/chat', (req, res) => {
-    //logic
-  })
-  apiRouter.put('/settings', (req, res) => {
-    //logic
-  })
-  apiRouter.put('/password', (req, res) => {
-    //logic
-  })
-  apiRouter.put('/prefrence', (req, res) => {
-    //logic
-  })
+  //logic
+})
+apiRouter.post('/action', (req, res) => {
+  //logic
+})
+apiRouter.post('/chat', (req, res) => {
+  //logic
+})
+apiRouter.delete('/chat', (req, res) => {
+  //logic
+})
+apiRouter.put('/settings', (req, res) => {
+  //logic
+})
+apiRouter.put('/password', (req, res) => {
+  //logic
+})
+apiRouter.put('/prefrence', (req, res) => {
+  //logic
+})
 
 export default apiRouter;
