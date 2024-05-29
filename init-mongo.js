@@ -67,7 +67,7 @@ for (let i = 1; i <= amountofusers; i++) {
 }
 db.users.insertMany(users);
 
-print('Inserted 30 users into users collection');
+print('Inserted " users into users collection');
 
 // Create indexes if necessary
 db.users.createIndex({ id: 1 });
@@ -76,7 +76,7 @@ db.users.createIndex({ age: 1 });
 db.users.createIndex({ country: 1 });
 db.users.createIndex({ 'preferences.age.from': 1, 'preferences.age.to': 1 });
 
-print('Created indexes on users collection');
+print('Created indexes "amountofusers" on users collection');
 
 // Indicate script completion
 print('Initialization script completed successfully');
