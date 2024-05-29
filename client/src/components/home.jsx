@@ -9,6 +9,7 @@ import NoPage from "./nopage";
 import { Route, Routes } from "react-router-dom";
 
 const Home = (props) => {
+    console.log("home")
     return (
         <Routes>
             <Route path="/" element={<HomeLayout />}>

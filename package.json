@@ -6,8 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cd client && npm run build && cd .. && node main.js",
-    "dev": "cd client && npm start && cd .. && DEV=true node main.js"
+    "start-prod": "cd client && npm run build && cd .. && node main.js",
+    "dev": "cd client && npm start && cd .. && DEV=true node main.js",
+    "dev-sv": "node main.js"
   },
   "author": "Team 01 - IMI - Agile Web Development",
   "contributors": [

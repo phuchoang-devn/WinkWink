@@ -1,9 +1,16 @@
 //login, register, change password, delete account
 
-export const handleLogin = (req, res) => {
-    //logic
+const accountController = {
+    handleLogin: (req, res, next) => {
+        res.send("hello");
+        next();
+    },
+
+    handleRegister: (req, res, next) => {
+        const body = req.body;
+        res.send("hi");
+        next();
+    }
 }
 
-export const handleRegister = (req, res) => {
-    //logic
-}
+export default accountController

@@ -1,17 +1,16 @@
 import { Router } from 'express';
-
-import {
-  handleLogin,
-  handleRegister
-} from '../controllers/accountController.js';
+import transactionController from "../controllers/transactionController.js";
+import accountController from '../controllers/accountController.js';
+import errorController from '../controllers/errorController.js';
 
 
 const apiRouter = Router();
 
-// TODO: routers - logic api 
-apiRouter.post('/login', handleLogin);
-apiRouter.post('/register', handleRegister);
+apiRouter.use(transactionController.startTransaction);
 
+// TODO: routers - logic api 
+apiRouter.post('/login', accountController.handleLogin);
+apiRouter.post('/register', accountController.handleRegister);
 
 apiRouter.post('/register', (req, res) => {
   //logic
@@ -37,5 +36,10 @@ apiRouter.put('/password', (req, res) => {
 apiRouter.put('/prefrence', (req, res) => {
   //logic
 })
+
+apiRouter.all('*', errorController.apiNotFound);
+
+apiRouter.use(transactionController.commitTransaction);
+apiRouter.use(transactionController.abortTransaction);
 
 export default apiRouter;

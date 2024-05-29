@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const User = require('./models/User'); // Adjust the path according to your file structure
+import mongoose from 'mongoose';
+import { User } from './user.js'; // Adjust the path according to your file structure
 
-mongoose.connect('mongodb://localhost:27017/dating-app', {
+mongoose.connect('mongodb://localhost:27017/winkwink', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
@@ -11,7 +11,7 @@ mongoose.connect('mongodb://localhost:27017/dating-app', {
 });
 
 // Example usage: creating a new user
-const createUser = async () => {
+export const createUser = async () => {
     try {
         const user = new User({
             id: '12345',
@@ -40,4 +40,11 @@ const createUser = async () => {
     }
 };
 
-createUser();
+export const getUser = async () => {
+    try {
+        const users = await User.find();
+        console.log("All users:" + users);
+    } catch (err) {
+        console.error('Error query user:', err);
+    }
+};
