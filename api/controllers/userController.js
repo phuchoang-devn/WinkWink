@@ -1,17 +1,20 @@
 // all with url /api/my/{id}
-
-import User from 'dating-app/api/models/user.js';
+import { v4 as uuidv4 } from 'uuid';
+import User from './path/to/userModel';
 
 const userController = {
     // Create a new user
     createUser: async (req, res, next) => {
         try {
-            const newUser = new User(req.body);
+            // Generate a UUID for the new user
+            const userId = uuidv4();
+            
+            // Create a new user instance with the UUID
+            const newUser = new User({ ...req.body, id: userId });
+            
+            // Save the new user to the database
             await newUser.save();
-
-            // Create indexes for the newly created user
-            await User.createIndexes();
-
+            
             res.status(201).json(newUser);
         } catch (error) {
             next(error);
