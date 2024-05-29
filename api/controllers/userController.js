@@ -8,6 +8,10 @@ const userController = {
         try {
             const newUser = new User(req.body);
             await newUser.save();
+
+            // Create indexes for the newly created user
+            await User.createIndexes();
+
             res.status(201).json(newUser);
         } catch (error) {
             next(error);
