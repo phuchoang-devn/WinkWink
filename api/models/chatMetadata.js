@@ -3,14 +3,14 @@ import mongoose, { Schema } from "mongoose";
 const chatMetadataSchema = new Schema({
     ofUser: {
         type: Schema.Types.ObjectId,
-        // ref: "User",
+        ref: "User",
         index: true,
         required: [true, "ChatMetadata: 'ofUser' is missing"]
     },
 
     matchedUser: {
         type: Schema.Types.ObjectId,
-        // ref: "User",
+        ref: "User",
         required: [true, "ChatMetadata: 'matchedUser' is missing"]
     },
 
@@ -33,4 +33,5 @@ const chatMetadataSchema = new Schema({
     }
 });
 
-export const ChatMetadata = mongoose.model("ChatMetadata", chatMetadataSchema);
+const ChatMetadata = mongoose.model("ChatMetadata", chatMetadataSchema);
+export default ChatMetadata;

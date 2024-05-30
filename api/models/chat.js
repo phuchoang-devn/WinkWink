@@ -3,14 +3,14 @@ import mongoose, { Schema } from "mongoose";
 const chatSchema = new Schema({
     sender: {
         type: Schema.Types.ObjectId,
-        // ref: "User",
+        ref: "User",
         index: true,
         required: [true, "Chat: 'sender' is missing"]
     },
 
     receiver: {
         type: Schema.Types.ObjectId,
-        // ref: "User",
+        ref: "User",
         required: [true, "Chat: 'receiver' is missing"]
     },
 
@@ -30,4 +30,5 @@ chatSchema.post(["remove", "deleteOne", "findOneAndDelete"], function(chat) {
     //logic: update ChatMetadata of both sender and receiver if LAST message is deleted
 })
 
-export const Chat = mongoose.model("Chat", chatSchema);
+const Chat =  mongoose.model("Chat", chatSchema);
+export default Chat;

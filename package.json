@@ -7,8 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-prod": "cd client && npm run build && cd .. && node main.js",
-    "dev": "cd client && npm start && cd .. && DEV=true node main.js",
-    "dev-sv": "node main.js"
+    "dev": "cd client && npm start && cd .. && DEV=true node --env-file=.dev.env main.js",
+    "dev-sv": "node --env-file=.dev.env main.js"
   },
   "author": "Team 01 - IMI - Agile Web Development",
   "contributors": [
@@ -27,8 +27,11 @@
   ],
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "express": "^4.19.2",
+    "express-validator": "^7.1.0",
     "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.0",
     "path": "^0.12.7"
   }
