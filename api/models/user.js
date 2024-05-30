@@ -5,7 +5,7 @@ const userSchema = new Schema({
     id: { 
         type: String, 
         required: [true, "Account: 'id' is missing"], 
-        default: uuidv4 
+    
     },
     name: {
         first: { 
