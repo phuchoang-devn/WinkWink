@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { User } from './user.js'; // Adjust the path according to your file structure
+import User from './user.js'; // Adjust the path according to your file structure
 
 mongoose.connect('mongodb://localhost:27017/winkwink', {
     useNewUrlParser: true,

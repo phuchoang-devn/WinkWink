@@ -13,9 +13,9 @@ const accountSchema = new Schema({
         required: [true, "Account: 'password' is missing"]
     },
 
-    userId: { 
+    user: { 
         type: Schema.Types.ObjectId, 
-        // ref: 'User', 
+        ref: 'User', 
         default: null 
     }
 })
