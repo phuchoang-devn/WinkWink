@@ -24,9 +24,9 @@ function generateRandomUser(id) {
     const femaleFirstNames = ['Alice', 'Eva', 'Grace', 'Hannah', 'Julia', 'Laura', 'Mary', 'Nina', 'Olivia', 'Sophia'];
     const otherFirstNames = ['Jordan', 'Alex', 'Taylor', 'Casey', 'Drew', 'Cameron', 'Jamie', 'Jordan', 'Kendall', 'Peyton'];
     const lastNames = ['Smith', 'Johnson', 'Brown', 'Taylor', 'Anderson', 'Thomas', 'Jackson', 'White', 'Harris', 'Martin'];
-    const countries = ['USA', 'Canada', 'UK', 'Australia', 'Germany', 'France', 'Spain', 'Italy', 'Netherlands', 'Sweden'];
+    const countries = ["US", "CA", "GB", "AU", "DE", "FR", "ES", "IT", "NL", "SE"];
     const interestsList = ['reading', 'traveling', 'sports', 'music', 'cooking', 'hiking', 'gaming', 'art', 'dancing', 'photography'];
-    const languages = ['English', 'Spanish', 'French', 'German', 'Chinese', 'Japanese', 'Korean', 'Russian', 'Portuguese', 'Italian'];
+    const languages = ["eng", "spa", "fre", "ger", "chi", "jpn", "kor", "rus", "por", "ita"];
 
     // Generate a random number between 0 and 99 for gender probability
     const genderProb = getRandomInt(0, 99);
