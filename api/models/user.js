@@ -2,11 +2,6 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-    id: { 
-        type: String, 
-        required: [true, "Account: 'id' is missing"], 
-    
-    },
     name: {
         first: { 
             type: String, 
@@ -17,11 +12,17 @@ const userSchema = new Schema({
             required: [true, "Account: 'last name' is missing"] 
         }
     },
-    profileImage: String,
+
+    profileImage: { 
+        type: String, 
+        required: [true, "Account: 'age' is missing"] 
+    },
+
     age: { 
         type: Number, 
         required: [true, "Account: 'age' is missing"] 
     },
+
     sex: { 
         type: String, 
         required: [true, "Account: 'sex' is missing"],
@@ -30,18 +31,22 @@ const userSchema = new Schema({
             message: "Account: 'sex' must be either 'male', 'female', or 'other'"
         }
     },
+
     country: {
         type: String,
         required: [true, "Account: 'country' is missing"]
     },
+
     interests: {
         type: String,
         required: [true, "Account: 'interests' is missing"]
     },
+
     language: { 
         type: [String], 
         required: [true, "Account: 'language' is missing"] 
     },
+
     preferences: {
         age: {
             from: { 
@@ -58,9 +63,21 @@ const userSchema = new Schema({
             required: [true, "Account: 'preferences.sex' is missing"] 
         }
     },
-    hasLiked: [String],
-    hasDisliked: [String],
-    hasMatched: [String]
+    
+    hasLiked: [{ 
+        type: Schema.Types.ObjectId, 
+        ref: 'User', 
+    }],
+
+    hasDisliked: [{ 
+        type: Schema.Types.ObjectId, 
+        ref: 'User', 
+    }],
+
+    hasMatched: [{ 
+        type: Schema.Types.ObjectId, 
+        ref: 'User', 
+    }],
 });
 
 const User = mongoose.model('User', userSchema);

@@ -30,6 +30,18 @@ const chatMetadataSchema = new Schema({
     timestamps: {
         createdAt: false,
         updatedAt: true
+    },
+    
+    methods: {
+        getResChatMetadata() {
+            return {
+                id: this._id,
+                matchedUser: this.matchedUser,
+                lastMessage: this.lastMessage,
+                isSeen: this.isSeen,
+                updatedAt: this.updatedAt
+            }
+        }
     }
 });
 

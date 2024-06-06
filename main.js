@@ -3,12 +3,12 @@ import path, { dirname } from "path";
 import { fileURLToPath } from 'url';
 import apiRouter from "./api/routers/apiRouter.js";
 import errorController from "./api/controllers/errorController.js"
-import { getUser } from "./api/models/index.js";
+import dbConnect from "./api/models/index.js";
 
 const app = express();
+dbConnect();
 
 app.set("port", process.env.PORT || 3000);
-getUser();
 
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(express.json()); // for parsing application/json

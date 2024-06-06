@@ -2,17 +2,28 @@ import { Router } from 'express';
 import transactionController from "../controllers/transactionController.js";
 import accountController from '../controllers/accountController.js';
 import errorController from '../controllers/errorController.js';
-import { checkExact, checkSchema, header } from 'express-validator';
+import { checkExact, checkSchema, header, param } from 'express-validator';
 import authController from '../controllers/authController.js';
+import appController from '../controllers/appController.js';
 
 
 const apiRouter = Router();
 
 apiRouter.use(transactionController.startTransaction);
 
-// TODO: routers - logic api 
+
 apiRouter.get(
-  '/login', 
+  '/test',
+  appController.createTestUser
+)
+
+/*
+Response:
+401 - error message
+200 - { token, user }
+*/
+apiRouter.get(
+  '/login',
   checkExact(
     checkSchema({
       email: { isString: true },
@@ -22,8 +33,13 @@ apiRouter.get(
   authController.handleLogin
 );
 
+/*
+Response:
+400 - error message
+200 - success message
+*/
 apiRouter.post(
-  '/register', 
+  '/register',
   checkExact(
     checkSchema({
       email: { isEmail: true },
@@ -34,30 +50,33 @@ apiRouter.post(
 );
 
 
-// The following URLs require Authentication
+/*  ---------------------------------------------------------------------------------------------
+    The following URLs require Authorization 
+    ---------------------------------------------------------------------------------------------
+
+Response:
+401 - error messgae
+*/
 apiRouter.use(
   header('Authorization').notEmpty(),
   authController.authenticateAccount
 );
 
-
-apiRouter.get('/profiles', (req, res) => {
-  //logic
-})
-apiRouter.post('/action', (req, res) => {
-  //logic
-})
-apiRouter.post('/chat', (req, res) => {
-  //logic
-})
-
+/*
+Response:
+200 - success message
+*/
 apiRouter.delete(
-  '/account', 
+  '/account',
   accountController.handleDelete
 );
 
+/*
+Response:
+200 - success message
+*/
 apiRouter.put(
-  '/account/password', 
+  '/account/password',
   checkExact(
     checkSchema({
       password: { isLength: { options: { min: 8 } } },
@@ -66,13 +85,97 @@ apiRouter.put(
   accountController.handleUpdatePassword
 );
 
-apiRouter.delete('/chat', (req, res) => {
+/*
+Response:
+200 - [{ 
+  id: chatmetadataId, 
+  matchedUser
+  isSeen, 
+  updatedAt 
+}]
+*/
+apiRouter.get(
+  '/chatmetadata/:page', 
+  param('page').exists().isInt().toInt(),
+  appController.getChatMetadata
+)
+
+/*
+Response:
+200 - success message
+400 - error message
+*/
+apiRouter.delete(
+  '/chatmetadata/:chatmetadataId', 
+  appController.deleteChatMetadata
+)
+
+/*
+Response:
+200 - success message
+400 - error message
+*/
+apiRouter.post(
+  '/chatmetadata/seen/:chatmetadataId', 
+  checkExact(
+    checkSchema({
+      isSeen: { isBoolean: true },
+    }, ['body'])
+  ),
+  appController.updateSeenChat
+)
+
+/*
+Response:
+200 - [{ 
+  id: chatId, 
+  isMine: boolean
+  content, 
+  createdAt 
+}]
+400 - error message
+*/
+apiRouter.get(
+  '/chats/:matchedUserId/:page', 
+  param('page').exists().isInt().toInt(),
+  appController.getChats
+)
+
+/*
+Response:
+200 - { 
+  id: chatId, 
+  content, 
+  createdAt 
+}
+400 - error message
+*/
+apiRouter.post(
+  '/chat/:receiverId', 
+  checkExact(
+    checkSchema({
+      content: { 
+        isString: true,
+        isLength: { options: { min: 1 } } 
+      },
+    }, ['body'])
+  ),
+  appController.postChat
+)
+
+apiRouter.get('/user', (req, res) => {
   //logic
 })
-apiRouter.put('/settings', (req, res) => {
+
+apiRouter.post('/user', (req, res) => {
   //logic
 })
-apiRouter.put('/prefrence', (req, res) => {
+
+apiRouter.put('/user', (req, res) => {
+  //logic
+})
+
+apiRouter.post('/action', (req, res) => {
   //logic
 })
 
