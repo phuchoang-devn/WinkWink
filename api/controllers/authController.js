@@ -30,8 +30,9 @@ const authController = {
                     { 
                         algorithm: 'RS256' 
                     }*/);
+
+                res.cookie("AuthToken", token)
                 res.status(httpStatus.OK).json({
-                    token,
                     user: account.user
                 });
             } else {
@@ -45,6 +46,11 @@ const authController = {
         }
     },
 
+    handleLogout: async(req, res) => {
+        res.clearCookie('AuthToken')
+        res.status(httpStatus.OK).send("Logout successfully")
+    },
+
     authenticateAccount: async (req, res, next) => {
         if (res.headersSent) {
             return next(); // Authentication process will be skipped for login and register.
@@ -52,7 +58,7 @@ const authController = {
 
         try {
             validateRequest(req, res);
-            const token = req.headers.authorization;
+            const token = req.cookies.AuthToken;
             const decoded = jwt.verify(token, process.env.AUTH_KEY);
             const account = await Account.findById(decoded.account).populate("user").exec();
 

@@ -24,7 +24,8 @@ const chatSchema = new Schema({
 }, {
     timestamps: {
         createdAt: true,
-        updatedAt: false
+        updatedAt: false,
+        // currentTime: () => Date.now()
     },
     methods: {
         getChatForPost() {

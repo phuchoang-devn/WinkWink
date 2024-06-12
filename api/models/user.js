@@ -78,6 +78,14 @@ const userSchema = new Schema({
         type: Schema.Types.ObjectId, 
         ref: 'User', 
     }],
+}, {
+    virtuals: {
+        fullName: {
+            get() {
+                return this.name.first + ' ' + this.name.last
+            }
+        }
+    }
 });
 
 const User = mongoose.model('User', userSchema);

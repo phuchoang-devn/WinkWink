@@ -1,6 +1,5 @@
 import "./styles/profile.css";
 import useImage from "../../static/js/hooks/useImage";
-import { users } from "../../fakeDB";
 import useUserInfo, { UserInfoChange } from "../../static/js/hooks/useUserInfo";
 import useUserInfoValidation from "../../static/js/hooks/useUserInfoValidation";
 import QuestionMarkFlag from "../../static/image/profile/flag-question-mark.svg"

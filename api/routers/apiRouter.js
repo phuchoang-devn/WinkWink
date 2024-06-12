@@ -2,15 +2,16 @@ import { Router } from 'express';
 import transactionController from "../controllers/transactionController.js";
 import accountController from '../controllers/accountController.js';
 import errorController from '../controllers/errorController.js';
-import { checkExact, checkSchema, header, param } from 'express-validator';
+import { checkExact, checkSchema, cookie, param } from 'express-validator';
 import authController from '../controllers/authController.js';
 import appController from '../controllers/appController.js';
+import cookieParser from 'cookie-parser';
 
 
 const apiRouter = Router();
 
+apiRouter.use(cookieParser());
 apiRouter.use(transactionController.startTransaction);
-
 
 apiRouter.get(
   '/test',
@@ -22,7 +23,7 @@ Response:
 401 - error message
 200 - { token, user }
 */
-apiRouter.get(
+apiRouter.post(
   '/login',
   checkExact(
     checkSchema({
@@ -32,6 +33,15 @@ apiRouter.get(
   ),
   authController.handleLogin
 );
+
+/*
+Response:
+200 - success message
+*/
+apiRouter.get(
+  '/logout',
+  authController.handleLogout
+)
 
 /*
 Response:
@@ -58,9 +68,19 @@ Response:
 401 - error messgae
 */
 apiRouter.use(
-  header('Authorization').notEmpty(),
+  cookie('AuthToken').notEmpty(),
   authController.authenticateAccount
 );
+
+apiRouter.post(
+  '/ws',
+  checkExact(
+    checkSchema({
+      conn: { isUUID: true },
+    }, ['body'])
+  ),
+  appController.wsRegister
+)
 
 /*
 Response:
@@ -89,7 +109,9 @@ apiRouter.put(
 Response:
 200 - [{ 
   id: chatmetadataId, 
-  matchedUser
+  matchedUserName,
+  matchedUser,
+  lastMessage,
   isSeen, 
   updatedAt 
 }]
@@ -98,16 +120,6 @@ apiRouter.get(
   '/chatmetadata/:page', 
   param('page').exists().isInt().toInt(),
   appController.getChatMetadata
-)
-
-/*
-Response:
-200 - success message
-400 - error message
-*/
-apiRouter.delete(
-  '/chatmetadata/:chatmetadataId', 
-  appController.deleteChatMetadata
 )
 
 /*

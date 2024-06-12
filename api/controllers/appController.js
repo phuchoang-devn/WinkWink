@@ -6,13 +6,15 @@ import httpStatus from "http-status-codes";
 import { validateRequest } from "../helpers/validator.js";
 import { isValidObjectId } from "mongoose";
 import ChatMetadata from "../models/chatMetadata.js";
+import { SocketAction, authenticateConnection } from "../web_socket/wsServer.js";
+import { sendSocketMessage } from "../web_socket/wsClient.js";
 
 const appController = {
     createTestUser: async (req, res, next) => {
         const fakeUser = {
             name: {
-                first: "First",
-                last: "Last"
+                first: "LUISSSSSSSSS",
+                last: "LALALALA"
             },
             profileImage: "image",
             age: 30,
@@ -77,6 +79,17 @@ const appController = {
         next()
     },
 
+    wsRegister: async (req, res, next) => {
+        const { conn } = req.body;
+        const userAccount = res.locals.account;
+
+        const result = authenticateConnection(conn, userAccount.user.id);
+        if (result.auth || result.isExisted)
+            res.status(httpStatus.OK).send("Connection established")
+        else res.status(httpStatus.BAD_REQUEST).send("Connection failed")
+        next();
+    },
+
     postChat: async (req, res, next) => {
         try {
             validateRequest(req, res);
@@ -87,7 +100,7 @@ const appController = {
             const sender = senderAccount.user;
 
             const hasAccepttoChat = sender.hasMatched.map(id => id.toString()).includes(receiverId)
-            if(hasAccepttoChat) {
+            if (hasAccepttoChat) {
                 const receiver = await User.findById(receiverId).exec();
 
                 const chat = await Chat.create({
@@ -95,7 +108,21 @@ const appController = {
                     receiver: receiver._id,
                     content
                 });
-                res.status(httpStatus.OK).json(chat.getChatForPost());
+
+                const responseChat = chat.getChatForPost();
+
+                sendSocketMessage({
+                    type: SocketAction.CHAT,
+                    payload: {
+                        receiver: receiverId,
+                        content: {
+                            sender: sender.id,
+                            chat: responseChat
+                        }
+                    }
+                })
+
+                res.status(httpStatus.OK).json(responseChat);
             } else {
                 res.status(httpStatus.BAD_REQUEST).send(`You aren't matched with the user "${receiverId}"`);
             }
@@ -134,7 +161,10 @@ const appController = {
                     .limit(CHATS_PER_PAGE);
 
                 const responseChats = chats.map(chat => chat.getChatForGet(user._id));
-                res.status(httpStatus.OK).json(responseChats);
+                res.status(httpStatus.OK).json({
+                    page,
+                    chats: responseChats
+                });
             } else {
                 res.status(httpStatus.BAD_REQUEST).send(`User with ID "${matchedUserId}" doesn't exist`);
             }
@@ -160,31 +190,11 @@ const appController = {
                 .limit(CHATS_PER_PAGE)
                 .exec();
 
-            const responseJSON = chatmetadatas.map(data => data.getResChatMetadata())
-            res.status(httpStatus.OK).json(responseJSON);
-
-            next();
-        } catch (error) {
-            next(error);
-        }
-    },
-
-    deleteChatMetadata: async (req, res, next) => {
-        try {
-            const { chatmetadataId } = req.params;
-            const userAccount = res.locals.account;
-
-            const user = userAccount.user;
-
-            const chatmetadata = isValidObjectId(chatmetadataId) ? await ChatMetadata.findById(chatmetadataId).exec() : undefined;
-
-            const doesUserHasMetadata = chatmetadata && chatmetadata.ofUser.toString() === user._id.toString();
-            if(doesUserHasMetadata) {
-                await chatmetadata.deleteOne();
-                res.status(httpStatus.OK).send(`Delete chat-metadata ${chatmetadataId} successfully`);
-            } else {
-                res.status(httpStatus.BAD_REQUEST).send(`You don't have the chat-metadata "${chatmetadataId}"`);
-            }
+            const responseMetadatas = await Promise.all(chatmetadatas.map(async data => await data.getResChatMetadata()))
+            res.status(httpStatus.OK).json({
+                page,
+                metadatas: responseMetadatas
+            });
 
             next();
         } catch (error) {
@@ -205,7 +215,7 @@ const appController = {
             const chatmetadata = isValidObjectId(chatmetadataId) ? await ChatMetadata.findById(chatmetadataId).exec() : undefined;
 
             const doesUserHasMetadata = chatmetadata && chatmetadata.ofUser.toString() === user._id.toString();
-            if(doesUserHasMetadata) {
+            if (doesUserHasMetadata) {
                 chatmetadata.isSeen = isSeen;
                 await chatmetadata.save();
                 res.status(httpStatus.OK).send(`Update chat-metadata ${chatmetadataId} successfully`);
