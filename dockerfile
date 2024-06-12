@@ -1,22 +1,27 @@
-# Use the official MongoDB image from Docker Hub
-FROM mongo:latest
+# Use an official Node.js runtime as a parent image
+FROM node:14
 
-# Copy the initialization script into the Docker image
-COPY init-mongo.js /docker-entrypoint-initdb.d/
+# Set the working directory in the container
+WORKDIR /app
 
-# Expose the default MongoDB port
-EXPOSE 27017
+# Copy package.json and package-lock.json
+COPY package*.json ./
 
-# Command to run MongoDB
-CMD ["mongod"]
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code
+COPY . .
+
+# Expose the port your app runs on
+EXPOSE 3000
+
+# Command to run the application
+CMD ["npm", "run", "dev"]
 
 
-#Open a terminal, navigate to the directory containing your 
-#Dockerfile and init-mongo.js, and run:
-
-# docker build -t my-mongodb-image .
-
-#Run the MongoDB Container
-
-# docker run -d --name my-mongodb-container -p 27017:27017 my-mongodb-image
+#How to use
+#
+# run xommand docker-compose build
+#               docker-compose up
 

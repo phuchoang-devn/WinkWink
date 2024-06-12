@@ -1,74 +1,14 @@
-import mongoose from 'mongoose';
+// Use the 'winkwink' database
+db = db.getSiblingDB('winkwink');
 
-const { Schema } = mongoose;
+// Drop the existing 'users' collection if it exists
+db.users.drop();
 
-const userSchema = new Schema({
-    id: { 
-        type: String, 
-        required: [true, "Account: 'id' is missing"], 
-    },
-    name: {
-        first: { 
-            type: String, 
-            required: [true, "Account: 'first name' is missing"] 
-        },
-        last: { 
-            type: String, 
-            required: [true, "Account: 'last name' is missing"] 
-        }
-    },
-    profileImage: String,
-    age: { 
-        type: Number, 
-        required: [true, "Account: 'age' is missing"] 
-    },
-    sex: { 
-        type: String, 
-        required: [true, "Account: 'sex' is missing"],
-        enum: {
-            values: ['male', 'female', 'non-binary'],
-            message: "Account: 'sex' must be either 'male', 'female', or 'other'"
-        }
-    },
-    country: {
-        type: String,
-        required: [true, "Account: 'country' is missing"]
-    },
-    interests: {
-        type: String,
-        required: [true, "Account: 'interests' is missing"]
-    },
-    language: { 
-        type: [String], 
-        required: [true, "Account: 'language' is missing"] 
-    },
-    preferences: {
-        age: {
-            from: { 
-                type: Number, 
-                required: [true, "Account: 'preferences.age.from' is missing"] 
-            },
-            to: { 
-                type: Number, 
-                required: [true, "Account: 'preferences.age.to' is missing"] 
-            }
-        },
-        sex: { 
-            type: String, 
-            required: [true, "Account: 'preferences.sex' is missing"] 
-        }
-    },
-    hasLiked: [String],
-    hasDisliked: [String],
-    hasMatched: [String]
-});
+// Create the 'users' collection
+db.createCollection('users');
 
-const User = mongoose.model('User', userSchema);
-
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/winkwink', { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('Could not connect to MongoDB', err));
+// Define the number of users to create
+const amountOfUsers = 30;
 
 // Helper functions to generate random values
 function getRandomInt(min, max) {
@@ -96,7 +36,7 @@ function generateRandomUser(id) {
     } else if (genderProb < 90) {
         sex = 'female'; // 45% probability for female
     } else {
-        sex = 'non-binary'; // 10% probability for other
+        sex = 'other'; // 10% probability for other
     }
 
     let firstName;
@@ -104,7 +44,7 @@ function generateRandomUser(id) {
         firstName = getRandomElement(maleFirstNames);
     } else if (sex === 'female') {
         firstName = getRandomElement(femaleFirstNames);
-    } else { // For 'non-binary' category
+    } else { // For 'other' category
         firstName = getRandomElement(otherFirstNames);
     }
 
@@ -118,10 +58,9 @@ function generateRandomUser(id) {
     const age = getRandomInt(18, 65);
     const preferencesAgeFrom = getRandomInt(18, 30);
     const preferencesAgeTo = getRandomInt(31, 65);
-    const preferencesSex = getRandomElement(['male', 'female', 'non-binary']);
+    const preferencesSex = getRandomElement(['male', 'female', 'other']);
 
     return {
-        id: id.toString(),
         name: { first: firstName, last: lastName },
         profileImage: `profile${id}.png`,
         age: age,
@@ -139,33 +78,22 @@ function generateRandomUser(id) {
     };
 }
 
-// Drop the existing 'users' collection if it exists
-User.collection.drop()
-    .then(() => console.log('Dropped existing users collection'))
-    .catch(err => console.log('No existing users collection to drop'));
-
-// Define the number of users to create
-const amountOfUsers = 30;
-
 // Generate and insert random users
 const users = [];
 for (let i = 1; i <= amountOfUsers; i++) {
     users.push(generateRandomUser(i));
 }
+db.users.insertMany(users);
 
-User.insertMany(users)
-    .then(() => {
-        console.log(`Inserted ${amountOfUsers} users into users collection`);
-        // Create indexes if necessary
-        return User.collection.createIndexes([
-            { key: { id: 1 } },
-            { key: { 'name.first': 1 } },
-            { key: { age: 1 } },
-            { key: { country: 1 } },
-            { key: { 'preferences.age.from': 1, 'preferences.age.to': 1 } }
-        ]);
-    })
-    .then(() => console.log('Created indexes on users collection'))
-    .then(() => console.log('Initialization script completed successfully'))
-    .catch(err => console.error('Error inserting users or creating indexes', err))
-    .finally(() => mongoose.connection.close());
+print(`Inserted ${amountOfUsers} users into users collection`);
+
+// Create indexes if necessary
+db.users.createIndex({ 'name.first': 1 });
+db.users.createIndex({ age: 1 });
+db.users.createIndex({ country: 1 });
+db.users.createIndex({ 'preferences.age.from': 1, 'preferences.age.to': 1 });
+
+print('Created indexes on users collection');
+
+// Indicate script completion
+print('Initialization script completed successfully');
