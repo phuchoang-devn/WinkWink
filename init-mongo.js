@@ -26,7 +26,7 @@ const userSchema = new Schema({
         type: String, 
         required: [true, "Account: 'sex' is missing"],
         enum: {
-            values: ['male', 'female', 'other'],
+            values: ['male', 'female', 'non-binary'],
             message: "Account: 'sex' must be either 'male', 'female', or 'other'"
         }
     },
