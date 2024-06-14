@@ -21,6 +21,11 @@ const chatSchema = new Schema({
         minLength: [1, "Chat: 'content' must have at least 1 characters"],
         required: [true, "Chat: 'content' is missing"]
     },
+
+    order: {
+        type: Number,
+        default: 0
+    }
 }, {
     timestamps: {
         createdAt: true,
@@ -32,7 +37,8 @@ const chatSchema = new Schema({
             return {
                 id: this._id,
                 content: this.content,
-                createdAt: this.createdAt
+                createdAt: this.createdAt,
+                order: this.order
             }
         },
 
@@ -41,11 +47,21 @@ const chatSchema = new Schema({
                 id: this._id,
                 isMine: this.sender.toString() === requestMaker.toString(),
                 content: this.content,
-                createdAt: this.createdAt
+                createdAt: this.createdAt,
+                order: this.order
             }
         }
     }
 });
+
+chatSchema.pre("save", async function() {
+    const chatMetadata = await ChatMetadata.findOne({ 
+        ofUser: this.sender
+    }).exec()
+
+    if(chatMetadata)
+        this.order = chatMetadata.total
+})
 
 chatSchema.post("save", async function(chat) {
     // update chat metadata of sender
@@ -67,13 +83,15 @@ async function updateChatMetadata(chat, isOwnedBySender) {
     if(chatMetadata) {
         chatMetadata.lastMessage = shortenedChatContent
         chatMetadata.isSeen = isOwnedBySender
+        chatMetadata.total += 1
         await chatMetadata.save()
     } else {
         await ChatMetadata.create({
             ofUser: owner,
             matchedUser: partner,
             lastMessage: shortenedChatContent,
-            isSeen: isOwnedBySender
+            isSeen: isOwnedBySender,
+            total: 1
         })
     }
 }

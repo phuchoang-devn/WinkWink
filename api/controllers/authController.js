@@ -32,9 +32,7 @@ const authController = {
                     }*/);
 
                 res.cookie("AuthToken", token)
-                res.status(httpStatus.OK).json({
-                    user: account.user
-                });
+                res.status(httpStatus.OK).json(account.user);
             } else {
                 res.status(httpStatus.UNAUTHORIZED).json({
                     field: "password",

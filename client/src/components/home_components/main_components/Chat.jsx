@@ -48,10 +48,10 @@ const Chat = () => {
                             </div>
                             : <>
                                 {
-                                    chatStore.matchedUserIds.map((id, index) => {
+                                    chatStore.matchedUserIds.map(id => {
                                         let metadata = chatStore.metadatas[id];
                                         return (
-                                            <MetadataCard key={id + index}
+                                            <MetadataCard key={id}
                                                 metadata={metadata}
                                                 isOnlyAvatar={!isMetadataExpanded}
                                                 openChat={setChatPartner}

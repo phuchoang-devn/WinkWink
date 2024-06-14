@@ -1,17 +1,43 @@
 import { ChatAction } from "./chatStore";
 
 export const chatThunk = (chatStore, dispatch) => async ({ type, payload }) => {
+    if (chatStore.isLoading) return
+
+    dispatch({
+        type: ChatAction.START_LOADING
+    })
+
     switch (type) {
         case ChatAction.GET_METADATA: {
+            let url = "/api/chatmetadata";
+
+            if (chatStore.matchedUserIds.length !== 0) {
+                const lastFetchedUser = chatStore.matchedUserIds.at(-1)
+                url += `/${chatStore.metadatas[lastFetchedUser].updatedAt}`
+            }
+
             try {
-                const response = await fetch(`/api/chatmetadata/${chatStore.nextPage}`, {
-                    credentials: "include"
-                });
+                const response = await fetch(url, { credentials: "include" });
 
                 if (response.ok) {
+                    const metadatas = await response.json();
+
+                    const metadatasWithImg = await Promise.all(metadatas.map(async mt => {
+                        const res = await fetch(`/api/image/chat/${mt.matchedUserId}`, { credentials: "include" });
+
+                        if (res.ok) {
+                            const blob = await res.blob();
+                            const imgUrl = URL.createObjectURL(blob);
+                            return {
+                                ...mt,
+                                image: imgUrl
+                            };
+                        }  else throw Error(await res.text());
+                    }))
+
                     dispatch({
                         type,
-                        payload: await response.json()
+                        payload: metadatasWithImg
                     })
                 } else throw Error(await response.text());
             } catch (error) {
@@ -22,18 +48,27 @@ export const chatThunk = (chatStore, dispatch) => async ({ type, payload }) => {
 
         case ChatAction.LOAD_CHAT: {
             const matchedUserId = payload
+
+            let url = `/api/chats/${matchedUserId}`
+
+            const loadedChat = chatStore.chats[matchedUserId];
+            if (loadedChat) {
+                const lastChatOrder = loadedChat.at(-1).order;
+
+                if (lastChatOrder === 0) break
+                else url += `/${lastChatOrder}`
+            }
+
             try {
-                const response = await fetch(`/api/chats/${matchedUserId}/${chatStore.metadatas[matchedUserId].nextPage}`, {
-                    credentials: "include"
-                });
+                const response = await fetch(url, { credentials: "include" });
 
                 if (response.ok) {
-                    const json = await response.json();
+                    const chats = await response.json();
                     dispatch({
                         type,
                         payload: {
                             matchedUserId,
-                            ...json
+                            chats
                         }
                     })
                 } else throw Error(await response.text());
@@ -80,7 +115,7 @@ export const chatThunk = (chatStore, dispatch) => async ({ type, payload }) => {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ 
+                    body: JSON.stringify({
                         isSeen: !metadata.isSeen
                     }),
                     credentials: "include"

@@ -18,6 +18,11 @@ apiRouter.get(
   appController.createTestUser
 )
 
+apiRouter.get(
+  "/test/img",
+  appController.testImage
+)
+
 /*
 Response:
 401 - error message
@@ -72,6 +77,11 @@ apiRouter.use(
   authController.authenticateAccount
 );
 
+/*
+Response:
+400 - error messgae
+200 - succes message
+*/
 apiRouter.post(
   '/ws',
   checkExact(
@@ -117,8 +127,8 @@ Response:
 }]
 */
 apiRouter.get(
-  '/chatmetadata/:page', 
-  param('page').exists().isInt().toInt(),
+  '/chatmetadata/:time?', 
+  param('time').optional().isISO8601(),
   appController.getChatMetadata
 )
 
@@ -148,8 +158,8 @@ Response:
 400 - error message
 */
 apiRouter.get(
-  '/chats/:matchedUserId/:page', 
-  param('page').exists().isInt().toInt(),
+  '/chats/:matchedUserId/:chatOrder?', 
+  param('chatOrder').optional().isInt().toInt(),
   appController.getChats
 )
 
@@ -173,6 +183,20 @@ apiRouter.post(
     }, ['body'])
   ),
   appController.postChat
+)
+
+apiRouter.post('/image/profile', (req, res) => {
+  //logic
+})
+
+apiRouter.get('/image/profile', (req, res) => {
+  //logic
+})
+
+apiRouter.get(
+  '/image/chat/:matchedUserId', 
+  param("matchedUserId").exists().isString(),
+  appController.getImageChat
 )
 
 apiRouter.get('/user', (req, res) => {

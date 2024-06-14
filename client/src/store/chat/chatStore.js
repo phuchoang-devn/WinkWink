@@ -3,6 +3,7 @@ import { useImmerReducer } from "use-immer";
 import { initialChat, chatReducer } from './chatReducer';
 import { chatThunk } from './chatThunk';
 import { useWS } from '../webSocket';
+import { useAuth } from '../../static/js/context_providers/auth_provider';
 
 const ChatContext = createContext(null);
 
@@ -15,6 +16,7 @@ export const ChatProvider = ({ children }) => {
     );
     const asyncDispatch = chatThunk(chatStore, dispatch);
 
+    const { user } = useAuth();
     const { wsChat } = useWS();
 
     useEffect(() => {
@@ -24,13 +26,15 @@ export const ChatProvider = ({ children }) => {
             type: ChatAction.NEW_CHAT,
             payload: wsChat
         })
-    }, [wsChat])
+    }, [wsChat, dispatch])
 
     useEffect(() => {
+        if(!user) return
+
         asyncDispatch({
             type: ChatAction.GET_METADATA
         })
-    }, [asyncDispatch])
+    }, [user])
 
     return (
         <ChatContext.Provider value={chatStore}>
@@ -50,6 +54,7 @@ export const useChatDispatch = () => {
 }
 
 export const ChatAction = Object.freeze({
+    START_LOADING: "chat/start",
     GET_METADATA: "chat/getMetadata",
     DELETE_METADATA: "chat/delMetadata",
     NEW_METADATA: "chat/newMetadata",

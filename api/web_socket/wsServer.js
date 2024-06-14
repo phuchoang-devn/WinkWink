@@ -7,19 +7,22 @@ const SocketAction = {
     CHAT: "chat"
 }
 
-const conections = {}
 const unauthenticatedConn = {}
-const assocConnAndUser = {}
+
+const userConns = {}
+const connAndUserMap = {}
+
+const winkwinkConn = []
 
 const authenticateConnection = (connId, userId) => {
     if (unauthenticatedConn[connId]) {
-        conections[userId] = unauthenticatedConn[connId];
-        assocConnAndUser[connId] = userId;
+        userConns[userId] = unauthenticatedConn[connId];
+        connAndUserMap[connId] = userId;
         delete unauthenticatedConn[connId];
         return ({
             auth: true
         })
-    } else if (conections[userId])
+    } else if (userConns[userId])
         return ({
             auth: false,
             isExisted: true
@@ -30,13 +33,17 @@ const authenticateConnection = (connId, userId) => {
     })
 }
 
+const deleteUnauthConnection = (connId) => {
+    unauthenticatedConn[connId].close();
+    delete unauthenticatedConn[connId];
+}
+
 const createWebSocketServer = () => {
     const wss = new WebSocketServer({
         port: 8000
     })
 
     wss.on("connection", connection => {
-        let isWinkWink = false;
         const connID = uuidv4();
 
         unauthenticatedConn[connID] = connection;
@@ -49,49 +56,49 @@ const createWebSocketServer = () => {
         connection.on("message", data => {
             const message = JSON.parse(data);
 
-            switch (message.type) {
-                case SocketAction.AUTH_SERVER: {
-                    try {
-                        const decoded = jwt.verify(message.token, process.env.AUTH_KEY);
+            if (message.type === SocketAction.AUTH_SERVER) {
+                try {
+                    const decoded = jwt.verify(message.token, process.env.AUTH_KEY);
 
-                        if (unauthenticatedConn[decoded.conn]) {
-                            delete unauthenticatedConn[decoded.conn];
-                            isWinkWink = true;
-                            console.log("WinkWink connection established")
-                        }
-                    } catch (error) {
-                        if (error instanceof jwt.JsonWebTokenError) {
-                            connection.close();
-                            delete unauthenticatedConn[decoded.conn];
-                            console.log(`Failed to authenticate server connection`)
-                        }
+                    if (unauthenticatedConn[decoded.conn]) {
+                        delete unauthenticatedConn[decoded.conn];
+                        winkwinkConn.push(connID);
+                        console.log("WinkWink connection established");
                     }
-                    break;
+                } catch (error) {
+                    if (error instanceof jwt.JsonWebTokenError) {
+                        connection.close();
+                        delete unauthenticatedConn[decoded.conn];
+                        console.log(`Failed to authenticate server connection`)
+                    }
                 }
+            } else if(winkwinkConn.includes(connID)){
+                switch (message.type) {
+                    case SocketAction.CHAT: {
+                        const { receiver, content } = message.payload;
 
-                case SocketAction.CHAT: {
-                    const { receiver, content } = message.payload;
+                        const receiverConn = userConns[receiver];
+                        if (receiverConn)
+                            receiverConn.send(JSON.stringify({
+                                type: "chat",
+                                payload: content
+                            }));
 
-                    const receiverConn = conections[receiver];
-                    if (receiverConn)
-                        receiverConn.send(JSON.stringify({
-                            type: "chat",
-                            payload: content
-                        }));
-                    break;
+                        break;
+                    }
+
+                    default:
+                        console.error("Web Socket: Unknown message type")
                 }
-
-                default:
-                    console.error("Web Socket: Unknown message type")
-            }
+            } else console.log(`Message from unauthenticated server "${connID}"`)
         })
 
         connection.on('close', () => {
-            const userId = assocConnAndUser[connID];
+            const userId = connAndUserMap[connID];
 
             if (userId) {
-                delete conections[userId];
-                delete assocConnAndUser[connID];
+                delete userConns[userId];
+                delete connAndUserMap[connID];
             }
         });
     })
@@ -99,7 +106,8 @@ const createWebSocketServer = () => {
 
 export {
     SocketAction,
-    authenticateConnection
+    authenticateConnection,
+    deleteUnauthConnection
 }
 
 export default createWebSocketServer

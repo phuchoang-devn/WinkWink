@@ -69,7 +69,7 @@ $defaultTransitionDuration: 0.5s;
                 justify-content: space-between;
 
                 width: 23rem;
-                padding: 0.5rem 0.75rem;
+                padding: 0.75rem;
                 border-radius: 10px;
 
 
@@ -81,11 +81,34 @@ $defaultTransitionDuration: 0.5s;
                     gap: 1rem;
 
                     .metadata-pic {
-                        min-width: 60px;
+                        $imgSize: 60px;
+                        border-radius: 50%;
+                        overflow: hidden;
+                        box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+                        cursor: pointer;
+
+                        .notify-ring {
+                            height: 72px;
+                            width: 72px;
+                            translate: -6px -6px;
+                            position: absolute;
+                            border-radius: 50%;
+                        }
+                        
+                        img {
+                            width: $imgSize;
+                            height: $imgSize;
+                            object-fit: cover;
+                            cursor: pointer;
+                        }
 
                         .metadata-svg {
-                            height: 60px;
-                            width: 60px;
+                            height: $imgSize;
+                            width: $imgSize;
+                            
+                            .icon-path {
+                                fill: var(--colorMiddle)
+                            }
                         }
                     }
 
@@ -93,14 +116,13 @@ $defaultTransitionDuration: 0.5s;
                         width: 70%;
 
                         .metadata-name {
-                            width: 50%;
                             font-size: 1.25rem;
                         }
 
                         .metadata-message,
                         .metadata-name {
                             text-overflow: ellipsis;
-                            overflow: hidden;  
+                            overflow: hidden;
                             white-space: nowrap;
                         }
                     }
@@ -162,8 +184,8 @@ $defaultTransitionDuration: 0.5s;
         gap: 1rem;
 
         .top {
-            $picWidth: 50px;
-            
+            $picSize: 50px;
+
             width: $chatComponentWidth;
             background-color: white;
             border-radius: 20px;
@@ -173,23 +195,46 @@ $defaultTransitionDuration: 0.5s;
             align-items: center;
             justify-content: space-between;
 
-            .partner-pic {
-                height: $picWidth;
-                width: $picWidth;
+            .chat-pic {
+                margin-right: 1rem;
+                display: flex;
+                border-radius: 50%;
+                overflow: hidden;
+                box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+
+                img {
+                    height: $picSize;
+                    width: $picSize;
+                    object-fit: cover;
+                }
+
+                .chat-svg {
+                    height: $picSize;
+                    width: $picSize;
+
+                    .icon-path {
+                        fill: var(--colorLight)
+                    }
+                }
             }
 
             .partner-name {
                 font-size: 1.5rem;
-                text-wrap: nowrap;
+                max-width: 100%;
+
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
             }
 
             .partner-blank {
-                width: $picWidth;
+                width: $picSize;
             }
         }
 
         .messages {
             width: $chatComponentWidth;
+            flex-grow: 1;
             padding: 0 1rem;
 
             display: flex;
@@ -197,7 +242,7 @@ $defaultTransitionDuration: 0.5s;
             gap: 0.5rem;
 
             overflow: auto;
-            
+
 
             /* Hide scrollbar for IE, Edge and Firefox */
             -ms-overflow-style: none;

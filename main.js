@@ -7,6 +7,9 @@ import dbConnect from "./api/models/index.js";
 import createWebSocketServer from "./api/web_socket/wsServer.js";
 import createWebSocketClient from "./api/web_socket/wsClient.js";
 
+const __filename = fileURLToPath(import.meta.url);
+export const __dirname = dirname(__filename);
+
 const app = express();
 dbConnect();
 
@@ -24,8 +27,6 @@ if (!process.env.DEV) {
 	const staticPath = "./client/build/";
 	app.use(express.static(staticPath));
 	app.get("*", (req, res) => {
-		const __filename = fileURLToPath(import.meta.url);
-		const __dirname = dirname(__filename);
 		res.sendFile(path.join(__dirname, "client/build", "index.html"));
 	});
 }

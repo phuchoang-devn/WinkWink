@@ -1,26 +1,38 @@
 import { ReactComponent as FakePic } from "../../../../static/image/profile/default-user-image.svg"
 import { ReactComponent as Send } from "../../../../static/image/chat/send.svg"
 import { ReactComponent as Down } from "../../../../static/image/chat/down-circle.svg"
-import { useEffect, useRef, useState } from "react";
+import { useDeferredValue, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ChatAction, useChatDispatch, useChatStore } from "../../../../store/chat/chatStore";
 
 const ChatCompose = ({ partnerId }) => {
     const chatStore = useChatStore();
-    const isSeen = chatStore.metadatas[partnerId]?.isSeen
+    const metadata = chatStore.metadatas[partnerId];
+    const chats = chatStore.chats[partnerId];
     const dispatch = useChatDispatch();
 
     const [newMessage, setNewMessage] = useState("");
     const contentRef = useRef(null);
+    const currentPos = useRef(0);
     const [isOnBottom, setIsOnBottom] = useState(true);
 
     useEffect(() => {
         if (!partnerId) return
 
         setNewMessage("");
-
-        const ref = contentRef.current;
-        ref.scrollTop = 0;
+        contentRef.current.scrollTop = 0;
     }, [partnerId])
+
+    useLayoutEffect(() => {
+        if (!chats) return
+
+        currentPos.current = contentRef.current.scrollTop;
+    }, [chats])
+
+    useEffect(() => {
+        if (!chats) return
+
+        contentRef.current.scrollTop = currentPos.current;
+    }, [chats])
 
     const handleInput = async (e) => {
         setNewMessage(e.target.value)
@@ -29,6 +41,8 @@ const ChatCompose = ({ partnerId }) => {
 
     const handleSendMessgae = (e) => {
         e.preventDefault();
+        if (newMessage.length === 0) return
+
         dispatch({
             type: ChatAction.SEND_MESSAGE,
             payload: {
@@ -40,19 +54,37 @@ const ChatCompose = ({ partnerId }) => {
     }
 
     const handleScroll = (e) => {
-        if (e.target.scrollTop <= -1 && isOnBottom)
-            setIsOnBottom(false)
-        else if (e.target.scrollTop > -1 && !isOnBottom)
-            setIsOnBottom(true)
+        if (e.target.scrollTop <= -1) {
+            if (isOnBottom) setIsOnBottom(false)
+
+            const isAllOrIsLoading = chats.at(-1).order === 0 || chatStore.isLoading;
+            if (isAllOrIsLoading) return
+
+            const lineForLoadingMoreChats = (contentRef.current.clientHeight - contentRef.current.scrollHeight) + 200
+            if (e.target.scrollTop < lineForLoadingMoreChats) {
+                dispatch({
+                    type: ChatAction.LOAD_CHAT,
+                    payload: partnerId
+                })
+            }
+
+        } else if (e.target.scrollTop > -1 && !isOnBottom) {
+            setIsOnBottom(true);
+
+            if (!metadata?.isSeen)
+                dispatch({
+                    type: ChatAction.IS_SEEN,
+                    payload: partnerId
+                })
+        }
     }
 
     const scrollToBottom = async () => {
         contentRef.current.scrollTop = 0
-        await handleSeen()
     }
 
     const handleSeen = async () => {
-        if(!isSeen && contentRef.current.scrollTop > -1)
+        if (!metadata?.isSeen && isOnBottom)
             await dispatch({
                 type: ChatAction.IS_SEEN,
                 payload: partnerId
@@ -64,11 +96,18 @@ const ChatCompose = ({ partnerId }) => {
             style={{
                 width: partnerId ? "30rem" : 0,
                 padding: partnerId ? "1rem" : 0,
-                backgroundColor: isSeen || !partnerId ? "var(--colorLight)" : "var(--colorDark)"
+                backgroundColor: metadata?.isSeen || !partnerId ? "var(--colorLight)" : "var(--colorDark)"
             }}
             onMouseDown={handleSeen}>
             <div className="top">
-                <FakePic className="partner-pic" />
+                <div className="chat-pic">
+                    {
+                        metadata?.image ?
+                            <img src={metadata?.image} alt={metadata.matchedUserName} />
+                            : <FakePic className="chat-svg" />
+                    }
+                </div>
+
                 <div className="partner-name">
                     {partnerId ? chatStore.metadatas[partnerId]?.matchedUserName : ""}
                 </div>
@@ -81,16 +120,16 @@ const ChatCompose = ({ partnerId }) => {
             >
                 {
                     partnerId ?
-                        chatStore.chats[partnerId]?.map(chat => (
+                        chats.map(chat => (
                             <div key={chat.id}
                                 className="message"
                                 style={
                                     chat.isMine ? {
-                                        backgroundColor: isSeen || !partnerId ? "var(--colorDark)" : "var(--colorLight)",
-                                        color: isSeen || !partnerId ? "var(--colorLight)" : "black",
+                                        backgroundColor: metadata?.isSeen || !partnerId ? "var(--colorDark)" : "var(--colorLight)",
+                                        color: metadata?.isSeen || !partnerId ? "var(--colorLight)" : "black",
                                         marginLeft: "auto"
                                     } : {
-                                        backgroundColor: isSeen || !partnerId ? "var(--colorMiddle)" : "var(--colorLight)"
+                                        backgroundColor: metadata?.isSeen || !partnerId ? "var(--colorMiddle)" : "var(--colorLight)"
                                     }
                                 }
                             >

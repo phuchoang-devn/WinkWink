@@ -27,6 +27,11 @@ const chatMetadataSchema = new Schema({
         type: Boolean,
         required: [true, "ChatMetadata: 'isSeen' is missing"]
     },
+
+    total: {
+        type: Number,
+        default: 0
+    }
 }, {
     timestamps: {
         createdAt: false,
@@ -43,7 +48,8 @@ const chatMetadataSchema = new Schema({
                 matchedUserName: matchedUser.fullName,
                 lastMessage: this.lastMessage,
                 isSeen: this.isSeen,
-                updatedAt: this.updatedAt
+                updatedAt: this.updatedAt,
+                total: this.total
             }
         }
     }

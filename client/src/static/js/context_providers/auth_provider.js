@@ -1,11 +1,21 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setLoggedIn] = useState(() => document.cookie.includes("AuthToken"));
+  const [user, setUser] = useState(undefined);
 
-  const login = async (email, password) => {
+  useEffect(() => {
+    if(!document.cookie.includes("AuthToken")) return
+
+    // TODO: replace this by fetch GET user
+    const localUser = localStorage.getItem("winkwinkUser")
+
+    if(localUser) setUser(JSON.parse(localUser))
+  }, [setUser])
+
+  const login = useCallback(async (email, password) => {
     try {
       let data = { email, password };
 
@@ -18,7 +28,11 @@ export const AuthProvider = ({ children }) => {
       });
 
       if (response.ok) {
+        const resUser = await response.json();
+        localStorage.setItem("winkwinkUser", JSON.stringify(resUser))
+        setUser(resUser);
         setLoggedIn(true);
+
         return ({
           isSuccessful: true
         })
@@ -36,7 +50,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.log(error.message)
     }
-  };
+  }, [setLoggedIn, setUser]);
 
   const logout = () => {
     fetch("/api/logout")
@@ -46,7 +60,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, user }}>
       {children}
     </AuthContext.Provider>
   );

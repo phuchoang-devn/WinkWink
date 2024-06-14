@@ -38,7 +38,7 @@ const MetadataCard = (props) => {
 
         openChat(partner);
 
-        if (!chatStore.metadatas[partner].isSeen)
+        if (!metadata.isSeen)
             dispatch({
                 type: ChatAction.IS_SEEN,
                 payload: partner
@@ -49,7 +49,7 @@ const MetadataCard = (props) => {
         <div className="metadata-card"
             onMouseEnter={() => setIsFocus(true)}
             onMouseLeave={() => setIsFocus(false)}
-            onClick={handleOpenChat}
+            onClick={isOnlyAvatar ? () => null : handleOpenChat}
             style={
                 isFocus && !isOnlyAvatar ? {
                     backgroundColor: "rgb(0, 0, 0, 0.15)",
@@ -58,8 +58,19 @@ const MetadataCard = (props) => {
             }
         >
             <div className="metadata-right">
-                <div className="metadata-pic">
-                    <FakePic className="metadata-svg" />
+                <div className="metadata-pic"
+                    onClick={isOnlyAvatar ? handleOpenChat : () => null}
+                >
+                    <div className="notify-ring"
+                    style={{
+                        border: metadata.isSeen ? "unset" : "3px solid var(--colorMiddle)"
+                    }}
+                    ></div>
+                    {
+                        metadata.image ?
+                            <img src={metadata.image} alt={metadata.matchedUserName} />
+                            : <FakePic className="metadata-svg" />
+                    }
                 </div>
 
                 <div className="metadata-middle">
