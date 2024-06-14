@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import User from "./user.js";
 
 const chatMetadataSchema = new Schema({
     ofUser: {
@@ -26,6 +27,11 @@ const chatMetadataSchema = new Schema({
         type: Boolean,
         required: [true, "ChatMetadata: 'isSeen' is missing"]
     },
+
+    total: {
+        type: Number,
+        default: 0
+    }
 }, {
     timestamps: {
         createdAt: false,
@@ -33,13 +39,17 @@ const chatMetadataSchema = new Schema({
     },
     
     methods: {
-        getResChatMetadata() {
+        async getResChatMetadata() {
+            const matchedUser = await User.findById(this.matchedUser).exec()
+
             return {
                 id: this._id,
-                matchedUser: this.matchedUser,
+                matchedUserId: this.matchedUser,
+                matchedUserName: matchedUser.fullName,
                 lastMessage: this.lastMessage,
                 isSeen: this.isSeen,
-                updatedAt: this.updatedAt
+                updatedAt: this.updatedAt,
+                total: this.total
             }
         }
     }

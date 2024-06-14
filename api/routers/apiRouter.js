@@ -2,19 +2,25 @@ import { Router } from 'express';
 import transactionController from "../controllers/transactionController.js";
 import accountController from '../controllers/accountController.js';
 import errorController from '../controllers/errorController.js';
-import { checkExact, checkSchema, header, param } from 'express-validator';
+import { checkExact, checkSchema, cookie, param } from 'express-validator';
 import authController from '../controllers/authController.js';
 import appController from '../controllers/appController.js';
+import cookieParser from 'cookie-parser';
 
 
 const apiRouter = Router();
 
+apiRouter.use(cookieParser());
 apiRouter.use(transactionController.startTransaction);
-
 
 apiRouter.get(
   '/test',
   appController.createTestUser
+)
+
+apiRouter.get(
+  "/test/img",
+  appController.testImage
 )
 
 /*
@@ -22,7 +28,7 @@ Response:
 401 - error message
 200 - { token, user }
 */
-apiRouter.get(
+apiRouter.post(
   '/login',
   checkExact(
     checkSchema({
@@ -32,6 +38,15 @@ apiRouter.get(
   ),
   authController.handleLogin
 );
+
+/*
+Response:
+200 - success message
+*/
+apiRouter.get(
+  '/logout',
+  authController.handleLogout
+)
 
 /*
 Response:
@@ -58,9 +73,24 @@ Response:
 401 - error messgae
 */
 apiRouter.use(
-  header('Authorization').notEmpty(),
+  cookie('AuthToken').notEmpty(),
   authController.authenticateAccount
 );
+
+/*
+Response:
+400 - error messgae
+200 - succes message
+*/
+apiRouter.post(
+  '/ws',
+  checkExact(
+    checkSchema({
+      conn: { isUUID: true },
+    }, ['body'])
+  ),
+  appController.wsRegister
+)
 
 /*
 Response:
@@ -89,25 +119,17 @@ apiRouter.put(
 Response:
 200 - [{ 
   id: chatmetadataId, 
-  matchedUser
+  matchedUserName,
+  matchedUser,
+  lastMessage,
   isSeen, 
   updatedAt 
 }]
 */
 apiRouter.get(
-  '/chatmetadata/:page', 
-  param('page').exists().isInt().toInt(),
+  '/chatmetadata/:time?', 
+  param('time').optional().isISO8601(),
   appController.getChatMetadata
-)
-
-/*
-Response:
-200 - success message
-400 - error message
-*/
-apiRouter.delete(
-  '/chatmetadata/:chatmetadataId', 
-  appController.deleteChatMetadata
 )
 
 /*
@@ -136,8 +158,8 @@ Response:
 400 - error message
 */
 apiRouter.get(
-  '/chats/:matchedUserId/:page', 
-  param('page').exists().isInt().toInt(),
+  '/chats/:matchedUserId/:chatOrder?', 
+  param('chatOrder').optional().isInt().toInt(),
   appController.getChats
 )
 
@@ -161,6 +183,20 @@ apiRouter.post(
     }, ['body'])
   ),
   appController.postChat
+)
+
+apiRouter.post('/image/profile', (req, res) => {
+  //logic
+})
+
+apiRouter.get('/image/profile', (req, res) => {
+  //logic
+})
+
+apiRouter.get(
+  '/image/chat/:matchedUserId', 
+  param("matchedUserId").exists().isString(),
+  appController.getImageChat
 )
 
 apiRouter.get('/user', (req, res) => {

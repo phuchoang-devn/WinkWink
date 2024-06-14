@@ -2,7 +2,6 @@ import { useState } from "react";
 
 const ProfileImage = ({image, isError, profileImageRef, setImage}) => {
     const [isMouseOverImage, setIsMouseOverImage] = useState(false);
-    console.log(isError)
 
     const handleHoverOnImage = () => {
         setIsMouseOverImage(state => !state);

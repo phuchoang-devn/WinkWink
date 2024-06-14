@@ -6,15 +6,20 @@ import httpStatus from "http-status-codes";
 import { validateRequest } from "../helpers/validator.js";
 import { isValidObjectId } from "mongoose";
 import ChatMetadata from "../models/chatMetadata.js";
+import { SocketAction, authenticateConnection, deleteUnauthConnection } from "../web_socket/wsServer.js";
+import { sendSocketMessage } from "../web_socket/wsClient.js";
+import path from "path";
+import { __dirname } from "../../main.js";
+
 
 const appController = {
     createTestUser: async (req, res, next) => {
-        const fakeUser = {
+        const fakeUser = (first, last) => ({
             name: {
-                first: "First",
-                last: "Last"
+                first,
+                last
             },
-            profileImage: "image",
+            profileImage: "image.jpg",
             age: 30,
             sex: "other",
             country: "DE",
@@ -27,10 +32,10 @@ const appController = {
                 },
                 sex: "other"
             }
-        }
+        })
 
-        const user1 = await User.create(fakeUser)
-        const user2 = await User.create(fakeUser)
+        const user1 = await User.create(fakeUser("Donald", "Trump"))
+        const user2 = await User.create(fakeUser("Joe", "Biden"))
 
         user1.hasMatched.push(user2._id)
         await user1.save()
@@ -52,6 +57,9 @@ const appController = {
                 password: hashPassword,
                 user: user1._id
             });
+        } else {
+            accountsWithSameEmail1.user = user1._id;
+            await accountsWithSameEmail1.save()
         }
 
         const account2 = {
@@ -68,6 +76,9 @@ const appController = {
                 password: hashPassword,
                 user: user2._id
             });
+        } else {
+            accountsWithSameEmail2.user = user2._id;
+            await accountsWithSameEmail2.save()
         }
 
         res.status(200).json({
@@ -75,6 +86,25 @@ const appController = {
             account2
         })
         next()
+    },
+
+    wsRegister: async (req, res, next) => {
+        const { conn } = req.body;
+        const userAccount = res.locals.account;
+
+        const user = userAccount.user;
+
+        if (!user) {
+            deleteUnauthConnection(conn);
+            res.status(httpStatus.BAD_REQUEST).send("Connection failed");
+            return next();
+        }
+
+        const result = authenticateConnection(conn, user._id);
+        if (result.auth || result.isExisted)
+            res.status(httpStatus.OK).send("Connection established")
+        else res.status(httpStatus.BAD_REQUEST).send("Connection failed")
+        next();
     },
 
     postChat: async (req, res, next) => {
@@ -87,7 +117,7 @@ const appController = {
             const sender = senderAccount.user;
 
             const hasAccepttoChat = sender.hasMatched.map(id => id.toString()).includes(receiverId)
-            if(hasAccepttoChat) {
+            if (hasAccepttoChat) {
                 const receiver = await User.findById(receiverId).exec();
 
                 const chat = await Chat.create({
@@ -95,7 +125,21 @@ const appController = {
                     receiver: receiver._id,
                     content
                 });
-                res.status(httpStatus.OK).json(chat.getChatForPost());
+
+                const responseChat = chat.getChatForPost();
+
+                sendSocketMessage({
+                    type: SocketAction.CHAT,
+                    payload: {
+                        receiver: receiverId,
+                        content: {
+                            sender: sender.id,
+                            chat: responseChat
+                        }
+                    }
+                })
+
+                res.status(httpStatus.OK).json(responseChat);
             } else {
                 res.status(httpStatus.BAD_REQUEST).send(`You aren't matched with the user "${receiverId}"`);
             }
@@ -110,27 +154,32 @@ const appController = {
         try {
             validateRequest(req, res);
             const CHATS_PER_PAGE = 20;
-            const { matchedUserId, page } = req.params;
+            const { matchedUserId, chatOrder } = req.params;
             const userAccount = res.locals.account;
 
             const user = userAccount.user;
             const matchedUser = isValidObjectId(matchedUserId) ? await User.findById(matchedUserId).exec() : undefined;
 
+            const query = {
+                $or: [
+                    {
+                        sender: user._id,
+                        receiver: matchedUserId
+                    },
+                    {
+                        sender: matchedUserId,
+                        receiver: user._id
+                    },
+                ]
+            }
+
+            if (chatOrder) query.order = {
+                $lt: chatOrder,
+            }
+
             if (matchedUser) {
-                const chats = await Chat.find({
-                    $or: [
-                        {
-                            sender: user._id,
-                            receiver: matchedUserId
-                        },
-                        {
-                            sender: matchedUserId,
-                            receiver: user._id
-                        },
-                    ]
-                })
-                    .sort({ createdAt: -1 })
-                    .skip(CHATS_PER_PAGE * page)
+                const chats = await Chat.find(query)
+                    .sort({ order: -1 })
                     .limit(CHATS_PER_PAGE);
 
                 const responseChats = chats.map(chat => chat.getChatForGet(user._id));
@@ -149,42 +198,25 @@ const appController = {
         try {
             validateRequest(req, res);
             const CHATS_PER_PAGE = 20;
-            const { page } = req.params;
+            const { time } = req.params;
             const userAccount = res.locals.account;
 
             const user = userAccount.user;
 
-            const chatmetadatas = await ChatMetadata.find({ ofUser: user._id })
+            const query = time ? {
+                ofUser: user._id,
+                updatedAt: { $lt: time }
+            } : {
+                ofUser: user._id
+            }
+
+            const chatmetadatas = await ChatMetadata.find(query)
                 .sort({ updatedAt: -1 })
-                .skip(CHATS_PER_PAGE * page)
                 .limit(CHATS_PER_PAGE)
                 .exec();
 
-            const responseJSON = chatmetadatas.map(data => data.getResChatMetadata())
-            res.status(httpStatus.OK).json(responseJSON);
-
-            next();
-        } catch (error) {
-            next(error);
-        }
-    },
-
-    deleteChatMetadata: async (req, res, next) => {
-        try {
-            const { chatmetadataId } = req.params;
-            const userAccount = res.locals.account;
-
-            const user = userAccount.user;
-
-            const chatmetadata = isValidObjectId(chatmetadataId) ? await ChatMetadata.findById(chatmetadataId).exec() : undefined;
-
-            const doesUserHasMetadata = chatmetadata && chatmetadata.ofUser.toString() === user._id.toString();
-            if(doesUserHasMetadata) {
-                await chatmetadata.deleteOne();
-                res.status(httpStatus.OK).send(`Delete chat-metadata ${chatmetadataId} successfully`);
-            } else {
-                res.status(httpStatus.BAD_REQUEST).send(`You don't have the chat-metadata "${chatmetadataId}"`);
-            }
+            const responseMetadatas = await Promise.all(chatmetadatas.map(async data => await data.getResChatMetadata()))
+            res.status(httpStatus.OK).json(responseMetadatas);
 
             next();
         } catch (error) {
@@ -205,7 +237,7 @@ const appController = {
             const chatmetadata = isValidObjectId(chatmetadataId) ? await ChatMetadata.findById(chatmetadataId).exec() : undefined;
 
             const doesUserHasMetadata = chatmetadata && chatmetadata.ofUser.toString() === user._id.toString();
-            if(doesUserHasMetadata) {
+            if (doesUserHasMetadata) {
                 chatmetadata.isSeen = isSeen;
                 await chatmetadata.save();
                 res.status(httpStatus.OK).send(`Update chat-metadata ${chatmetadataId} successfully`);
@@ -218,6 +250,30 @@ const appController = {
             next(error);
         }
     },
+
+    getImageChat: async (req, res, next) => {
+        try {
+            validateRequest(req, res);
+            const { matchedUserId } = req.params;
+            const account = res.locals.account;
+
+            const hasMatched = account.user.hasMatched.map(id => id.toString());
+            const isAlreadyMatched = hasMatched.includes(matchedUserId);
+            if (isAlreadyMatched) {
+                const matchedUser = await User.findById(matchedUserId).exec();
+
+                res.status(httpStatus.OK).sendFile(path.join(__dirname, "profile_image", matchedUser.profileImage));
+            } else res.status(httpStatus.BAD_REQUEST).send(`No match with user "${matchedUserId}"`);
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    testImage: async (req, res, next) => {
+        res.status(httpStatus.OK).sendFile(path.join(__dirname, "profile_image", "image.jpg"));
+
+        next();
+    }
 }
 
 export default appController

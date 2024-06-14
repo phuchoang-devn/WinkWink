@@ -1,50 +1,23 @@
 import './styles/AuthLogin.css'
 import {useState} from "react";
-import { useNavigate } from "react-router-dom";
-import { accounts } from "../../fakeDB";
+import { useAuth } from '../../static/js/context_providers/auth_provider';
 
 
-const AuthLogin = ({ setShowLogin,isSignUp}) => {
-    const navigate = useNavigate(); // Hook für die Navigation
+const AuthLogin = ({ setShowLogin }) => {
+    const [email, setEmail] = useState(null);
+    const [password, setPassword] = useState(null);
+    const [error, setError] = useState(null);
+    const { login } = useAuth();
+
     const handleClick = () => {
         setShowLogin(false);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        try{
-            if(isSignUp && (password !== confirmPassword)){
-                setError("Password needs it to match")
-            }
-            else {
-                const user = accounts.find((acc) => acc.email === email);
-
-                if (user) {
-                    if (user.password === password) {
-                        if (user.userId !==null){
-                            navigate("/HomeMain");
-                        }
-                        else{
-                            navigate("/HomeProfile");
-                        }
-                    } else {
-                        setError("Incorrect password");
-                    }
-                } else {
-                    setError("User not found");
-                }
-            }
-            console.log('make a post-request to our database')
-        }
-        catch(error){
-            console.log(error)
-        }
+        const loginResult = await login(email, password);
+        if(!loginResult.isSuccessful) setError(loginResult.message)
     };
-
-    const [email, setEmail] = useState(null);
-    const [password, setPassword] = useState(null);
-    const [confirmPassword, setConfirmPassword] = useState(null);
-    const [error, setError] = useState(null);
 
     return (
         <div className="logIn">
