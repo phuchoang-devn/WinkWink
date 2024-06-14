@@ -22,6 +22,6 @@ CMD ["npm", "run", "dev"]
 
 #How to use
 #
-# run xommand docker-compose build
+# run command docker-compose build
 #               docker-compose up
 

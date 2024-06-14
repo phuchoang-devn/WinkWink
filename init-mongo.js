@@ -26,7 +26,7 @@ function generateRandomUser(id) {
     const lastNames = ['Smith', 'Johnson', 'Brown', 'Taylor', 'Anderson', 'Thomas', 'Jackson', 'White', 'Harris', 'Martin'];
     const countries = ["US", "CA", "GB", "AU", "DE", "FR", "ES", "IT", "NL", "SE"];
     const interestsList = ['reading', 'traveling', 'sports', 'music', 'cooking', 'hiking', 'gaming', 'art', 'dancing', 'photography'];
-    const languages = ["eng", "spa", "fre", "ger", "chi", "jpn", "kor", "rus", "por", "ita"];
+    const languages = ["eng", "spa", "fre", "ger", "chi", "jpn", "kor", "rus", "por", "ita","vie"];
 
     // Generate a random number between 0 and 99 for gender probability
     const genderProb = getRandomInt(0, 99);
@@ -36,7 +36,7 @@ function generateRandomUser(id) {
     } else if (genderProb < 90) {
         sex = 'female'; // 45% probability for female
     } else {
-        sex = 'other'; // 10% probability for other
+        sex = 'non-binary'; // 10% probability for other
     }
 
     let firstName;
@@ -58,7 +58,7 @@ function generateRandomUser(id) {
     const age = getRandomInt(18, 65);
     const preferencesAgeFrom = getRandomInt(18, 30);
     const preferencesAgeTo = getRandomInt(31, 65);
-    const preferencesSex = getRandomElement(['male', 'female', 'other']);
+    const preferencesSex = getRandomElement(['male', 'female', 'non-binary']);
 
     return {
         name: { first: firstName, last: lastName },
