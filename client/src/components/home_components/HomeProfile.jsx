@@ -1,4 +1,5 @@
 import "./styles/profile.css";
+import "../../index.css"
 import useImage from "../../static/js/hooks/useImage";
 import useUserInfo, { UserInfoChange } from "../../static/js/hooks/useUserInfo";
 import useUserInfoValidation from "../../static/js/hooks/useUserInfoValidation";

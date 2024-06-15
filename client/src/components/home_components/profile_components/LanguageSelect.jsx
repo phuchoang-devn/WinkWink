@@ -35,13 +35,17 @@ const CssSelect = styled(
     },
     '& .MuiOutlinedInput-notchedOutline': {
         borderWidth: isError ? 2 : 1,
-    }
+    },
+    '& .MuiInputBase-input': {
+        fontFamily: "Anonymous Pro, monospace",
+    },
 }));
 
 const MenuProps = {
     PaperProps: {
         style: {
-            maxHeight: "200px"
+            maxHeight: "200px",
+            fontFamily: "Anonymous Pro, monospace"
         },
     },
 };
@@ -65,8 +69,8 @@ export default function LanguageSelect({ isError, currentValue, updateValues }) 
 
     return (
         <div>
-            <FormControl error={isError} sx={{ backgroundColor: "var(--colorWhite)" }} fullWidth>
-                <InputLabel id={id} color='colorDark'>Languages</InputLabel>
+            <FormControl error={isError} sx={{ backgroundColor: "var(--colorWhite)", fontFamily: "Anonymous Pro, monospace" }} fullWidth>
+                <InputLabel id={id} sx={{ fontFamily: "Anonymous Pro, monospace" }} color='colorDark'>Languages</InputLabel>
                 <CssSelect
                     labelId={id}
                     isError={isError}
@@ -89,18 +93,21 @@ export default function LanguageSelect({ isError, currentValue, updateValues }) 
                                         '&:hover .MuiChip-deleteIcon': {
                                             color: 'var(--colorDark)',
                                         },
+                                        fontFamily: "Anonymous Pro, monospace",
                                     }} />
                             ))}
-                            <FormHelperText className='my-profile__helper-text' sx={{ right: 10, color: "var(--colorDark)" }}>Maximum 3 languages</FormHelperText>
+                            <FormHelperText className='my-profile__helper-text' sx={{ right: 10, color: "var(--colorDark)",fontFamily: "Anonymous Pro, monospace"  }}>Maximum 3 languages</FormHelperText>
                         </Box>
                     )}
                     MenuProps={MenuProps}
+                    sx={{ fontFamily: "Anonymous Pro, monospace" }}
                 >
                     {allLanguages.map((language) => (
                         <MenuItem
                             key={language}
                             value={language}
                             disabled={currentValue.length >= 3 && !currentValue.includes(language)}
+                            sx={{ fontFamily: "Anonymous Pro, monospace" }}
                         >
                             {language}
                         </MenuItem>

@@ -25,7 +25,13 @@ const CssTextField = styled(
     },
     '& .MuiOutlinedInput-notchedOutline': {
         borderWidth: isError ? 2 : 1,
-    }
+    },
+    '& .MuiInputBase-input': {
+        fontFamily: "Anonymous Pro, monospace",
+    },
+    '& .MuiInputLabel-root': {
+        fontFamily: "Anonymous Pro, monospace",
+    },
 }));
 
 export default function CountrySelect({ isError, currentValue, onSelectCountry }) {
@@ -33,7 +39,7 @@ export default function CountrySelect({ isError, currentValue, onSelectCountry }
     return (
         <Autocomplete
             fullWidth
-            sx={{ backgroundColor: "var(--colorWhite)" }}
+            sx={{ backgroundColor: "var(--colorWhite)", fontFamily: "Anonymous Pro, monospace" }}
             value={currentValue ?? ""}
             isOptionEqualToValue={() => true} //disable check value in allCountries
             options={allCountries}
@@ -42,7 +48,7 @@ export default function CountrySelect({ isError, currentValue, onSelectCountry }
             renderOption={(props, option) => {
                 const { key, ...otherProps } = props;
                 return (
-                    <Box key={uuidv4()} component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...otherProps}>
+                    <Box key={uuidv4()} component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } ,fontFamily: "Anonymous Pro, monospace" }} {...otherProps}>
                         <img width="20" alt="" src={getSrcByCountryCode(option.code)} />
                         {option.label} ({option.code})
                     </Box>

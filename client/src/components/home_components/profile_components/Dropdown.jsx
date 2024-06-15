@@ -30,13 +30,17 @@ const CssSelect = styled(
   },
   '& .MuiOutlinedInput-notchedOutline': {
     borderWidth: isError ? 2 : 1,
+  },
+  '& .MuiInputBase-input': {
+    fontFamily: "Anonymous Pro, monospace", // Schriftart für die Eingabe
   }
 }));
 
 const MenuProps = {
   PaperProps: {
     style: {
-      maxHeight: "200px"
+      maxHeight: "200px",
+      fontFamily: "Anonymous Pro, monospace"
     },
   },
 };
@@ -45,10 +49,11 @@ const Dropdown = ({ isError, currentValue, options, onSelect, label }) => {
   const dropdownId = useId();
 
   return (
-    <FormControl error={isError} sx={{ backgroundColor: "var(--colorWhite)" }} fullWidth>
+    <FormControl error={isError} sx={{ backgroundColor: "var(--colorWhite)", fontFamily: "Anonymous Pro, monospace" }} fullWidth>
       <InputLabel
         color='colorDark'
         id={dropdownId}
+        sx={{ fontFamily: "Anonymous Pro, monospace" }}
       >
         {label}
       </InputLabel>
@@ -60,9 +65,10 @@ const Dropdown = ({ isError, currentValue, options, onSelect, label }) => {
         value={currentValue || ""}
         onChange={onSelect}
         MenuProps={MenuProps}
+        sx={{ fontFamily: "Anonymous Pro, monospace" }}
       >
         {options.map(option => (
-          <MenuItem key={option} value={option}>{option}</MenuItem>
+          <MenuItem key={option} value={option} sx={{ fontFamily: "Anonymous Pro, monospace" }}>{option}</MenuItem>
         ))}
       </CssSelect>
     </FormControl>

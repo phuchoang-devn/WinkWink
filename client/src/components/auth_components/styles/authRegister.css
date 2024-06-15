@@ -1,16 +1,27 @@
+
 .register{
     position: absolute;
+    border: 1px solid var(--colorMiddle);
     width: 560px;
     height: 600px;
-    background-color: var(--colorLight);
     border-radius: 10px;
     padding: 20px;
     text-align: center;
-{/*
-    top: 300px;
-    right: 280px;
-    z-index: 2;*/
+    background-color: #eec2c4;
+    z-index: 2;
+    top: 15%;
 }
+@media screen and (max-width:700px) {
+    .register{
+        width: 460px;
+        height: 500px;
+    }
+}
+@media screen and (max-width:480px) {
+    .register{
+        width: 360px;
+        height: 500px;
+    }
 }
 .register .login__info{
     display: flex;
@@ -21,10 +32,17 @@
     height: 90%;
     gap: 20px;
 }
-.register button{
+
+.register i{
     margin: 0;
     padding: 0;
     float: right;
+    cursor: pointer;
+    transform: scale(1);
+    transition: transform .5s linear;
+}
+.register i:hover{
+    transform: scale(1.5);
 }
 
 .register h2{
@@ -48,6 +66,8 @@
 .login__info input{
     padding: 10px;
     font-size: 17px;
+    border:1px solid var(--colorMiddle);
+    border-radius: 10px;
 }
 
 .login__info form .form-btn{
@@ -58,4 +78,4 @@
     padding: 6px 10px;
     background-color: var(--colorMiddle);
     width: 100px;
-}
+} 

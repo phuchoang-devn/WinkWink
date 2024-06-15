@@ -4,7 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="39d31275-fac2-4821-b8b1-1a305773b923" name="Changes" comment="" />
+    <list default="true" id="39d31275-fac2-4821-b8b1-1a305773b923" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/auth_components/AuthLayout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/auth_components/AuthLayout.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/auth_components/AuthMain.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/auth_components/AuthMain.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/auth_components/styles/authLayout.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/auth_components/styles/authLayout.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/main-components/header/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/main-components/header/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/static/image/home/Group.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/static/image/home/logo-3.svg" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/static/image/home/logo-3.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/static/image/home/logo-big.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/static/image/home/logo-color.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/static/image/home/logo-png.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/static/image/home/logo-small.svg" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/static/image/home/logo-small.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/static/image/home/logo.svg" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,21 +26,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Margarita250494"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Margarita250494&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "git@github.com:phuchoang-devn/dating-app.git",
-    "accountId": "501c6a6e-b9ca-48b8-b2c1-8dfa1b96f86c"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:phuchoang-devn/dating-app.git&quot;,
+    &quot;accountId&quot;: &quot;501c6a6e-b9ca-48b8-b2c1-8dfa1b96f86c&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2fv2MYSEpb3wbeaeupWZbYHXA0w" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -36,8 +49,9 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/margaritaboiko/Desktop/Agile Web Development/dating-app",
+    "git-widget-placeholder": "V__Sprint07",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/margaritaboiko/Desktop/Agile Web Development/wink-wink/WinkWink",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -45,6 +59,7 @@
     "nodejs_package_manager_path": "npm",
     "npm.start.executor": "Run",
     "settings.editor.selected.configurable": "preferences.keymap",
+    "ts.external.directory.path": "/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -57,10 +72,21 @@
       </map>
     </option>
   </component>
+  <component name="RunManager">
+    <configuration name="docker-compose.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-WS-241.15989.105" />
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
+        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
       </set>
     </attachedChunks>
   </component>
@@ -74,6 +100,7 @@
       <updated>1714573400839</updated>
       <workItem from="1714573404533" duration="1023000" />
       <workItem from="1714667185348" duration="535000" />
+      <workItem from="1718450209308" duration="3724000" />
     </task>
     <servers />
   </component>

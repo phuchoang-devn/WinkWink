@@ -1,20 +1,25 @@
+
+/* in home profile page maybe background contrast */
+
 .my-profile {
-    background-color: var(--colorWhite);
+    background-color: var(--colorBack);
 }
 
 .my-profile__form {
     height: 100vh;
 
     display: flex;
+    flex-flow: row wrap;
     justify-content: center;
     align-items: center;
-    gap: 5rem
+    column-gap: 5rem;
+    row-gap: 2rem;
 }
 
 .my-profile__left {
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+     row-gap: 3rem; 
 }
 
 .my-profile__left-top {
@@ -28,9 +33,9 @@
     height: 300px;
     width: 300px;
     border-radius: 50%;
-    box-shadow: 0 0 3px black;
+    box-shadow: 0 0 2px black;
     background-color: var(--colorLight);
-
+   
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -71,7 +76,7 @@
 
 .my-profile__preferences-edit {
     padding: 1.25rem;
-    background-color: var(--colorMiddle);
+    background-color: #e096a3;
     border-radius: 10px;
 }
 
@@ -111,4 +116,6 @@
     justify-content: center;
     gap: 2rem;
 }
-
+.css-11qxptk-MuiFormControlLabel-root .MuiFormControlLabel-label {
+    font-family: "Anonymous Pro", monospace;
+}

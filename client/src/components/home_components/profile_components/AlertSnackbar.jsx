@@ -39,7 +39,18 @@ export default function AlertSnackbar({ status }) {
                     onClose={handleClose}
                     severity={lastIsSuccess.current ? "success" : "error"}
                     variant="filled"
-                    sx={{ width: '100%' }}
+                    sx={{ 
+                        width: '100%',
+                    fontFamily: "Anonymous Pro, monospace",
+                        '& .MuiAlert-icon': {
+                            fontFamily: "Anonymous Pro, monospace",
+                        },
+                        '& .MuiAlert-message': {
+                            fontFamily: "Anonymous Pro, monospace",
+                        },
+                        '& .MuiAlert-action': {
+                            fontFamily: "Anonymous Pro, monospace",
+                        } }}
                     iconMapping={{
                         success: <FavoriteIcon fontSize="inherit" />,
                         error: <HeartBrokenIcon fontSize="inherit"/>

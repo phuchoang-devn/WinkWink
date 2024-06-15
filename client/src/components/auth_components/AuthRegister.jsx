@@ -26,9 +26,7 @@ const AuthRegister = ({ setShowLogin,isSignUp}) => {
 
     return (
         <div className="register">
-            <button type="button" onClick={handleClick}>
-                <i className="ri-eye-close-line"></i>
-            </button>
+            <i className="ri-eye-close-line" onClick={handleClick}></i>
             <div className="login__info">
                 <h2>{isSignUp ? "Create an account" : "Log In"}</h2>
                 <p>
@@ -59,7 +57,7 @@ const AuthRegister = ({ setShowLogin,isSignUp}) => {
                         type="password-check"
                         id="password-check"
                         name="password-check"
-                        placeholder="confirm password"
+                        placeholder="Confirm password"
                         required={true}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />

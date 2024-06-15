@@ -1,17 +1,18 @@
 import './styles/AuthLogin.css'
-import {useState} from "react";
+import {useState, useCallback} from "react";
 import { useAuth } from '../../static/js/context_providers/auth_provider';
 
 
-const AuthLogin = ({ setShowLogin }) => {
+const AuthLogin = ({ setShowDialog }) => {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     const [error, setError] = useState(null);
     const { login } = useAuth();
 
-    const handleClick = () => {
-        setShowLogin(false);
-    };
+
+    const handleClick = useCallback(() => {
+        setShowDialog(false);
+    }, [setShowDialog]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,9 +22,7 @@ const AuthLogin = ({ setShowLogin }) => {
 
     return (
         <div className="logIn">
-            <button type="button" onClick={handleClick}>
-                <i className="ri-eye-close-line"></i>
-            </button>
+            <i className="ri-eye-close-line" onClick={handleClick}></i>
             <div className="login__info">
                 <h2>Log In</h2>
                 <p>

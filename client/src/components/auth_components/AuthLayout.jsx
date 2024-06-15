@@ -1,7 +1,8 @@
 import {Header} from "../main-components/header/Header";
 import {Footer} from "../main-components/footer/Footer";
 import './styles/authLayout.css';
-import homeImg from "../../static/image/home/Group.svg";
+import homeImg from "../../static/image/home/group2.svg";
+import home from "../../static/image/home/home2.svg"
 import AuthMain from "./AuthMain";
 import {useState} from "react";
 import { Outlet } from "react-router-dom";
@@ -17,18 +18,15 @@ const AuthLayout = (props) => {
             <main className="home">
                 <div className="home-container">
                     <div className="home__image">
-                        <img src={homeImg} alt=""/>
+                        <img src={home} alt=""/>
                     </div>
-                    <AuthMain />
+                    <Outlet />
                 </div>
             </main>
-
-            <Outlet />
-            
             <Footer/>
-           
+
         </>
-);
+    );
 }
 export  default  AuthLayout;
 

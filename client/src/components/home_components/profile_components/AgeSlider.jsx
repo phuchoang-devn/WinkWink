@@ -2,6 +2,8 @@ import Slider from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import "../styles/profile.css"
+
 
 const MIN_DISTANCE = 10;
 
@@ -27,13 +29,22 @@ export default function AgeSlider({ currentValue, updateValue }) {
 
     return (
         <Box sx={{ width: 320 }}>
-            <Typography gutterBottom>{currentValue[0]} - {currentValue[1]} years old</Typography>
+            <Typography gutterBottom sx={{ fontFamily: "Anonymous Pro, monospace" }}>{currentValue[0]} - {currentValue[1]} years old</Typography>
             <PrettoSlider
                 valueLabelDisplay="auto"
                 value={currentValue}
                 onChange={handleChange}
                 min={18}
                 disableSwap
+                sx={{ 
+                fontFamily: "Anonymous Pro, monospace", 
+                '& .MuiInputBase-input': {
+                    fontFamily: "Anonymous Pro, monospace", 
+                },
+                '& .MuiInputLabel-root': {
+                    fontFamily: "Anonymous Pro, monospace", 
+                }
+            }}
             />
         </Box>
     );
@@ -59,6 +70,7 @@ const PrettoSlider = styled(Slider)({
     },
     '& .MuiSlider-valueLabel': {
         lineHeight: 1.2,
+        fontFamily: "Anonymous Pro, monospace",
         fontSize: 12,
         background: 'unset',
         padding: 0,

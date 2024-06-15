@@ -20,15 +20,29 @@ header .header__nav .header__nav-list{
 }
 .header__nav-list_item img{
     width: 120px;
+    transform: rotate(0);
+    transition: transform .5s linear;
 }
-
-
-
-.header__nav-list_item button{
-    background-color:var(--colorLight);
-    border-radius: 20px;
-    padding: 10px 20px;
-    font-weight: 500;
-    font-size: 20px;
+.header__nav-list_item img:hover{
+    transform: rotate(360deg);
 }
-
+.header__nav-list_item-text{
+    cursor: pointer;
+    position: relative;
+}
+.header__nav-list_item-text::before{
+    content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 1px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--colorDark);
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+.header__nav-list_item-text:hover::before{
+    transform: scaleX(1);
+  transform-origin: bottom left;
+}
