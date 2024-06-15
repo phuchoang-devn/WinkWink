@@ -21,7 +21,7 @@ const appController = {
             },
             profileImage: "image.jpg",
             age: 30,
-            sex: "other",
+            sex: "non-binary",
             country: "DE",
             interests: "I like...",
             language: "eng",
@@ -30,7 +30,7 @@ const appController = {
                     from: 20,
                     to: 40
                 },
-                sex: "other"
+                sex: "non-binary"
             }
         })
 
