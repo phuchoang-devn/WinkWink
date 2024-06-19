@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cd client && npm run build && cd .. && node main.js",
+    "start": "cd client && npm run build && cd .. && node --env-file=.dev.env main.js",
     "dev-client": "DEV=true node --env-file=.dev.env main.js & cd client && npm start",
     "dev-server": "node --env-file=.dev.env main.js"
   },
