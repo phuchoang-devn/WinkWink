@@ -17,7 +17,7 @@ export const ChatProvider = ({ children }) => {
     const asyncDispatch = chatThunk(chatStore, dispatch);
 
     const { user } = useAuth();
-    const { wsChat } = useWS();
+    const { wsChat, wsMetadata } = useWS();
 
     useEffect(() => {
         if(!wsChat) return
@@ -26,7 +26,16 @@ export const ChatProvider = ({ children }) => {
             type: ChatAction.NEW_CHAT,
             payload: wsChat
         })
-    }, [wsChat, dispatch])
+    }, [wsChat])
+
+    useEffect(() => {
+        if(!wsMetadata) return
+
+        asyncDispatch({
+            type: ChatAction.NEW_METADATA,
+            payload: wsMetadata
+        })
+    }, [wsMetadata])
 
     useEffect(() => {
         if(!user) return
@@ -55,8 +64,8 @@ export const useChatDispatch = () => {
 
 export const ChatAction = Object.freeze({
     START_LOADING: "chat/start",
+
     GET_METADATA: "chat/getMetadata",
-    DELETE_METADATA: "chat/delMetadata",
     NEW_METADATA: "chat/newMetadata",
     IS_SEEN: "chat/isSeen",
     UNMATCH: "chat/unmatch",

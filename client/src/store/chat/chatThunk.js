@@ -32,7 +32,7 @@ export const chatThunk = (chatStore, dispatch) => async ({ type, payload }) => {
                                 ...mt,
                                 image: imgUrl
                             };
-                        }  else throw Error(await res.text());
+                        } else throw Error(await res.text());
                     }))
 
                     dispatch({
@@ -133,6 +133,31 @@ export const chatThunk = (chatStore, dispatch) => async ({ type, payload }) => {
             } catch (error) {
                 console.log(error.message)
             }
+            break;
+        }
+
+        case ChatAction.NEW_METADATA: {
+            const metadata = payload
+
+            try {
+                const res = await fetch(`/api/image/chat/${metadata.matchedUserId}`, { credentials: "include" });
+
+                if (res.ok) {
+                    const blob = await res.blob();
+                    const imgUrl = URL.createObjectURL(blob);
+
+                    dispatch({
+                        type,
+                        payload: {
+                            ...metadata,
+                            image: imgUrl
+                        }
+                    })
+                } else throw Error(await res.text());
+            } catch (error) {
+                console.log(error.message)
+            }
+
             break;
         }
 

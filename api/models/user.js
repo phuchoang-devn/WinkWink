@@ -86,6 +86,43 @@ const userSchema = new Schema({
                 return this.name.first + ' ' + this.name.last
             }
         }
+    },
+
+    methods: {
+        getResponseUser() {
+            return {
+                name: {
+                    first: this.name.first,
+                    last: this.name.last
+                },
+                age: this.age,
+                sex: this.sex,
+                country: this.country,
+                interests: this.interests,
+                language: this.language,
+                preferences: {
+                    age: {
+                        from: this.preferences.age.from,
+                        to: this.preferences.age.to
+                    },
+                    sex: this.preferences.sex
+                }
+            }
+        }
+    },
+
+    statics: {
+        getResponseUserForWink(user) {
+            return {
+                id: user._id,
+                fullName: user.name.first + " " + user.name.last,
+                age: user.age,
+                sex: user.sex,
+                country: user.country,
+                interests: user.interests,
+                language: user.language
+            }
+        },
     }
 });
 

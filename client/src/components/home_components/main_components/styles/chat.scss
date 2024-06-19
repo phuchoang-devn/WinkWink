@@ -82,9 +82,12 @@ $defaultTransitionDuration: 0.5s;
 
                     .metadata-pic {
                         $imgSize: 60px;
+
+                        width: $imgSize;
+                        height: $imgSize;
                         border-radius: 50%;
                         overflow: hidden;
-                        box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+                        box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
                         cursor: pointer;
 
                         .notify-ring {
@@ -94,7 +97,7 @@ $defaultTransitionDuration: 0.5s;
                             position: absolute;
                             border-radius: 50%;
                         }
-                        
+
                         img {
                             width: $imgSize;
                             height: $imgSize;
@@ -105,7 +108,7 @@ $defaultTransitionDuration: 0.5s;
                         .metadata-svg {
                             height: $imgSize;
                             width: $imgSize;
-                            
+
                             .icon-path {
                                 fill: var(--colorMiddle)
                             }
@@ -270,6 +273,27 @@ $defaultTransitionDuration: 0.5s;
                     margin-left: auto;
                     font-size: 0.75rem;
                     opacity: 0.6;
+                }
+            }
+
+            .new-match {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                .chat-icon {
+                    height: 200px;
+                    width: 200px;
+
+                    .icon-path {
+                        fill: var(--colorMiddle)
+                    }
+                }
+
+                .new-match-message {
+                    font-weight: 650;
+                    font-size: 1.5rem;
+                    color: var(--colorMiddle);
                 }
             }
 

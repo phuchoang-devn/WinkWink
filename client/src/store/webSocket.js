@@ -47,6 +47,11 @@ export const WSProvider = ({ children }) => {
                     break;
                 }
 
+                case "match": {
+                    setWsMetadata(message.payload)
+                    break;
+                }
+
                 default:
                     console.error("Unknown message type from ws server")
             }

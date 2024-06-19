@@ -86,13 +86,7 @@ async function updateChatMetadata(chat, isOwnedBySender) {
         chatMetadata.total += 1
         await chatMetadata.save()
     } else {
-        await ChatMetadata.create({
-            ofUser: owner,
-            matchedUser: partner,
-            lastMessage: shortenedChatContent,
-            isSeen: isOwnedBySender,
-            total: 1
-        })
+        console.error("ChatMetadata need to be created before Chat")
     }
 }
 

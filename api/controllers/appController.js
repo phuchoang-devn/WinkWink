@@ -10,6 +10,7 @@ import { SocketAction, authenticateConnection, deleteUnauthConnection } from "..
 import { sendSocketMessage } from "../web_socket/wsClient.js";
 import path from "path";
 import { __dirname } from "../../main.js";
+import { type } from "os";
 
 
 const appController = {
@@ -21,26 +22,26 @@ const appController = {
             },
             profileImage: "image.jpg",
             age: 30,
-            sex: "other",
+            sex: "non-binary",
             country: "DE",
             interests: "I like...",
             language: "eng",
             preferences: {
                 age: {
-                    from: 20,
-                    to: 40
+                    from: 18,
+                    to: 100
                 },
-                sex: "other"
+                sex: "non-binary"
             }
         })
 
         const user1 = await User.create(fakeUser("Donald", "Trump"))
         const user2 = await User.create(fakeUser("Joe", "Biden"))
 
-        user1.hasMatched.push(user2._id)
+        //user1.hasMatched.push(user2)
         await user1.save()
 
-        user2.hasMatched.push(user1._id)
+        //user2.hasMatched.push(user1)
         await user2.save()
 
         const account1 = {
@@ -269,10 +270,128 @@ const appController = {
         }
     },
 
-    testImage: async (req, res, next) => {
-        res.status(httpStatus.OK).sendFile(path.join(__dirname, "profile_image", "image.jpg"));
+    findFriends: async (req, res, next) => {
+        const MAX_RES_LENGTH = 10;
 
-        next();
+        try {
+            validateRequest(req, res);
+            const except = req.query.except || [];
+            const user = res.locals.account.user;
+
+            if (except.length >= MAX_RES_LENGTH) {
+                res.status(httpStatus.BAD_REQUEST).send(`Length of except[] should under ${MAX_RES_LENGTH}`)
+                return next()
+            }
+
+            const hasMatched = user.hasMatched.map(id => id.toString());
+            const hasLiked = user.hasLiked.map(id => id.toString());
+            const hasDisliked = user.hasDisliked.map(id => id.toString());
+
+            const suggestedFriends = [
+                ...except,
+                ...hasMatched,
+                ...hasLiked,
+                ...hasDisliked
+            ];
+
+            const newFriends = await User.aggregate().match({
+                _id: { $nin: suggestedFriends },
+                age: {
+                    $gte: user.preferences.age.from,
+                    $lte: user.preferences.age.to
+                },
+                sex: user.preferences.sex,
+                country: user.country,
+                language: { $in: user.language },
+                "preferences.sex": user.sex,
+                "preferences.age.from": { $lte: user.age },
+                "preferences.age.to": { $gte: user.age }
+            }).sample(MAX_RES_LENGTH - except.length).exec();
+
+            const responseValue = newFriends.map(nf => User.getResponseUserForWink(nf));
+            res.status(httpStatus.OK).json(responseValue)
+            next()
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    handleWink: async (req, res, next) => {
+        try {
+            validateRequest(req, res);
+            const { id, isWink } = req.body;
+            const user = res.locals.account.user;
+
+            if (user._id.toString() === id) {
+                res.status(httpStatus.BAD_REQUEST).send(`You can't wink with yourself`);
+                return next();
+            } else if (
+                user.hasLiked.includes(id)
+                || user.hasDisliked.includes(id)
+                || user.hasMatched.includes(id)
+            ) {
+                res.status(httpStatus.BAD_REQUEST).send(`You have winked to this user "${id}"`);
+                return next();
+            }
+
+            const friend = isValidObjectId(id) ? await User.findById(id).exec() : undefined;
+
+            if (friend) {
+                if (isWink) {
+                    if (friend.hasLiked.includes(user._id)) {
+                        // When users get matched...
+                        
+                        user.hasMatched.push(friend);
+                        friend.hasMatched.push(user);
+                        friend.hasLiked = friend.hasLiked.filter(value => value.toString() !== user._id.toString());
+
+                        const chatMetadatas = await ChatMetadata.insertMany([
+                            {
+                                ofUser: user._id,
+                                matchedUser: friend._id
+                            },
+                            {
+                                ofUser: friend._id,
+                                matchedUser: user._id,
+                            }
+                        ])
+
+                        var responseValue = {
+                            isMatched: true,
+                            chatMetadata: await chatMetadatas[0].getResChatMetadata()
+                        }
+
+                        sendSocketMessage({
+                            type: SocketAction.MATCH,
+                            payload: {
+                                receiver: friend._id,
+                                chatMetadata: await chatMetadatas[1].getResChatMetadata()
+                            }
+                        })
+
+                    } else {
+                        user.hasLiked.push(friend);
+                        var responseValue = { isMatched: false }
+                    }
+                } else {
+                    friend.hasDisliked.push(user);
+                    user.hasDisliked.push(friend)
+                }
+
+                await friend.save();
+                await user.save();
+                res.status(httpStatus.OK)
+
+                if (responseValue)
+                    res.json(responseValue);
+                else res.send("Wink action successfully");
+
+            } else res.status(httpStatus.BAD_REQUEST).send(`User "${is}" doesn't exist`);
+
+            next()
+        } catch (error) {
+            next(error)
+        }
     }
 }
 

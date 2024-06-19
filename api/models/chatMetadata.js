@@ -20,17 +20,22 @@ const chatMetadataSchema = new Schema({
         trim: true,
         minLength: [1, "ChatMetadata: 'lastMessage' must have at least 1 characters"],
         maxLength: [50, "ChatMetadata: 'lastMessage' can't not exceed 50 characters"],
-        required: [true, "ChatMetadata: 'lastMessage' is missing"]
+        default: null
     },
 
     isSeen: {
         type: Boolean,
-        required: [true, "ChatMetadata: 'isSeen' is missing"]
+        default: false
     },
 
     total: {
         type: Number,
         default: 0
+    },
+
+    isUnmatched: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: {
@@ -49,7 +54,8 @@ const chatMetadataSchema = new Schema({
                 lastMessage: this.lastMessage,
                 isSeen: this.isSeen,
                 updatedAt: this.updatedAt,
-                total: this.total
+                total: this.total,
+                isUnmatched: this.isUnmatched
             }
         }
     }
