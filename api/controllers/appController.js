@@ -399,8 +399,7 @@ const appController = {
             const file = req.file
             const user = res.locals.account.user;
 
-            //const picName = user._id.toString() + ".jpg";
-            const picName = "non-binary.jpg"
+            const picName = user._id.toString() + ".jpg";
 
             await sharp(file.buffer)
                 .resize(100, 100)
