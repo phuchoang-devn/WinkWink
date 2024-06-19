@@ -2,7 +2,7 @@ import { Router } from 'express';
 import transactionController from "../controllers/transactionController.js";
 import accountController from '../controllers/accountController.js';
 import errorController from '../controllers/errorController.js';
-import { checkExact, checkSchema, cookie, param } from 'express-validator';
+import { checkExact, checkSchema, cookie, param, query } from 'express-validator';
 import authController from '../controllers/authController.js';
 import appController from '../controllers/appController.js';
 import cookieParser from 'cookie-parser';
@@ -16,11 +16,6 @@ apiRouter.use(transactionController.startTransaction);
 apiRouter.get(
   '/test',
   appController.createTestUser
-)
-
-apiRouter.get(
-  "/test/img",
-  appController.testImage
 )
 
 /*
@@ -211,9 +206,41 @@ apiRouter.put('/user', (req, res) => {
   //logic
 })
 
-apiRouter.post('/action', (req, res) => {
-  //logic
-})
+/*
+Response:
+200 - [{ 
+  id, 
+  fullName,
+  age,
+  sex,
+  country,
+  interests,
+  language: [] 
+}]
+400 - error message
+*/
+apiRouter.get(
+  "/wink",
+  query("except").optional().isArray(),
+  appController.findFriends
+)
+
+/*
+Response:
+200 - success message
+400 - error message
+*/
+apiRouter.post(
+  '/wink', 
+  checkExact(
+    checkSchema({
+      id: { isString: true },
+      isWink: { isBoolean: true } 
+    }, ['body'])
+  ),
+  appController.handleWink
+)
+
 
 apiRouter.all('*', errorController.apiNotFound);
 

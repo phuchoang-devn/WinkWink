@@ -1,12 +1,14 @@
 import { ReactComponent as FakePic } from "../../../../static/image/profile/default-user-image.svg"
 import { ReactComponent as Send } from "../../../../static/image/chat/send.svg"
 import { ReactComponent as Down } from "../../../../static/image/chat/down-circle.svg"
-import { useDeferredValue, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { ReactComponent as ChatLove } from "../../../../static/image/chat/chat-love.svg"
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ChatAction, useChatDispatch, useChatStore } from "../../../../store/chat/chatStore";
 
 const ChatCompose = ({ partnerId }) => {
     const chatStore = useChatStore();
     const metadata = chatStore.metadatas[partnerId];
+    console.log(metadata)
     const chats = chatStore.chats[partnerId];
     const dispatch = useChatDispatch();
 
@@ -54,6 +56,8 @@ const ChatCompose = ({ partnerId }) => {
     }
 
     const handleScroll = (e) => {
+        if(metadata.total === 0) return
+
         if (e.target.scrollTop <= -1) {
             if (isOnBottom) setIsOnBottom(false)
 
@@ -120,27 +124,32 @@ const ChatCompose = ({ partnerId }) => {
             >
                 {
                     partnerId ?
-                        chats.map(chat => (
-                            <div key={chat.id}
-                                className="message"
-                                style={
-                                    chat.isMine ? {
-                                        backgroundColor: metadata?.isSeen || !partnerId ? "var(--colorDark)" : "var(--colorLight)",
-                                        color: metadata?.isSeen || !partnerId ? "var(--colorLight)" : "black",
-                                        marginLeft: "auto"
-                                    } : {
-                                        backgroundColor: metadata?.isSeen || !partnerId ? "var(--colorMiddle)" : "var(--colorLight)"
+                        metadata.total !== 0 ?
+                            chats.map(chat => (
+                                <div key={chat.id}
+                                    className="message"
+                                    style={
+                                        chat.isMine ? {
+                                            backgroundColor: metadata?.isSeen || !partnerId ? "var(--colorDark)" : "var(--colorLight)",
+                                            color: metadata?.isSeen || !partnerId ? "var(--colorLight)" : "black",
+                                            marginLeft: "auto"
+                                        } : {
+                                            backgroundColor: metadata?.isSeen || !partnerId ? "var(--colorMiddle)" : "var(--colorLight)"
+                                        }
                                     }
-                                }
-                            >
-                                <div className="message-content">{chat.content}</div>
-                                <div className="message-createdAt">{getDisplayTime(chat.createdAt)}</div>
+                                >
+                                    <div className="message-content">{chat.content}</div>
+                                    <div className="message-createdAt">{getDisplayTime(chat.createdAt)}</div>
+                                </div>
+                            ))
+                            : <div className="new-match">
+                                <ChatLove className="chat-icon" />
+                                <div className="new-match-message">Let's chat!!!</div>
                             </div>
-                        ))
                         : null
                 }
                 {
-                    partnerId && !isOnBottom ?
+                    partnerId && metadata.total !== 0 && !isOnBottom ?
                         <Down className="down-button" onClick={scrollToBottom} />
                         : null
                 }

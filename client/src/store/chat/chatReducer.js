@@ -45,7 +45,6 @@ export const chatReducer = (store, action) => {
                 }
             });
 
-            store.isLoading = false
             break;
         }
 
@@ -56,21 +55,24 @@ export const chatReducer = (store, action) => {
                 store.chats[matchedUserId].push(...chats)
             else store.chats[matchedUserId] = chats
 
-            store.isLoading = false
             break;
         }
 
         case ChatAction.SEND_MESSAGE: {
             const { matchedUserId, newChat } = action.payload;
 
-            store.chats[matchedUserId].unshift({
+            const modifiedChat = {
                 isMine: true,
                 ...newChat
-            })
+            }
+
+            if (store.chats[matchedUserId])
+                store.chats[matchedUserId].unshift(modifiedChat)
+            else store.chats[matchedUserId] = [modifiedChat]
 
             store.metadatas[matchedUserId].lastMessage = newChat.content.substring(0, 50);
+            store.metadatas[matchedUserId].total += 1;
 
-            store.isLoading = false
             break;
         }
 
@@ -79,7 +81,6 @@ export const chatReducer = (store, action) => {
 
             store.metadatas[matchedUserId].isSeen = newState;
 
-            store.isLoading = false
             break;
         }
 
@@ -90,20 +91,35 @@ export const chatReducer = (store, action) => {
                 ...store.metadatas[sender],
                 updatedAt: chat.createdAt,
                 isSeen: false,
-                lastMessage: chat.content.substring(0, 50)
+                lastMessage: chat.content.substring(0, 50),
+                total: chat.order + 1
+            }
+
+            const modifiedChat = {
+                isMine: false,
+                ...chat
             }
 
             if (store.chats[sender])
-                store.chats[sender].unshift({
-                    isMine: false,
-                    ...chat
-                })
+                store.chats[sender].unshift(modifiedChat)
+            else store.chats[sender] = [modifiedChat]
 
-            store.isLoading = false
+            break;
+        }
+
+        case ChatAction.NEW_METADATA: {
+            const metadata = action.payload
+            const matchedUserId = metadata.matchedUserId
+
+            store.matchedUserIds.unshift(matchedUserId)
+            store.metadatas[matchedUserId] = metadata
+
             break;
         }
 
         default:
             throw Error('Unknown action: ' + action.type);
     }
+
+    store.isLoading = false
 }

@@ -30,7 +30,7 @@ const MetadataCard = (props) => {
     const handleOpenChat = async () => {
         const partner = metadata.matchedUserId;
 
-        if (!chatStore.chats[partner])
+        if (!chatStore.chats[partner] && metadata.total !== 0)
             await dispatch({
                 type: ChatAction.LOAD_CHAT,
                 payload: partner
@@ -38,7 +38,7 @@ const MetadataCard = (props) => {
 
         openChat(partner);
 
-        if (!metadata.isSeen)
+        if (!metadata.isSeen) 
             dispatch({
                 type: ChatAction.IS_SEEN,
                 payload: partner

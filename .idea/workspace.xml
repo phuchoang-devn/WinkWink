@@ -4,20 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="39d31275-fac2-4821-b8b1-1a305773b923" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/auth_components/AuthLayout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/auth_components/AuthLayout.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/auth_components/AuthMain.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/auth_components/AuthMain.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/auth_components/styles/authLayout.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/auth_components/styles/authLayout.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/main-components/header/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/main-components/header/Header.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/static/image/home/Group.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/static/image/home/logo-3.svg" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/static/image/home/logo-3.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/static/image/home/logo-big.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/static/image/home/logo-color.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/static/image/home/logo-png.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/static/image/home/logo-small.svg" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/static/image/home/logo-small.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/static/image/home/logo.svg" beforeDir="false" />
-    </list>
+    <list default="true" id="39d31275-fac2-4821-b8b1-1a305773b923" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,23 +33,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "V__Sprint07",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/margaritaboiko/Desktop/Agile Web Development/wink-wink/WinkWink",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.start.executor": "Run",
-    "settings.editor.selected.configurable": "preferences.keymap",
-    "ts.external.directory.path": "/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;V__Sprint07&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/margaritaboiko/Desktop/Agile Web Development/wink-wink/WinkWink&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.start.executor&quot;: &quot;Run&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -101,6 +88,7 @@
       <workItem from="1714573404533" duration="1023000" />
       <workItem from="1714667185348" duration="535000" />
       <workItem from="1718450209308" duration="3724000" />
+      <workItem from="1718628558046" duration="158000" />
     </task>
     <servers />
   </component>

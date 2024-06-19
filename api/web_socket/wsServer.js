@@ -4,7 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 const SocketAction = {
     AUTH_SERVER: "auth-server",
-    CHAT: "chat"
+    CHAT: "chat",
+    MATCH: "match"
 }
 
 const unauthenticatedConn = {}
@@ -72,17 +73,31 @@ const createWebSocketServer = () => {
                         console.log(`Failed to authenticate server connection`)
                     }
                 }
-            } else if(winkwinkConn.includes(connID)){
+            } else if (winkwinkConn.includes(connID)) {
+                const { receiver } = message.payload;
+                const receiverConn = userConns[receiver];
+
+                if (!receiverConn) return
+
                 switch (message.type) {
                     case SocketAction.CHAT: {
-                        const { receiver, content } = message.payload;
+                        const { content } = message.payload;
 
-                        const receiverConn = userConns[receiver];
-                        if (receiverConn)
-                            receiverConn.send(JSON.stringify({
-                                type: "chat",
-                                payload: content
-                            }));
+                        receiverConn.send(JSON.stringify({
+                            type: message.type,
+                            payload: content
+                        }));
+
+                        break;
+                    }
+
+                    case SocketAction.MATCH: {
+                        const { chatMetadata } = message.payload;
+                        
+                        receiverConn.send(JSON.stringify({
+                            type: message.type,
+                            payload: chatMetadata
+                        }));
 
                         break;
                     }

@@ -6,6 +6,7 @@ import errorController from "./api/controllers/errorController.js"
 import dbConnect from "./api/models/index.js";
 import createWebSocketServer from "./api/web_socket/wsServer.js";
 import createWebSocketClient from "./api/web_socket/wsClient.js";
+import cors from "cors"
 
 const __filename = fileURLToPath(import.meta.url);
 export const __dirname = dirname(__filename);
@@ -17,6 +18,16 @@ createWebSocketServer();
 createWebSocketClient();
 
 app.set("port", process.env.PORT || 3000);
+
+app.use(cors(/*
+	The default configuration
+	{
+  		"origin": "*",
+		"methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+  		"preflightContinue": false,
+  		"optionsSuccessStatus": 204
+}
+*/))
 
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(express.json()); // for parsing application/json
