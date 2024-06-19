@@ -6,13 +6,13 @@ const useUserInfoValidation = () => {
     });
 
     const validate = (userInfo, currentImage) => {
-        let image = currentImage !== null;
+        let image = currentImage !== undefined;
         let firstname = userInfo.name.first !== "";
         let lastname = userInfo.name.last !== "";
         let age = userInfo.age !== null;
         let sex = userInfo.sex !== "";
         let country = typeof userInfo.country !== "undefined";
-        let languages = userInfo.languages.length !== 0;
+        let languages = userInfo.language.length !== 0;
         let prefSex = userInfo.preferences.sex !== "";
     
         setValidationStatus({

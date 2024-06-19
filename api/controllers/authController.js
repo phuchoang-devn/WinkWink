@@ -32,7 +32,8 @@ const authController = {
                     }*/);
 
                 res.cookie("AuthToken", token)
-                res.status(httpStatus.OK).json(account.user);
+                const responseValue = account.user ? account.user.getResponseUser() : null
+                res.status(httpStatus.OK).json(responseValue);
             } else {
                 res.status(httpStatus.UNAUTHORIZED).json({
                     field: "password",

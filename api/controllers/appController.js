@@ -10,22 +10,22 @@ import { SocketAction, authenticateConnection, deleteUnauthConnection } from "..
 import { sendSocketMessage } from "../web_socket/wsClient.js";
 import path from "path";
 import { __dirname } from "../../main.js";
-import { type } from "os";
+import sharp from "sharp";
 
 
 const appController = {
     createTestUser: async (req, res, next) => {
-        const fakeUser = (first, last) => ({
+        const fakeUser = (first, last, sex) => ({
             name: {
                 first,
                 last
             },
-            profileImage: "image.jpg",
+            profileImage: sex + ".jpg",
             age: 30,
-            sex: "non-binary",
+            sex,
             country: "DE",
             interests: "I like...",
-            language: "eng",
+            language: "en",
             preferences: {
                 age: {
                     from: 18,
@@ -35,8 +35,8 @@ const appController = {
             }
         })
 
-        const user1 = await User.create(fakeUser("Donald", "Trump"))
-        const user2 = await User.create(fakeUser("Joe", "Biden"))
+        const user1 = await User.create(fakeUser("Donald", "Trump", "non-binary"))
+        const user2 = await User.create(fakeUser("Joe", "Biden", "male"))
 
         //user1.hasMatched.push(user2)
         await user1.save()
@@ -263,7 +263,7 @@ const appController = {
             if (isAlreadyMatched) {
                 const matchedUser = await User.findById(matchedUserId).exec();
 
-                res.status(httpStatus.OK).sendFile(path.join(__dirname, "profile_image", matchedUser.profileImage));
+                res.status(httpStatus.OK).sendFile(path.join(__dirname, "profile_image/thumb", matchedUser.profileImage));
             } else res.status(httpStatus.BAD_REQUEST).send(`No match with user "${matchedUserId}"`);
         } catch (error) {
             next(error)
@@ -340,7 +340,7 @@ const appController = {
                 if (isWink) {
                     if (friend.hasLiked.includes(user._id)) {
                         // When users get matched...
-                        
+
                         user.hasMatched.push(friend);
                         friend.hasMatched.push(user);
                         friend.hasLiked = friend.hasLiked.filter(value => value.toString() !== user._id.toString());
@@ -386,9 +386,47 @@ const appController = {
                     res.json(responseValue);
                 else res.send("Wink action successfully");
 
-            } else res.status(httpStatus.BAD_REQUEST).send(`User "${is}" doesn't exist`);
+            } else res.status(httpStatus.BAD_REQUEST).send(`User "${id}" doesn't exist`);
 
             next()
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    uploadImage: async (req, res, next) => {
+        try {
+            const file = req.file
+            const user = res.locals.account.user;
+
+            //const picName = user._id.toString() + ".jpg";
+            const picName = "non-binary.jpg"
+
+            await sharp(file.buffer)
+                .resize(100, 100)
+                .jpeg({ quality: 50 })
+                .toFile(path.join(__dirname, "profile_image/thumb", picName));
+
+            await sharp(file.buffer)
+                .resize(650, 650)
+                .jpeg({ quality: 100 })
+                .toFile(path.join(__dirname, "profile_image/avatar", picName));
+
+            res.status(httpStatus.OK).send("File Uploaded Successfully!")
+            next()
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    getImageProfile: async (req, res, next) => {
+        try {
+            const account = res.locals.account;
+
+            const user = account.user;
+            if (user) {
+                res.status(httpStatus.OK).sendFile(path.join(__dirname, "profile_image/avatar", user.profileImage));
+            } else res.status(httpStatus.BAD_REQUEST).send(`Profile of account ${account._id} doesn't exist`);
         } catch (error) {
             next(error)
         }

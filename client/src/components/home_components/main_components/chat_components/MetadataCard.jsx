@@ -57,7 +57,7 @@ const MetadataCard = (props) => {
                 } : null
             }
         >
-            <div className="metadata-right">
+            <div className="metadata-left">
                 <div className="metadata-pic"
                     onClick={isOnlyAvatar ? handleOpenChat : () => null}
                 >

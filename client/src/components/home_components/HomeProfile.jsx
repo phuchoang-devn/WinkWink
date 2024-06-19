@@ -17,23 +17,24 @@ import {
     AlertSnackbar
 } from "./profile_components";
 import { useMemo } from "react";
+import { useUser } from "../../static/js/context_providers/auth_provider";
 
 
-const HomeProfile = (props) => {
-    //TODO: disable submit and reset
+const HomeProfile = () => {
+    const { user, setUser } = useUser();
 
     // here need to fetch image, when we have backend
-    const [image, setImage, profileImageDiv, isImageChanged] = useImage(null);
+    const [image, setImage, profileImageDiv, isImageChanged] = useImage();
 
     // here need to fetch user info, when we have backend
     // If no info was created before, initial value -> null
-    const [userInfo, handleChangeValue, isInfoChanged] = useUserInfo(null);
+    const [userInfo, handleChangeValue, isInfoChanged] = useUserInfo();
     const fullName = userInfo.name.first + " " + userInfo.name.last;
     const [validationStatus, validate] = useUserInfoValidation();
 
     const handleReset = () => {
         handleChangeValue(UserInfoChange.RESET)();
-        setImage(null);
+        setImage(user?.image);
     }
 
     const handleSubmit = (event) => {
@@ -87,7 +88,7 @@ const HomeProfile = (props) => {
                             isError={validationStatus.sex === false}
                             currentValue={userInfo.sex ?? null}
                             label="Sex"
-                            options={["male", "female", "divers"]}
+                            options={["male", "female", "non-binary"]}
                             onSelect={handleChangeValue(UserInfoChange.SEX)} />
                     </div>
 
@@ -105,7 +106,7 @@ const HomeProfile = (props) => {
                     </div>
 
                     <LanguageSelect isError={validationStatus.languages === false}
-                        currentValue={userInfo.languages}
+                        currentValue={userInfo.language}
                         updateValues={handleChangeValue(UserInfoChange.LANGUAGE)} />
 
                     <StyledTextField label="About me"

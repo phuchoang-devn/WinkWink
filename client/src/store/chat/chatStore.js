@@ -3,7 +3,7 @@ import { useImmerReducer } from "use-immer";
 import { initialChat, chatReducer } from './chatReducer';
 import { chatThunk } from './chatThunk';
 import { useWS } from '../webSocket';
-import { useAuth } from '../../static/js/context_providers/auth_provider';
+import { useUser } from '../../static/js/context_providers/auth_provider';
 
 const ChatContext = createContext(null);
 
@@ -16,7 +16,7 @@ export const ChatProvider = ({ children }) => {
     );
     const asyncDispatch = chatThunk(chatStore, dispatch);
 
-    const { user } = useAuth();
+    const { user } = useUser();
     const { wsChat, wsMetadata } = useWS();
 
     useEffect(() => {

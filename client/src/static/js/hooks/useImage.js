@@ -1,12 +1,34 @@
 import { useEffect, useRef, useState } from "react";
 import defauftImage from "../../image/profile/default-user-image.svg"
+import { useUser } from "../context_providers/auth_provider";
 
-const useImage = (imageData) => {
-    const [image, setImage] = useState(imageData);
+const useImage = () => {
+    const { user, setUser } = useUser();
+    const [image, setImage] = useState(user?.image);
     const profileImageDiv = useRef();
 
     useEffect(() => {
-        if(!image) {
+        if(!user) return
+
+        fetch(`/api/image/profile`, {
+            credentials: "include",
+        })
+            .then(res => {
+                if (res.ok) return res.blob();
+                else throw Error("Failed to fetch profile image")
+            }).then(blob => {
+                setUser(state => ({
+                    ...state,
+                    image: blob
+                }))
+                setImage(blob)
+            }).catch(error => {
+                console.log(error)
+            });
+    }, [])
+
+    useEffect(() => {
+        if (!image) {
             profileImageDiv.current.style.backgroundImage = `url(${defauftImage})`;
             return
         }
@@ -19,7 +41,7 @@ const useImage = (imageData) => {
         fileReader.readAsDataURL(image);
     }, [image]);
 
-    const isImageChanged = image !== imageData;
+    const isImageChanged = image !== user?.image;
 
     return [image, setImage, profileImageDiv, isImageChanged];
 }

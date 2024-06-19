@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { useAuth } from '../static/js/context_providers/auth_provider';
+import { useUser } from '../static/js/context_providers/auth_provider';
 
 const WSContext = createContext(null);
 
@@ -9,7 +9,7 @@ export const WSProvider = ({ children }) => {
     const [wsChat, setWsChat] = useState(undefined);
     const [wsMetadata, setWsMetadata] = useState(undefined);
 
-    const { user } = useAuth();
+    const { user } = useUser();
 
     useEffect(() => {
         if (!user) return

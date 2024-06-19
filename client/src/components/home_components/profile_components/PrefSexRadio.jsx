@@ -27,7 +27,7 @@ export default function PrefSexRadio({ currentValue, handleChange }) {
                 sx={{ display: "flex", justifyContent: "space-around"}}>
                 <FormControlLabel value="female" control={<Radio sx={style}/>} label="Female" sx={labelStyle} />
                 <FormControlLabel value="male" control={<Radio sx={style}/>} label="Male" sx={labelStyle} />
-                <FormControlLabel value="divers" control={<Radio sx={style}/>} label="Divers" sx={labelStyle} />
+                <FormControlLabel value="non-binary" control={<Radio sx={style}/>} label="Non-binary" sx={labelStyle} />
             </RadioGroup>
         </FormControl>
     );
