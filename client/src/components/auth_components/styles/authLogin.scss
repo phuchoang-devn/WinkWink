@@ -1,0 +1,70 @@
+
+@import '../../../index';
+
+.logIn{
+    position: absolute;
+    border: 1px solid $colorMiddle;
+    width: 560px;
+    height: 500px;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    background-color: $colorLightPink;
+    z-index: 2;
+    top: 15%;
+    @media screen and (max-width:700px) {
+            width: 470px;
+            height: 500px;
+    }
+    @media screen and (max-width:480px) {
+            width: 370px;
+            height: 600px;
+    }
+    i{
+        margin: 0;
+        padding: 0;
+        float: right;
+        cursor: pointer;
+        @extend %scale-base;
+        &:hover{
+            @include scale(1.5);
+        }
+    }
+    .login__info{
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 90%;
+        gap: 20px;
+
+        h2{
+            margin: 0;
+        }
+        p{
+            max-width: 30ch;
+        }
+        form{
+            display: flex;
+            flex-flow: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+
+            input{
+                padding: 10px;
+                font-size: 17px;
+                border:1px solid $colorMiddle;
+                transition: border .5s linear;
+                border-radius: 10px;
+                &:hover{
+                    border:1px solid $colorDark;
+                }
+                &:not(:last-child){
+                    width: 300px;
+                }
+            }
+        }
+    }
+}

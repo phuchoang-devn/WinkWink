@@ -1,19 +1,16 @@
 import {Header} from "../main-components/header/Header";
 import {Footer} from "../main-components/footer/Footer";
-import './styles/authLayout.css';
-import homeImg from "../../static/image/home/group2.svg";
+import './styles/authLayout.scss';
 import home from "../../static/image/home/home2.svg"
-import AuthMain from "./AuthMain";
 import {useState} from "react";
 import { Outlet } from "react-router-dom";
 const AuthLayout = (props) => {
     const [showLogin, setShowLogin] = useState(false);
     return(
-        <>
+        <div className="auth-layout">
             <Header
                 setShowLogin = {setShowLogin}
                 showLogin={showLogin}
-
             />
             <main className="home">
                 <div className="home-container">
@@ -25,7 +22,8 @@ const AuthLayout = (props) => {
             </main>
             <Footer/>
 
-        </>
+        </div>
+            
     );
 }
 export  default  AuthLayout;

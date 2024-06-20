@@ -1,3 +1,5 @@
+@import '../../../../../index';
+
 .dropdown__container {
     position: relative;
 
@@ -9,26 +11,42 @@
             width: 50px;
     
             .icon-path {
-                fill: var(--colorLight);
-                stroke: rgba(0, 0, 0, 0.5);
+                 fill: $colorLight; 
+                // stroke: rgba(0, 0, 0, 0.5);
+                stroke: $colorDarkPink;
+                @extend %scale-base;
+                 &:hover{
+                    @include scale(1.07);
+                }
             }
         }
     }
 
     .dropdown__content {
         position: absolute;
-        z-index: 1;
+        z-index: 4;
         right: 0;
         top: 0;
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-        background-color: white;
+        background-color: $colorWhite;
         border-radius: 10px;
         padding: 0.75rem;
+        border: 1px solid $colorDark;
 
         .dropdown__option {
             text-wrap: nowrap;
+            text-align: center;
+            @extend %text-base;
+            &::before{
+                @extend %text-before;
+            }
+            &:hover{
+                &::before{
+                    @extend %text-hover-before;
+                }
+            }
         }
     }
 }

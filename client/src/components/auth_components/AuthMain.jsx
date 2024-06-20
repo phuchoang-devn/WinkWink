@@ -1,7 +1,6 @@
-import './styles/authLayout.css'
+import './styles/authLayout.scss'
 import {useState} from "react";
 import logo from "../../static/image/home/logo-small.svg"
-import './styles/authLayout.css'
 import AuthRegister from "./AuthRegister";
 import AuthLogin from './AuthLogin';
 

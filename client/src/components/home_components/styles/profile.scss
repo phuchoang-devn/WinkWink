@@ -1,0 +1,155 @@
+
+/* in home profile page maybe background contrast */
+
+@import '../../../index';
+
+.my-profile {
+    .my-profile__form {
+        margin-top: 25px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
+        align-items: center;
+        column-gap: 5rem;
+        row-gap: 2rem;
+        .my-profile__left {
+            display: flex;
+            flex-direction: column;
+            row-gap: 3rem;
+            .my-profile__left-top {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+                .my-profile__image {
+                    height: 300px;
+                    width: 300px;
+                    border-radius: 50%;
+                    box-shadow: 0 0 2px black;
+                    background-color: $colorLight;
+                   
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    background-position: center;
+                    .my-profile__image-input {
+                        height: 100%;
+                        width: 100%;
+                        border-radius: 50%;
+                        background-color: rgba(0, 0, 0, 0.75);
+                        > label{
+                            height: 100%;
+                            width: 100%;
+                            color: $colorWhite;
+                            font-size: 1.5rem;
+                            border-radius: 50%;
+                            cursor: pointer;
+                        
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                        }
+                        > input{
+                            display: none;
+                        }
+                    }
+                }
+                .my-profile__fullname {
+                    min-height: 3rem;
+                    color: $colorDark;
+                }
+                
+            }
+            .my-profile__preferences{
+                .my-profile__preferences-title {
+                    color: $colorDark;
+                }
+                .my-profile__preferences-edit {
+                    padding: 1.25rem;
+                    background-color: $colorPink;
+                    border-radius: 10px;
+                }
+                
+            }
+        }
+        .my-profile__right {
+            width: 350px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+            .my-profile__age-and-sex {
+                display: flex;
+                gap: 0.5rem;
+            }
+            
+            .my-profile__country {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                .my-profile__country-icon {
+                    border-radius: 5px;
+                    box-shadow: 0 0 2px $colorVeryDark;
+                    width: 40px;
+                }
+            }
+            .my-profile__button-group {
+                height: 3rem;
+                display: flex;
+                justify-content: center;
+                gap: 2rem;
+                /* margin-bottom: 30px; */
+
+                button{
+                    padding: 15px 25px;
+                     border: 1px solid transparent;
+                    transition: border .5s linear;
+                    &:hover{
+                        border: 1px solid $colorLight;
+                    }
+                     /*@extend %button;
+                    &::before{
+                        @extend %button-before;
+                        @include glowing-animation; 
+                        animation: glowing 20s linear infinite;
+                    }
+                    &:active{
+                        @extend %button-active;
+                    }
+                    &:active::after{
+                        @extend %button-active-after;
+                    }
+                    &:hover::before{
+                        @extend %button-hover-before;
+                    }
+                    &::after{
+                        @extend %button-after;
+                    }
+            
+                    @media screen and (max-width:700px) {
+                            padding: 10px 20px;
+                        
+                    }
+                    @media screen and (max-width:480px) {
+                       
+                            font-size: 16px;
+                            padding: 5px 15px;
+                        
+                    } */
+                }
+            }
+        }
+        
+    }
+}
+
+.my-profile__helper-text {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+
+.css-11qxptk-MuiFormControlLabel-root .MuiFormControlLabel-label {
+    font-family: "Anonymous Pro", monospace;
+}

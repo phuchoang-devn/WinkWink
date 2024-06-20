@@ -1,19 +1,12 @@
 import { Outlet } from "react-router-dom";
-import { useAuth } from "../../static/js/context_providers/auth_provider";
+import { HomeHeader } from "./HomeHeader";
+import './main_components/styles/swiper.scss'
+
 
 const HomeLayout = (props) => {
-    const { logout } = useAuth();
     return(
-        <div>
-            <div onClick={logout}
-                style={{
-                    position: "absolute",
-                    right: 0
-                }}
-            >
-                Logout
-            </div>
-
+        <div className="main-home-container">
+            <HomeHeader />
             <Outlet />
         </div>
     );

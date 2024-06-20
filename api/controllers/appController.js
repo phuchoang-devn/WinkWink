@@ -386,7 +386,7 @@ const appController = {
                     res.json(responseValue);
                 else res.send("Wink action successfully");
 
-            } else res.status(httpStatus.BAD_REQUEST).send(`User "${is}" doesn't exist`);
+            } else res.status(httpStatus.BAD_REQUEST).send(`User "${id}" doesn't exist`);
 
             next()
         } catch (error) {

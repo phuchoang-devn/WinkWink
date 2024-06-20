@@ -1,0 +1,116 @@
+@import "../../../index";
+
+header {
+    padding-top: 20px;
+    padding-inline: 15px;
+    /* padding-bottom: 50px; */
+    .header__nav {
+        display: flex;
+        flex-flow: row;
+        justify-content: space-between;
+        align-items: center;
+        column-gap: 40px;
+        .header__nav-list {
+            display: flex;
+            flex-flow: row;
+            align-items: center;
+            gap: 20px;
+            .header__nav-list_item {
+                img {
+                    width: 120px;
+                    transform: rotate(0);
+                    transition: transform 0.5s linear;
+                    &:hover {
+                        transform: rotate(360deg);
+                    }
+                }
+            }
+            .header__nav-list_item-text {
+                @extend %text-base;
+                &::before {
+                    @extend %text-before;
+                }
+
+                &:hover {
+                    &::before {
+                        @extend %text-hover-before;
+                    }
+                }
+                .dropdown-menu {
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    width: 100px;
+                    left: -16px;
+                    right: 0;
+                    background-color: $colorLight;
+                    border-bottom-left-radius: 10px;
+                    border-bottom-right-radius: 10px;
+                    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+                    z-index: 1;
+                    .btn-delete{
+                        color: $colorDarkPink
+                    }
+          
+                   button {
+                      display: block;
+                      /* padding: 10px; */
+                      padding: 5px;
+                      text-decoration: none;
+                      color: $colorDark;
+                      background-color: transparent;
+                      transition: all .3s linear;
+                      &:last-child{
+                        border-bottom-left-radius: 10px;
+                        border-bottom-right-radius: 10px;
+                      }
+          
+                      &:hover {
+                        background-color: $colorWhite;
+                      }
+                    }
+                    
+          
+                    &.visible {
+                      display: block;
+                    }
+                  }
+            }
+        }
+    }
+}
+
+/* --------HomeHeader------- */
+
+.home-header {
+    /* padding-bottom: 0; */
+    .btn-logout {
+        padding: 5px 10px;
+        @extend %button;
+        &::before {
+            @extend %button-before;
+            @include glowing-animation;
+            animation: glowing 20s linear infinite;
+        }
+        &:active {
+            @extend %button-active;
+        }
+        &:active::after {
+            @extend %button-active-after;
+        }
+        &:hover::before {
+            @extend %button-hover-before;
+        }
+        &::after {
+            @extend %button-after;
+        }
+
+        @media screen and (max-width: 700px) {
+            padding: 10px 20px;
+        }
+        @media screen and (max-width: 480px) {
+            font-size: 16px;
+            padding: 5px 15px;
+        }
+    }
+}

@@ -2,7 +2,7 @@ import Slider from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import "../styles/profile.css"
+import "../styles/profile.scss"
 
 
 const MIN_DISTANCE = 10;
