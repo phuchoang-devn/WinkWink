@@ -200,7 +200,7 @@ apiRouter.get(
 );
 
 
-aapiRouter.post(
+apiRouter.post(
   '/user',
   checkSchema(userValidationSchema),
   validateRequest,
