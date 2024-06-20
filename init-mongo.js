@@ -26,7 +26,7 @@ function generateRandomUser(id) {
     const lastNames = ['Smith', 'Johnson', 'Brown', 'Taylor', 'Anderson', 'Thomas', 'Jackson', 'White', 'Harris', 'Martin'];
     const countries = ["US", "CA", "GB", "AU", "DE", "FR", "ES", "IT", "NL", "SE"];
     const interestsList = ['reading', 'traveling', 'sports', 'music', 'cooking', 'hiking', 'gaming', 'art', 'dancing', 'photography'];
-    const languages = ["eng", "spa", "fre", "ger", "chi", "jpn", "kor", "rus", "por", "ita","vie"];
+    const languages = ["en", "sp", "fr", "ge", "ch", "jp", "ko", "ru", "po", "it","vi"];
 
     // Generate a random number between 0 and 99 for gender probability
     const genderProb = getRandomInt(0, 99);
@@ -56,13 +56,21 @@ function generateRandomUser(id) {
         userLanguages.push(getRandomElement(languages));
     }
     const age = getRandomInt(18, 65);
-    const preferencesAgeFrom = getRandomInt(18, 30);
-    const preferencesAgeTo = getRandomInt(31, 65);
+    const preferencesAgeFrom = 18;
+    const preferencesAgeTo = 100;
     const preferencesSex = getRandomElement(['male', 'female', 'non-binary']);
+
+    if (sex === 'male') {
+        gender_image = "dating-app/profile_image/men.jpg"
+    } else if (sex === 'female') {
+        gender_image = "dating-app/profile_image/woman.jpg"
+    } else { // For 'non-bynary' category
+        gender_image = "dating-app/profile_image/non-binary.jpg"
+    }
 
     return {
         name: { first: firstName, last: lastName },
-        profileImage: `profile${id}.png`,
+        profileImage:gender_image,
         age: age,
         sex: sex,
         country: country,

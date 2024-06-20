@@ -7,6 +7,7 @@ const userController = {
             const newUser = new User(req.body);
             await newUser.save();
             res.status(201).json(newUser);
+            next();
         } catch (error) {
             next(error);
         }
@@ -20,6 +21,7 @@ const userController = {
                 return res.status(404).json({ message: 'User not found' });
             }
             res.status(200).json(user);
+            next();
         } catch (error) {
             next(error);
         }
@@ -33,6 +35,7 @@ const userController = {
                 return res.status(404).json({ message: 'User not found' });
             }
             res.status(200).json(updatedUser);
+            next();
         } catch (error) {
             next(error);
         }
@@ -46,6 +49,7 @@ const userController = {
                 return res.status(404).json({ message: 'User not found' });
             }
             res.status(200).json({ message: 'User deleted successfully' });
+            next();
         } catch (error) {
             next(error);
         }

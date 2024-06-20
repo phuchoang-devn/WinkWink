@@ -194,17 +194,24 @@ apiRouter.get(
   appController.getImageChat
 )
 
-apiRouter.get('/user', (req, res) => {
-  //logic
-})
+apiRouter.get(
+  '/user/:id'
+  , userController.getUser
+);
 
-apiRouter.post('/user', (req, res) => {
-  //logic
-})
+
+aapiRouter.post(
+  '/user',
+  checkSchema(userValidationSchema),
+  validateRequest,
+  userController.createUser
+);
 
 apiRouter.put('/user', (req, res) => {
-  //logic
-})
+    '/user/:id',
+    checkSchema(userValidationSchema),
+    validateRequest,
+    userController.updateUser})
 
 /*
 Response:
