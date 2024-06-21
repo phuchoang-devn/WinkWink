@@ -141,14 +141,16 @@ const ChatCompose = ({ partnerId }) => {
                                     <div className="message-createdAt">{getDisplayTime(chat.createdAt)}</div>
                                 </div>
                             ))
-                            : <div className="new-match">
-                                <Winking className="chat-icon" />
-                                <div className="new-match-message">
-                                    Looooook!
-                                    <br />
-                                    Someone is winking at you
+                            : !metadata.isUnmatched ?
+                                <div className="new-match">
+                                    <Winking className="chat-icon" />
+                                    <div className="new-match-message">
+                                        Looooook!
+                                        <br />
+                                        Someone is winking at you
+                                    </div>
                                 </div>
-                            </div>
+                                : null
                         : null
                 }
                 {
@@ -159,9 +161,13 @@ const ChatCompose = ({ partnerId }) => {
             </div>
 
             <form className="bottom" onSubmit={handleSendMessgae}>
-                <input placeholder="Type a message"
+                <input placeholder={metadata?.isUnmatched ? "Oh nooo! An unmatch :(((" : "Type a message"}
                     value={newMessage}
-                    onChange={handleInput} />
+                    onChange={handleInput}
+                    style={{
+                        cursor: metadata?.isUnmatched ? "not-allowed" : "unset"
+                    }}
+                    disabled={metadata?.isUnmatched} />
                 {
                     newMessage.length !== 0 ?
                         <button type="submit">

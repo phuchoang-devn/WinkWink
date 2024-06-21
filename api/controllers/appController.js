@@ -259,12 +259,15 @@ const appController = {
             const account = res.locals.account;
 
             const hasMatched = account.user.hasMatched.map(id => id.toString());
-            const isAlreadyMatched = hasMatched.includes(matchedUserId);
-            if (isAlreadyMatched) {
+            const hasUnmatched = account.user.hasUnmatched.map(id => id.toString());
+
+
+            const hasAccessToImage = hasMatched.includes(matchedUserId) || hasUnmatched.includes(matchedUserId);
+            if (hasAccessToImage) {
                 const matchedUser = await User.findById(matchedUserId).exec();
 
                 res.status(httpStatus.OK).sendFile(path.join(__dirname, "profile_image/thumb", matchedUser.profileImage));
-            } else res.status(httpStatus.BAD_REQUEST).send(`No match with user "${matchedUserId}"`);
+            } else res.status(httpStatus.BAD_REQUEST).send(`No access to image of user "${matchedUserId}"`);
         } catch (error) {
             next(error)
         }
@@ -284,6 +287,7 @@ const appController = {
             }
 
             const hasMatched = user.hasMatched.map(id => id.toString());
+            const hasUnmatched = user.hasUnmatched.map(id => id.toString());
             const hasLiked = user.hasLiked.map(id => id.toString());
             const hasDisliked = user.hasDisliked.map(id => id.toString());
 
@@ -291,7 +295,8 @@ const appController = {
                 ...except,
                 ...hasMatched,
                 ...hasLiked,
-                ...hasDisliked
+                ...hasDisliked,
+                ...hasUnmatched
             ];
 
             const newFriends = await User.aggregate().match({
@@ -329,6 +334,7 @@ const appController = {
                 user.hasLiked.includes(id)
                 || user.hasDisliked.includes(id)
                 || user.hasMatched.includes(id)
+                || user.hasUnmatched.includes(id)
             ) {
                 res.status(httpStatus.BAD_REQUEST).send(`You have winked to this user "${id}"`);
                 return next();
@@ -428,6 +434,56 @@ const appController = {
             } else res.status(httpStatus.BAD_REQUEST).send(`Profile of account ${account._id} doesn't exist`);
         } catch (error) {
             next(error)
+        }
+    },
+
+    handleUnmatch: async (req, res, next) => {
+        try {
+            validateRequest(req, res);
+            const { id } = req.body;
+            const account = res.locals.account;
+
+            const user = account.user;
+            const isMatched = user.hasMatched.map(id => id.toString()).includes(id);
+
+            if(isMatched) {
+                const friend = await User.findById(id).exec();
+                friend.hasMatched = friend.hasMatched.filter(idObject => idObject.toString() !== user._id.toString())
+                friend.hasUnmatched.push(user)
+                user.hasMatched = user.hasMatched.filter(idObject => idObject.toString() !== id)
+                user.hasUnmatched.push(friend)
+
+                const metadataOfFriend = await ChatMetadata.findOne({
+                    ofUser: id,
+                    matchedUser: user._id
+                }).exec();
+                const metadataOfUser = await ChatMetadata.findOne({
+                    ofUser: user._id,
+                    matchedUser: id
+                }).exec();
+                metadataOfFriend.isUnmatched = true
+                metadataOfFriend.isSeen = false
+                metadataOfUser.isUnmatched = true
+
+                await user.save()
+                await friend.save()
+                await metadataOfUser.save()
+                const chatMetadataForWS = await metadataOfFriend.save()
+
+                sendSocketMessage({
+                    type: SocketAction.MATCH,
+                    payload: {
+                        receiver: id,
+                        chatMetadata: await chatMetadataForWS.getResChatMetadata()
+                    }
+                })
+
+                res.status(httpStatus.OK).send("Unmatch successfully")
+            } else res.status(httpStatus.BAD_REQUEST).send(`No match with user ${id}`)
+
+            next();
+        } catch (error) {
+            next(error);
         }
     }
 }

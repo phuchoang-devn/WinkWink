@@ -23,11 +23,7 @@ import { useUser } from "../../static/js/context_providers/auth_provider";
 const HomeProfile = () => {
     const { user, setUser } = useUser();
 
-    // here need to fetch image, when we have backend
     const [image, setImage, profileImageDiv, isImageChanged] = useImage();
-
-    // here need to fetch user info, when we have backend
-    // If no info was created before, initial value -> null
     const [userInfo, handleChangeValue, isInfoChanged] = useUserInfo();
     const fullName = userInfo.name.first + " " + userInfo.name.last;
     const [validationStatus, validate] = useUserInfoValidation();
@@ -37,10 +33,34 @@ const HomeProfile = () => {
         setImage(user?.image);
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        validate(userInfo, image);
-    };
+        const validationResult = validate(userInfo, image);
+        
+        if(!validationResult) return
+
+        //TODO: fetch api for info and image
+
+        try{
+            const data = new FormData();
+            data.append("avatar", image)
+
+            const res = await fetch(`api/image/profile`, {
+                method: "POST",
+                body: data,
+                credentials: "include"
+            });
+
+            if (res.ok) {
+                setUser(state => ({
+                    ...state,
+                    image
+                }))
+            } else throw Error(await res.text());
+        } catch(error) {
+            console.log(error.message)
+        }
+    }
 
     return (
         <div className="my-profile">

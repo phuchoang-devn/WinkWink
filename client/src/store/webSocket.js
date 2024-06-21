@@ -1,13 +1,13 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useUser } from '../static/js/context_providers/auth_provider';
+import { ChatAction } from './chat/chatStore';
 
 const WSContext = createContext(null);
 
 const WSResetContext = createContext(null);
 
 export const WSProvider = ({ children }) => {
-    const [wsChat, setWsChat] = useState(undefined);
-    const [wsMetadata, setWsMetadata] = useState(undefined);
+    const [ws, setWS] = useState(undefined);
 
     const { user } = useUser();
 
@@ -43,12 +43,18 @@ export const WSProvider = ({ children }) => {
                 }
 
                 case "chat": {
-                    setWsChat(message.payload);
+                    setWS({
+                        type: ChatAction.NEW_CHAT,
+                        payload: message.payload
+                    })
                     break;
                 }
 
                 case "match": {
-                    setWsMetadata(message.payload)
+                    setWS({
+                        type: ChatAction.NEW_METADATA,
+                        payload: message.payload
+                    })
                     break;
                 }
 
@@ -65,12 +71,11 @@ export const WSProvider = ({ children }) => {
     }, [user])
 
     const resetValue = () => {
-        setWsChat(undefined);
-        setWsMetadata(undefined);
+        setWS(undefined)
     }
 
     return (
-        <WSContext.Provider value={{ wsChat, wsMetadata }}>
+        <WSContext.Provider value={ws}>
             <WSResetContext.Provider value={resetValue}>
                 {children}
             </WSResetContext.Provider>

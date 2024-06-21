@@ -330,6 +330,7 @@ $defaultTransitionDuration: 0.5s;
 
             input {
                 height: $componentHeight;
+                background-color: transparent;
                 border: unset;
                 outline: none;
                 flex-grow: 1;

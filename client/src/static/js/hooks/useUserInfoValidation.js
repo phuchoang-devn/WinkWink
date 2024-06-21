@@ -14,11 +14,14 @@ const useUserInfoValidation = () => {
         let country = typeof userInfo.country !== "undefined";
         let languages = userInfo.language.length !== 0;
         let prefSex = userInfo.preferences.sex !== "";
+
+        const all = image & firstname && lastname && age && sex && country && languages && prefSex;
     
         setValidationStatus({
-            all: image & firstname && lastname && age && sex && country && languages && prefSex,
-            image, firstname, lastname, age, sex, country, languages, prefSex
+            all, image, firstname, lastname, age, sex, country, languages, prefSex
         });
+
+        return all
     }
 
     return [ validationStatus, validate ];

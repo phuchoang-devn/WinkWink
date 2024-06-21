@@ -139,26 +139,62 @@ export const chatThunk = (chatStore, dispatch) => async ({ type, payload }) => {
         case ChatAction.NEW_METADATA: {
             const metadata = payload
 
+            const isImageFetched = chatStore.matchedUserIds.includes(metadata.matchedUserId);
+
+            if (!isImageFetched) {
+                try {
+                    const res = await fetch(`/api/image/chat/${metadata.matchedUserId}`, { credentials: "include" });
+
+                    if (res.ok) {
+                        const blob = await res.blob();
+                        const imgUrl = URL.createObjectURL(blob);
+
+                        dispatch({
+                            type,
+                            payload: {
+                                ...metadata,
+                                image: imgUrl
+                            }
+                        })
+                    } else throw Error(await res.text());
+                } catch (error) {
+                    console.log(error.message)
+                }
+            } else {
+                dispatch({ type, payload })
+            }
+
+            break;
+        }
+
+        case ChatAction.UNMATCH: {
+            const userId = payload
+
             try {
-                const res = await fetch(`/api/image/chat/${metadata.matchedUserId}`, { credentials: "include" });
+                const res = await fetch(`/api/unmatch`, {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: userId
+                    }),
+                    credentials: "include"
+                });
 
                 if (res.ok) {
-                    const blob = await res.blob();
-                    const imgUrl = URL.createObjectURL(blob);
-
-                    dispatch({
-                        type,
-                        payload: {
-                            ...metadata,
-                            image: imgUrl
-                        }
-                    })
+                    dispatch({ type, payload })
                 } else throw Error(await res.text());
             } catch (error) {
                 console.log(error.message)
             }
 
             break;
+        }
+
+        case ChatAction.NEW_CHAT: {
+            dispatch({ type, payload })
+            break
         }
 
         default:

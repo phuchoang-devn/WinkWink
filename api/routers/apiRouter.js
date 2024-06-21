@@ -260,6 +260,21 @@ apiRouter.post(
   appController.handleWink
 )
 
+/*
+Response:
+200 - success message
+400 - error message
+*/
+apiRouter.post(
+  '/unmatch',
+  checkExact(
+    checkSchema({
+      id: { isString: true }
+    }, ['body'])
+  ),
+  appController.handleUnmatch
+)
+
 
 apiRouter.all('*', errorController.apiNotFound);
 

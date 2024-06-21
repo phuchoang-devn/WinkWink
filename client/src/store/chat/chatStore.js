@@ -17,25 +17,13 @@ export const ChatProvider = ({ children }) => {
     const asyncDispatch = chatThunk(chatStore, dispatch);
 
     const { user } = useUser();
-    const { wsChat, wsMetadata } = useWS();
+    const ws = useWS();
 
     useEffect(() => {
-        if(!wsChat) return
+        if(!ws) return
 
-        dispatch({
-            type: ChatAction.NEW_CHAT,
-            payload: wsChat
-        })
-    }, [wsChat])
-
-    useEffect(() => {
-        if(!wsMetadata) return
-
-        asyncDispatch({
-            type: ChatAction.NEW_METADATA,
-            payload: wsMetadata
-        })
-    }, [wsMetadata])
+        asyncDispatch(ws)
+    }, [ws])
 
     useEffect(() => {
         if(!user) return
