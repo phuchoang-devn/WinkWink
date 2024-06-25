@@ -296,38 +296,22 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-<<<<<<< HEAD
-                gap: 1.5rem;
-
-=======
                 justify-content: center;
                 height:  100%;
->>>>>>> origin/M_Sprint08
                 .chat-icon {
                     height: 150px;
                     width: 150px;
 
 
                     .icon-path {
-<<<<<<< HEAD
-                        fill: var(--colorMiddle);
-                        stroke: rgba(0, 0, 0, 0.1);
-                        stroke-width: 0.25;
-=======
                         fill: $colorDarkPink;
->>>>>>> origin/M_Sprint08
                     }
                 }
 
                 .new-match-message {
                     font-weight: 650;
                     font-size: 1.5rem;
-<<<<<<< HEAD
-                    color: var(--colorMiddle);
-                    text-align: center;
-=======
                     color: $colorDarkPink;
->>>>>>> origin/M_Sprint08
                 }
             }
 

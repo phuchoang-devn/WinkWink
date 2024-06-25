@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-import { useCallback, useState } from "react";
-import './styles/authRegister.css'
-=======
 import {useCallback, useState} from "react";
 import './styles/authLogin.scss'
->>>>>>> origin/M_Sprint08
 
 const AuthRegister = ({ setShowLogin, isSignUp }) => {
     const [email, setEmail] = useState("");
