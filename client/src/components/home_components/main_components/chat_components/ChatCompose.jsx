@@ -97,7 +97,7 @@ const ChatCompose = ({ partnerId }) => {
     return (
         <div className="chat-compose"
             style={{
-                width: partnerId ? "30rem" : 0,
+                width: partnerId ? "25rem" : 0,
                 padding: partnerId ? "1rem" : 0,
                 backgroundColor: metadata?.isSeen || !partnerId ? "var(--colorLight)" : "var(--colorDark)"
             }}
@@ -130,7 +130,7 @@ const ChatCompose = ({ partnerId }) => {
                                     style={
                                         chat.isMine ? {
                                             backgroundColor: metadata?.isSeen || !partnerId ? "var(--colorDark)" : "var(--colorLight)",
-                                            color: metadata?.isSeen || !partnerId ? "var(--colorLight)" : "black",
+                                            color: metadata?.isSeen || !partnerId ? "var(--colorLight)" : "var(colorVeryDark)",
                                             marginLeft: "auto"
                                         } : {
                                             backgroundColor: metadata?.isSeen || !partnerId ? "var(--colorMiddle)" : "var(--colorLight)"

@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { useCallback, useState } from "react";
 import './styles/authRegister.css'
+=======
+import {useCallback, useState} from "react";
+import './styles/authLogin.scss'
+>>>>>>> origin/M_Sprint08
 
 const AuthRegister = ({ setShowLogin, isSignUp }) => {
     const [email, setEmail] = useState("");
@@ -46,7 +51,7 @@ const AuthRegister = ({ setShowLogin, isSignUp }) => {
     }, [isSignUp, password, confirmPassword]);
 
     return (
-        <div className="register">
+        <div className="logIn">
             <i className="ri-eye-close-line" onClick={handleClick}></i>
             <div className="login__info">
                 <h2>{isSignUp ? "Create an account" : "Log In"}</h2>
@@ -82,7 +87,7 @@ const AuthRegister = ({ setShowLogin, isSignUp }) => {
                         required={true}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
-                    <button className="form-btn" type="submit">Submit</button>
+                    <button type="submit">Submit</button>
                     <p>{error}</p>
                 </form>
             </div>

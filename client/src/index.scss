@@ -1,6 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-:root {
 
+/* variables */
+$colorDark:#4B164C;
+$colorMiddle:#cb89a5;
+$colorLight:#F8E7F6;
+$colorWhite:#F5F5F5;
+$colorVeryDark:#1E1E1E;
+$colorError: #bc2d50;
+$colorBack:#fcf1f1;
+$colorPink:#e096a3;
+$colorDarkPink:#c8474f;
+$colorLightPink:#eec2c4;
+$paddingMetadata: 1rem;
+$defaultTransitionDuration: 0.5s;
+$chatComponentWidth: 28rem;
+
+
+
+:root {
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -9,15 +26,11 @@
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
-
-  /* variables */
   --colorDark:#4B164C;
-  --colorMiddle:#DD88CF;
+  --colorMiddle:#cb89a5;
   --colorLight:#F8E7F6;
-  --colorWhite:#F5F5F5;
   --colorVeryDark:#1E1E1E;
   --colorError: #bc2d50;
-  --colorBack:#fcf1f1;
 }
 *,
 *::before,
@@ -93,7 +106,7 @@ html {
 }
 
 body {
-  background-color:var(--colorBack) ;
+  background-color:$colorBack ;
   min-height: 100%;
 
   line-height: 1.5;
@@ -135,22 +148,15 @@ a{
   flex-flow: column;
   justify-content: space-between;
   font-family: "Anonymous Pro", monospace;
-
-
-}
-/* button{
-  transform: scale(1);
-  transition: transform .5s linear;
 }
 
-button:hover{
-  transform: scale(1.1);
-} */
+/* -----buttons----- */
 
-button{
-    border: .5px solid var(--colorDark);
+%button{
+    border: .5px solid $colorDark;
+    font-size: 18px;
     outline: none;
-    color: var(--colorDark);
+    color: $colorDark;
     cursor: pointer;
     position: relative;
     z-index: 0;
@@ -158,9 +164,10 @@ button{
     transform: scale(1);
     transition: transform .5s linear;
 }
-button::before{
-    content: '';
-    background: linear-gradient(45deg, var(--colorBack), var(--colorDark), #c8474f, var(--colorLight), var(--colorMiddle), #bc2d50, #e096a3, var(--colorWhite));
+
+%button-before{
+  content: '';
+    background: linear-gradient(45deg, $colorBack, $colorDark, $colorDarkPink, $colorError, $colorLight, $colorMiddle, $colorPink, $colorWhite);
     position: absolute;
     top: -2px;
     left:-2px;
@@ -169,38 +176,82 @@ button::before{
     filter: blur(5px);
     width: calc(100% + 4px);
     height: calc(100% + 4px);
-    animation: glowing 20s linear infinite;
+    /* animation: glowing 20s linear infinite; */
     opacity: 0;
     transition: opacity .3s ease-in-out;
     border-radius: 20px;
+    will-change: opacity, transform;
 }
 
-button:active{
-  color: var(--colorDark);
+%button-active{
+  color: $colorDark;
 }
- button:active::after{
+
+%button-active-after{
   background: transparent;
- }
+}
 
- button:hover::before{
+%button-hover-before{
   opacity: 1;
   transform: scale(1.1);
- }
+}
 
- button::after{
-  z-index: -1;
+%button-after{
+    z-index: -1;
     content: '';
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: var(--colorLight);
+    background-color: $colorLight;
     left: 0;
     top: 0;
     border-radius: 10px;
- }
+}
 
- @keyframes glowing {
-  0% { background-position: 0 0; }
-  50% { background-position: 400% 0; }
-  100% { background-position: 0 0; }
+@mixin glowing-animation {
+  @-webkit-keyframes glowing {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+  }
+
+  @keyframes glowing {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+  }
+}
+
+/* ------------Underline Text------------ */
+
+%text-base{
+  cursor: pointer;
+  position: relative;
+}
+
+%text-before{
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 1px;
+  bottom: 0;
+  left: 0;
+  background-color: $colorDark;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+%text-hover-before{
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+%scale-base{
+  transform: scale(1);
+  transition: transform .5s linear;
+}
+
+@mixin scale ($faktor){
+  transform: scale($faktor);
 }

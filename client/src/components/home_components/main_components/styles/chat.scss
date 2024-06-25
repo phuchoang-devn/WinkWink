@@ -1,22 +1,23 @@
-$paddingMetadata: 1rem;
-$defaultTransitionDuration: 0.5s;
+@import '../../../../index';
 
 .chat-container {
     position: absolute;
-    bottom: 2rem;
-    left: 1rem;
+    margin-inline: 15px;
     height: 85vh;
 
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
+    bottom: 10px;
+    z-index: 10;
 
     .metadata {
         height: 100%;
-        background-color: var(--colorLight);
-        padding: $paddingMetadata;
+        background-color: $colorLight;
+        // padding: $paddingMetadata;
         border-radius: 20px;
-        box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0 3px $colorVeryDark;
         transition-duration: $defaultTransitionDuration;
         position: relative;
 
@@ -46,9 +47,11 @@ $defaultTransitionDuration: 0.5s;
 
                 .no-message__icon {
                     transition-duration: $defaultTransitionDuration;
-
+                    width: 50px;
+                    height: 50px;
                     .no-message__icon-path {
-                        fill: var(--colorDark);
+                        fill: $colorDark;
+                        
                     }
                 }
 
@@ -59,7 +62,7 @@ $defaultTransitionDuration: 0.5s;
                     transition-duration: $defaultTransitionDuration;
                     overflow: hidden;
                     text-wrap: nowrap;
-                    color: var(--colorDark);
+                    color: $colorDark;
                 }
             }
 
@@ -67,10 +70,10 @@ $defaultTransitionDuration: 0.5s;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-
-                width: 23rem;
-                padding: 0.75rem;
-                border-radius: 10px;
+                transition-duration: $defaultTransitionDuration;
+                width: 25rem;
+                padding: 10px;
+                border-radius: 20px;
 
 
                 .metadata-left {
@@ -87,7 +90,7 @@ $defaultTransitionDuration: 0.5s;
                         height: $imgSize;
                         border-radius: 50%;
                         overflow: hidden;
-                        box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+                        box-shadow: 0 0 3px $colorVeryDark;
                         cursor: pointer;
 
                         .notify-ring {
@@ -110,7 +113,7 @@ $defaultTransitionDuration: 0.5s;
                             width: $imgSize;
 
                             .icon-path {
-                                fill: var(--colorMiddle)
+                                fill: $colorMiddle;
                             }
                         }
                     }
@@ -120,6 +123,7 @@ $defaultTransitionDuration: 0.5s;
 
                         .metadata-name {
                             font-size: 1.25rem;
+                            text-align: center;
                         }
 
                         .metadata-message,
@@ -127,6 +131,7 @@ $defaultTransitionDuration: 0.5s;
                             text-overflow: ellipsis;
                             overflow: hidden;
                             white-space: nowrap;
+                            text-align: center;
                         }
                     }
                 }
@@ -142,14 +147,18 @@ $defaultTransitionDuration: 0.5s;
                 height: 10rem;
                 padding: 2rem;
                 text-wrap: nowrap;
+                text-align: center;
             }
         }
 
         .collapse-container {
             transition-duration: 0.75s;
             position: absolute;
-            bottom: $paddingMetadata;
-            right: $paddingMetadata;
+            /* bottom: $paddingMetadata;
+            right: $paddingMetadata; */
+            bottom: 10px;
+            left: 9px;
+            // right: 0;
             border-radius: 50%;
             cursor: pointer;
 
@@ -158,24 +167,26 @@ $defaultTransitionDuration: 0.5s;
             justify-content: space-between;
 
             .collapse {
-                height: 75px;
-                width: 75px;
-                background-color: var(--colorLight);
+                height: 60px;
+                width: 60px;
+                background-color: $colorLight;
                 border-radius: 50%;
 
                 .collapse-path {
-                    fill: var(--colorMiddle);
+                    fill: $colorPink;
                     stroke: rgba(0, 0, 0, 0.1);
                     stroke-width: 0.5;
+                    @extend %scale-base;
+                    &:hover{
+                        @include scale (1.06);
+                    }
                 }
             }
         }
     }
 
     .chat-compose {
-        $chatComponentWidth: 28rem;
-
-        box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0 1px $colorVeryDark;
         height: 80%;
         border-radius: 20px;
         transition-duration: $defaultTransitionDuration;
@@ -188,11 +199,13 @@ $defaultTransitionDuration: 0.5s;
 
         .top {
             $picSize: 50px;
-
-            width: $chatComponentWidth;
-            background-color: white;
+            /* width: $chatComponentWidth; */
+            width: 100%;
+            background-color:$colorWhite;
+            border: 1px solid $colorDark;
             border-radius: 20px;
-            padding: 0.75rem 1.5rem;
+            /* padding: 0.75rem 1.5rem; */
+            padding: 8px 10px;
 
             display: flex;
             align-items: center;
@@ -216,13 +229,14 @@ $defaultTransitionDuration: 0.5s;
                     width: $picSize;
 
                     .icon-path {
-                        fill: var(--colorLight)
+                        fill: $colorLight
                     }
                 }
             }
 
             .partner-name {
-                font-size: 1.5rem;
+                /* font-size: 1.5rem; */
+                font-size: 20px;
                 max-width: 100%;
 
                 text-overflow: ellipsis;
@@ -236,10 +250,11 @@ $defaultTransitionDuration: 0.5s;
         }
 
         .messages {
-            width: $chatComponentWidth;
+            // width: $chatComponentWidth;
+            width: 100%;
             flex-grow: 1;
             padding: 0 1rem;
-
+            
             display: flex;
             flex-direction: column-reverse;
             gap: 0.5rem;
@@ -263,15 +278,16 @@ $defaultTransitionDuration: 0.5s;
                 padding: 0.25rem 0.5rem;
                 width: fit-content;
                 max-width: 20rem;
-
+                
                 .message-content {
                     overflow-wrap: break-word;
+                    font-size: 18px;
                 }
 
                 .message-createdAt {
                     width: fit-content;
                     margin-left: auto;
-                    font-size: 0.75rem;
+                    font-size: 14px;
                     opacity: 0.6;
                 }
             }
@@ -280,25 +296,38 @@ $defaultTransitionDuration: 0.5s;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+<<<<<<< HEAD
                 gap: 1.5rem;
 
+=======
+                justify-content: center;
+                height:  100%;
+>>>>>>> origin/M_Sprint08
                 .chat-icon {
                     height: 150px;
                     width: 150px;
 
 
                     .icon-path {
+<<<<<<< HEAD
                         fill: var(--colorMiddle);
                         stroke: rgba(0, 0, 0, 0.1);
                         stroke-width: 0.25;
+=======
+                        fill: $colorDarkPink;
+>>>>>>> origin/M_Sprint08
                     }
                 }
 
                 .new-match-message {
                     font-weight: 650;
                     font-size: 1.5rem;
+<<<<<<< HEAD
                     color: var(--colorMiddle);
                     text-align: center;
+=======
+                    color: $colorDarkPink;
+>>>>>>> origin/M_Sprint08
                 }
             }
 
@@ -308,19 +337,19 @@ $defaultTransitionDuration: 0.5s;
                 height: 60px;
                 width: 60px;
                 cursor: pointer;
-                background-color: white;
+                background-color: $colorWhite;
                 border-radius: 50%;
 
                 .icon-path {
-                    fill: var(--colorMiddle);
+                    fill: $colorMiddle;
                 }
             }
         }
 
         .bottom {
             $componentHeight: 40px;
-
-            background-color: white;
+            border: 1px solid $colorDark;
+            background-color: $colorWhite;
             border-radius: 20px;
             padding: 0.25rem 1rem;
 
@@ -329,11 +358,13 @@ $defaultTransitionDuration: 0.5s;
             gap: 1rem;
 
             input {
+                background-color: $colorWhite;
                 height: $componentHeight;
                 background-color: transparent;
                 border: unset;
                 outline: none;
                 flex-grow: 1;
+                font-size: 18px;
             }
 
             button {
@@ -344,7 +375,7 @@ $defaultTransitionDuration: 0.5s;
                     width: $componentHeight;
 
                     .icon-path {
-                        fill: var(--colorMiddle)
+                        fill: $colorDark;
                     }
                 }
             }

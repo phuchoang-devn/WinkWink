@@ -1,0 +1,148 @@
+@import '../../../../index';
+
+#root,
+.swiper-container,
+.home-container,
+.container,
+.main-home-container{
+    overflow: hidden;
+    
+}
+.main-home-container,
+.home-container{
+    height: 100%;
+}
+.swiper-container{
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    position: fixed;
+    left: 40%;
+    margin-inline: 10px;
+     @media screen and (max-width:500px) {
+        left: 30%;
+    } 
+
+    
+}
+
+.swipe {
+    position: absolute;
+  }
+  
+  .cardContainer {
+    width: 90vw;
+    max-width: 260px;
+    height: 400px;
+    overflow: hidden;
+    @media screen and (max-width:500px) {
+        max-width: 240px;
+    }
+  }
+  
+  .card {
+    position: relative;
+    background-color: #fff;
+    width: 80vw;
+    max-width: 260px;
+    height: 400px;
+    box-shadow: 0px 0px 10px 0px $colorLightPink;
+    border-radius: 20px;
+    background-size: cover;
+    background-position: center;
+    @media screen and (max-width:500px) {
+        max-width: 240px;
+    }
+  }
+  
+  .cardContent {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .swipe:last-of-type {
+  
+  }
+  
+  /* .card h3,span {
+    position: absolute;
+    bottom: 0;
+    margin: 10px;
+    color: #fff;
+  } */
+  .card{
+    .card-info{
+        width: 100%;
+        color: $colorLight;
+        position: absolute;
+        bottom: 0;
+        text-align: center;
+        display: flex;
+        flex-flow: column;
+        h3{
+            margin: 0;
+            padding: 0;
+        }
+
+    }
+  }
+  .buttons {
+    margin: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+  }
+  
+  @media (max-width: 625px) {
+    .buttons {
+      flex-direction: column;
+    }
+  }
+  
+  .buttons{
+    button{
+        padding: 5px 10px;
+        @extend %button;
+        &::before{
+            @extend %button-before;
+            @include glowing-animation; 
+            animation: glowing 20s linear infinite;
+        }
+        &:active{
+            @extend %button-active;
+        }
+        &:active::after{
+            @extend %button-active-after;
+        }
+        &:hover::before{
+            @extend %button-hover-before;
+        }
+        &::after{
+            @extend %button-after;
+        }
+
+        @media screen and (max-width:700px) {
+                padding: 10px 20px;
+            
+        }
+        @media screen and (max-width:480px) {
+           
+                font-size: 16px;
+                padding: 5px 15px;
+            
+        }
+    }
+  }
+  
+  @keyframes popup {
+    0%   { transform: scale(1,1) }
+    10%  { transform: scale(1.1,1.1) }
+    30%  { transform: scale(.9,.9) }
+    50%  { transform: scale(1,1) }
+    57%  { transform: scale(1,1) }
+    64%  { transform: scale(1,1) }
+    100% { transform: scale(1,1) }
+  }

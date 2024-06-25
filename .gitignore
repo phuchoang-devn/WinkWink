@@ -1,4 +1,5 @@
 node_modules
+<<<<<<< HEAD
 
 profile_image/avatar/*
 !profile_image/avatar/female.jpg
@@ -9,3 +10,7 @@ profile_image/thumb/*
 !profile_image/thumb/female.jpg
 !profile_image/thumb/male.jpg
 !profile_image/thumb/non-binary.jpg
+=======
+.DS_Store
+.idea
+>>>>>>> origin/M_Sprint08

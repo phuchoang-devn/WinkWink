@@ -55,7 +55,8 @@ const MetadataCard = (props) => {
             onClick={isOnlyAvatar ? () => null : handleOpenChat}
             style={
                 isFocus && !isOnlyAvatar ? {
-                    backgroundColor: "rgb(0, 0, 0, 0.15)",
+                    // backgroundColor: "rgb(0, 0, 0, 0.15)"
+                    backgroundColor: "rgba(200, 71, 79, 0.60)",
                     cursor: "pointer"
                 } : null
             }
@@ -66,7 +67,7 @@ const MetadataCard = (props) => {
                 >
                     <div className="notify-ring"
                     style={{
-                        border: metadata.isSeen ? "unset" : "3px solid var(--colorMiddle)"
+                        border: metadata.isSeen ? "unset" : "2px solid var(--colorPink)"
                     }}
                     ></div>
                     {

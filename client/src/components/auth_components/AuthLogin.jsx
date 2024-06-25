@@ -1,4 +1,4 @@
-import './styles/AuthLogin.css'
+import './styles/authLogin.scss'
 import {useState, useCallback} from "react";
 import { useAuth } from '../../static/js/context_providers/auth_provider';
 
@@ -48,7 +48,7 @@ const AuthLogin = ({ setShowDialog }) => {
                         onChange={(e) => setPassword(e.target.value)}
                         autoComplete="current-password"
                     />
-                    <button className="form-btn" type="submit">Submit</button>
+                    <button type="submit">Submit</button>
                     <p>{error}</p>
                 </form>
             </div>

@@ -1,5 +1,5 @@
-import "./styles/profile.css";
-import "../../index.css"
+import "./styles/profile.scss";
+import "../../index.scss"
 import useImage from "../../static/js/hooks/useImage";
 import useUserInfo, { UserInfoChange } from "../../static/js/hooks/useUserInfo";
 import useUserInfoValidation from "../../static/js/hooks/useUserInfoValidation";
@@ -64,6 +64,7 @@ const HomeProfile = () => {
 
     return (
         <div className="my-profile">
+        
             <form className="my-profile__form" onSubmit={handleSubmit}>
                 <div className="my-profile__left">
                     <div className="my-profile__left-top">

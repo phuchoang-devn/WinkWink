@@ -11,6 +11,25 @@ const Chat = () => {
     const [chatPartner, setChatPartner] = useState(undefined);
     const [isMetadataExpanded, setIsMetadataExpanded] = useState(false);
 
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    useEffect(() => {
+        const handleResize = () => {
+          setWindowWidth(window.innerWidth);
+        };
+    
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+      }, []);
+    
+      const getWidth = () => {
+        if (windowWidth <= 430) {
+          return isMetadataExpanded ? "22.5rem" : "5rem";
+        } else {
+          return isMetadataExpanded ? "25rem" : "5rem";
+        }
+      };
+    
+
     useEffect(() => {
         if (chatPartner) setIsMetadataExpanded(false)
     }, [chatPartner])
@@ -24,7 +43,8 @@ const Chat = () => {
         <div className="chat-container">
             <div className="metadata"
                 style={{
-                    width: isMetadataExpanded ? "25rem" : "7rem",
+                    // width: isMetadataExpanded ? "25rem" : "5rem",
+                    width: getWidth(),
                 }}>
                 <div className="matched-users"
                     style={{
@@ -35,8 +55,8 @@ const Chat = () => {
                             <div className="no-message">
                                 <NoPartner className="no-message__icon"
                                     style={{
-                                        height: isMetadataExpanded ? "150px" : "75px",
-                                        width: isMetadataExpanded ? "150px" : "75px",
+                                        height: isMetadataExpanded ? "120px" : "60px",
+                                        width: isMetadataExpanded ? "120px" : "60px",
                                     }} />
 
                                 <div className="no-message__text"
