@@ -215,7 +215,7 @@ apiRouter.get(
 )
 
 apiRouter.get(
-  '/user/:id'
+  '/user'
   , userController.getUser
 );
 

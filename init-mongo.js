@@ -8,7 +8,7 @@ db.users.drop();
 db.createCollection('users');
 
 // Define the number of users to create
-const amountOfUsers = 30;
+const amountOfUsers = 100;
 
 // Helper functions to generate random values
 function getRandomInt(min, max) {
