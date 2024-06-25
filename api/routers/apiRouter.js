@@ -7,6 +7,7 @@ import authController from '../controllers/authController.js';
 import userController from '../controllers/userController.js';
 import appController from '../controllers/appController.js';
 import cookieParser from 'cookie-parser';
+import multer from 'multer';
 
 
 const apiRouter = Router();
@@ -181,14 +182,32 @@ apiRouter.post(
   appController.postChat
 )
 
-apiRouter.post('/image/profile', (req, res) => {
-  //logic
-})
+/*
+Response:
+200 - success message
+*/
+apiRouter.post(
+  '/image/profile', 
+  multer().single("avatar"),
+  appController.uploadImage
+)
 
-apiRouter.get('/image/profile', (req, res) => {
-  //logic
-})
+/*
+Response:
+200 - image
+400 - error message
+*/
+apiRouter.get(
+  '/image/profile', 
+  appController.getImageProfile
+)
 
+
+/*
+Response:
+200 - image
+400 - error message
+*/
 apiRouter.get(
   '/image/chat/:matchedUserId', 
   param("matchedUserId").exists().isString(),
@@ -264,6 +283,21 @@ apiRouter.post(
     }, ['body'])
   ),
   appController.handleWink
+)
+
+/*
+Response:
+200 - success message
+400 - error message
+*/
+apiRouter.post(
+  '/unmatch',
+  checkExact(
+    checkSchema({
+      id: { isString: true }
+    }, ['body'])
+  ),
+  appController.handleUnmatch
 )
 
 

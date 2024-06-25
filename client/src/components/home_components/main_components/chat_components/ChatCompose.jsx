@@ -1,14 +1,13 @@
 import { ReactComponent as FakePic } from "../../../../static/image/profile/default-user-image.svg"
 import { ReactComponent as Send } from "../../../../static/image/chat/send.svg"
 import { ReactComponent as Down } from "../../../../static/image/chat/down-circle.svg"
-import { ReactComponent as ChatLove } from "../../../../static/image/chat/chat-love.svg"
+import { ReactComponent as Winking } from "../../../../static/image/chat/winking.svg"
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ChatAction, useChatDispatch, useChatStore } from "../../../../store/chat/chatStore";
 
 const ChatCompose = ({ partnerId }) => {
     const chatStore = useChatStore();
     const metadata = chatStore.metadatas[partnerId];
-    console.log(metadata)
     const chats = chatStore.chats[partnerId];
     const dispatch = useChatDispatch();
 
@@ -56,7 +55,7 @@ const ChatCompose = ({ partnerId }) => {
     }
 
     const handleScroll = (e) => {
-        if(metadata.total === 0) return
+        if (metadata.total === 0) return
 
         if (e.target.scrollTop <= -1) {
             if (isOnBottom) setIsOnBottom(false)
@@ -142,10 +141,16 @@ const ChatCompose = ({ partnerId }) => {
                                     <div className="message-createdAt">{getDisplayTime(chat.createdAt)}</div>
                                 </div>
                             ))
-                            : <div className="new-match">
-                                <ChatLove className="chat-icon" />
-                                <div className="new-match-message">Let's chat!!!</div>
-                            </div>
+                            : !metadata.isUnmatched ?
+                                <div className="new-match">
+                                    <Winking className="chat-icon" />
+                                    <div className="new-match-message">
+                                        Looooook!
+                                        <br />
+                                        Someone is winking at you
+                                    </div>
+                                </div>
+                                : null
                         : null
                 }
                 {
@@ -156,9 +161,13 @@ const ChatCompose = ({ partnerId }) => {
             </div>
 
             <form className="bottom" onSubmit={handleSendMessgae}>
-                <input placeholder="Type a message"
+                <input placeholder={metadata?.isUnmatched ? "Oh nooo! An unmatch :(((" : "Type a message"}
                     value={newMessage}
-                    onChange={handleInput} />
+                    onChange={handleInput}
+                    style={{
+                        cursor: metadata?.isUnmatched ? "not-allowed" : "unset"
+                    }}
+                    disabled={metadata?.isUnmatched} />
                 {
                     newMessage.length !== 0 ?
                         <button type="submit">

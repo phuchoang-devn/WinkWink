@@ -12,6 +12,7 @@ export const initialChat = {
             isSeen,
             total,
             updatedAt,
+            isUnmatched,
 
             image
         }
@@ -111,8 +112,20 @@ export const chatReducer = (store, action) => {
             const metadata = action.payload
             const matchedUserId = metadata.matchedUserId
 
+            store.matchedUserIds = store.matchedUserIds.filter(id => id !== matchedUserId)
             store.matchedUserIds.unshift(matchedUserId)
-            store.metadatas[matchedUserId] = metadata
+
+            store.metadatas[matchedUserId] = {
+                image: store.metadatas[matchedUserId]?.image,
+                ...metadata
+            }
+
+            break;
+        }
+
+        case ChatAction.UNMATCH: {
+            const matchedUserId = action.payload
+            store.metadatas[matchedUserId].isUnmatched = true
 
             break;
         }

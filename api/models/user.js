@@ -79,6 +79,10 @@ const userSchema = new Schema({
         type: Schema.Types.ObjectId, 
         ref: 'User', 
     }],
+    hasUnmatched: [{ 
+        type: Schema.Types.ObjectId, 
+        ref: 'User', 
+    }],
 }, {
     virtuals: {
         fullName: {

@@ -15,15 +15,18 @@ const MetadataCard = (props) => {
 
     const dropdownOptions = useMemo(() => ([
         {
-            name: metadata.isSeen ? "Mark as unread" : "Mark as read",
+            name: metadata.isSeen ? "Mark s unread" : "Mark as read",
             action: async () => await dispatch({
                 type: ChatAction.IS_SEEN,
                 payload: metadata.matchedUserId
             })
         },
-        {
-            name: "Unmatch user",
-            action: () => console.log("unmatched")
+        !metadata.isUnmatched && {
+            name: "Unmatch",
+            action: async () => await dispatch({
+                type: ChatAction.UNMATCH,
+                payload: metadata.matchedUserId
+            })
         }
     ]), [metadata, dispatch])
 
@@ -57,7 +60,7 @@ const MetadataCard = (props) => {
                 } : null
             }
         >
-            <div className="metadata-right">
+            <div className="metadata-left">
                 <div className="metadata-pic"
                     onClick={isOnlyAvatar ? handleOpenChat : () => null}
                 >

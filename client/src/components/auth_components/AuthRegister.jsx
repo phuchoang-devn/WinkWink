@@ -1,24 +1,45 @@
-import {useCallback, useState} from "react";
+import { useCallback, useState } from "react";
 import './styles/authRegister.css'
 
-const AuthRegister = ({ setShowLogin,isSignUp}) => {
-    const [email, setEmail] = useState(null);
-    const [password, setPassword] = useState(null);
-    const [confirmPassword, setConfirmPassword] = useState(null);
+const AuthRegister = ({ setShowLogin, isSignUp }) => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState(null);
 
-    console.log(email, password, confirmPassword);
     const handleClick = useCallback(() => {
         setShowLogin(false);
     }, [setShowLogin]);
 
-    const handleSubmit = useCallback((e) => {
+    const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
         try {
             if (isSignUp && (password !== confirmPassword)) {
-                setError("Password needs it to match")
+                setError("Password needs it to match!")
+                return
             }
-            console.log('make a post-request to our database')
+
+            if (password.length < 8) {
+                setError("Password must contain at least 8 characters!")
+                return
+            }
+
+            let data = { email, password };
+
+            const response = await fetch(`/api/register`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if(response.ok){
+                console.log("Register succesful")
+            } else if(response.status === 400) {
+                setError(await response.text())
+            }
+
         } catch (error) {
             console.log(error)
         }

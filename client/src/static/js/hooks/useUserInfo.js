@@ -1,5 +1,6 @@
 import { countries, languages } from "countries-list";
 import { useImmerReducer } from 'use-immer';
+import { useUser } from "../context_providers/auth_provider";
 var _ = require('lodash');
 
 const UserInfoChange = {
@@ -24,7 +25,7 @@ const modifyInitialInfo = (info) => {
         age: null,
         sex: "",
         country: undefined,
-        languages: [],
+        language: [],
         interests: "",
         preferences: {
             age: {
@@ -38,12 +39,13 @@ const modifyInitialInfo = (info) => {
     return {
         ...info,
         country: countries[info.country].name,
-        languages: info.languages.map(l => languages[l].name)
+        language: info.language.map(l => languages[l].name)
     };
 }
 
-const useUserInfo = (info) => {
-    const initialUserInfo = modifyInitialInfo(info);
+const useUserInfo = () => {
+    const { user } = useUser();
+    const initialUserInfo = modifyInitialInfo(user && _.omit(user, ['image']));
 
     const handleChangeValue = (type) => {
         switch (type) {
@@ -88,7 +90,7 @@ const useUserInfo = (info) => {
                 break;
             }
             case UserInfoChange.LANGUAGE: {
-                info.languages = action.value;
+                info.language = action.value;
                 break;
             }
             case UserInfoChange.INTERESTS: {
