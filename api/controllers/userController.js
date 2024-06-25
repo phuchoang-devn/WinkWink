@@ -1,5 +1,4 @@
-import User from './path/to/dating-app/api/Models/user.js';
-
+import User from "../models/user.js";
 const userController = {
     // Create a new user
     createUser: async (req, res, next) => {

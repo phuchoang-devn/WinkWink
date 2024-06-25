@@ -4,6 +4,7 @@ import accountController from '../controllers/accountController.js';
 import errorController from '../controllers/errorController.js';
 import { checkExact, checkSchema, cookie, param, query } from 'express-validator';
 import authController from '../controllers/authController.js';
+import userController from '../controllers/userController.js';
 import appController from '../controllers/appController.js';
 import cookieParser from 'cookie-parser';
 
@@ -202,16 +203,33 @@ apiRouter.get(
 
 apiRouter.post(
   '/user',
-  checkSchema(userValidationSchema),
-  validateRequest,
-  userController.createUser
+  [
+    checkSchema({
+      id: { isString: true },
+      // Add more validation rules for other fields if necessary
+    }),
+  ],
+  (req, res) => {
+    // 'body' validation will automatically be handled by express-validator middleware
+    // Your logic to create a user based on req.body
+    userController.createUser(req, res);
+  }
 );
 
-apiRouter.put('/user', (req, res) => {
-    '/user/:id',
-    checkSchema(userValidationSchema),
-    validateRequest,
-    userController.updateUser})
+apiRouter.put(
+  '/user/:id',
+  [
+    checkSchema({
+      id: { isString: true },
+      // Add more validation rules for other fields if necessary
+    }),
+  ],
+  (req, res) => {
+    // 'body' validation will automatically be handled by express-validator middleware
+    // Your logic to update a user based on req.body and req.params.id
+    userController.updateUser(req, res);
+  }
+);
 
 /*
 Response:
