@@ -50,9 +50,13 @@ export const AuthProvider = ({ children }) => {
         })
       } else if (response.status === 400) {
         console.log(await response.text())
-      }
+      } else throw Error("Server Error")
     } catch (error) {
       console.log(error.message)
+      return ({
+        isSuccessful: false,
+        message: error.message
+      })
     }
   }, [setLoggedIn, setUser]);
 
