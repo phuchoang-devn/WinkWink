@@ -15,12 +15,14 @@ const ChatCompose = ({ partnerId }) => {
     const contentRef = useRef(null);
     const currentPos = useRef(0);
     const [isOnBottom, setIsOnBottom] = useState(true);
+    const [isLoadChatLocked, setIsLoadChatLocked] = useState(false); //Local lock to totally prevent duplicated fetch 
 
     useEffect(() => {
         if (!partnerId) return
 
         setNewMessage("");
         contentRef.current.scrollTop = 0;
+        setIsOnBottom(true);
     }, [partnerId])
 
     useLayoutEffect(() => {
@@ -33,6 +35,7 @@ const ChatCompose = ({ partnerId }) => {
         if (!chats) return
 
         contentRef.current.scrollTop = currentPos.current;
+        setIsLoadChatLocked(false);
     }, [chats])
 
     const handleInput = async (e) => {
@@ -54,8 +57,8 @@ const ChatCompose = ({ partnerId }) => {
         setNewMessage("")
     }
 
-    const handleScroll = (e) => {
-        if (metadata.total === 0) return
+    const handleScroll = async (e) => {
+        if (!partnerId || metadata.total === 0) return
 
         if (e.target.scrollTop <= -1) {
             if (isOnBottom) setIsOnBottom(false)
@@ -64,8 +67,9 @@ const ChatCompose = ({ partnerId }) => {
             if (isAllOrIsLoading) return
 
             const lineForLoadingMoreChats = (contentRef.current.clientHeight - contentRef.current.scrollHeight) + 200
-            if (e.target.scrollTop < lineForLoadingMoreChats) {
-                dispatch({
+            if (e.target.scrollTop < lineForLoadingMoreChats && !isLoadChatLocked) {
+                setIsLoadChatLocked(true)
+                await dispatch({
                     type: ChatAction.LOAD_CHAT,
                     payload: partnerId
                 })
@@ -130,7 +134,7 @@ const ChatCompose = ({ partnerId }) => {
                                     style={
                                         chat.isMine ? {
                                             backgroundColor: metadata?.isSeen || !partnerId ? "var(--colorDark)" : "var(--colorLight)",
-                                            color: metadata?.isSeen || !partnerId ? "var(--colorLight)" : "var(colorVeryDark)",
+                                            color: metadata?.isSeen || !partnerId ? "var(--colorLight)" : "var(--colorVeryDark)",
                                             marginLeft: "auto"
                                         } : {
                                             backgroundColor: metadata?.isSeen || !partnerId ? "var(--colorMiddle)" : "var(--colorLight)"
