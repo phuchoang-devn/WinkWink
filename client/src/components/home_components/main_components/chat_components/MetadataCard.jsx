@@ -1,13 +1,14 @@
 import { useMemo, useState } from "react";
 import { ReactComponent as FakePic } from "../../../../static/image/profile/default-user-image.svg"
 import MetadataDropdown from "./MetadataDropdown";
-import { ChatAction, useChatDispatch, useChatStore } from "../../../../store/chat/chatStore";
+import { ChatAction } from "../../../../store/chat/chatSlice";
+import { useAppDispatch, useAppStore } from "../../../../store";
 
 const MetadataCard = (props) => {
     const { metadata, isOnlyAvatar, openChat } = props;
 
-    const chatStore = useChatStore();
-    const dispatch = useChatDispatch();
+    const { chatStore } = useAppStore();
+    const { chatDispatch } = useAppDispatch();
     const [isFocus, setIsFocus] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
@@ -15,47 +16,46 @@ const MetadataCard = (props) => {
 
     const dropdownOptions = useMemo(() => ([
         {
-            name: metadata.isSeen ? "Mark s unread" : "Mark as read",
-            action: async () => await dispatch({
+            name: metadata.isSeen ? "Mark as unread" : "Mark as read",
+            action: async () => await chatDispatch({
                 type: ChatAction.IS_SEEN,
                 payload: metadata.matchedUserId
             })
         },
         !metadata.isUnmatched && {
             name: "Unmatch",
-            action: async () => await dispatch({
+            action: async () => await chatDispatch({
                 type: ChatAction.UNMATCH,
                 payload: metadata.matchedUserId
             })
         }
-    ]), [metadata, dispatch])
+    ]), [metadata, chatDispatch])
 
     const handleOpenChat = async () => {
         const partner = metadata.matchedUserId;
 
         if (!chatStore.chats[partner] && metadata.total !== 0)
-            await dispatch({
+            await chatDispatch({
                 type: ChatAction.LOAD_CHAT,
                 payload: partner
             })
 
         openChat(partner);
 
-        if (!metadata.isSeen) 
-            dispatch({
+        if (!metadata.isSeen)
+            chatDispatch({
                 type: ChatAction.IS_SEEN,
                 payload: partner
             })
     }
 
     return (
-        <div className="metadata-card"
+        <div className="metadata-card noselect"
             onMouseEnter={() => setIsFocus(true)}
             onMouseLeave={() => setIsFocus(false)}
             onClick={isOnlyAvatar ? () => null : handleOpenChat}
             style={
                 isFocus && !isOnlyAvatar ? {
-                    // backgroundColor: "rgb(0, 0, 0, 0.15)"
                     backgroundColor: "rgba(200, 71, 79, 0.60)",
                     cursor: "pointer"
                 } : null
@@ -66,9 +66,9 @@ const MetadataCard = (props) => {
                     onClick={isOnlyAvatar ? handleOpenChat : () => null}
                 >
                     <div className="notify-ring"
-                    style={{
-                        border: metadata.isSeen ? "unset" : "2px solid var(--colorPink)"
-                    }}
+                        style={{
+                            border: metadata.isSeen ? "unset" : "2px solid var(--colorPink)"
+                        }}
                     ></div>
                     {
                         metadata.image ?

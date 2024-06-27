@@ -1,23 +1,22 @@
-import { createContext, useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useImmerReducer } from "use-immer";
 import { initialChat, chatReducer } from './chatReducer';
 import { chatThunk } from './chatThunk';
-import { useWS } from '../webSocket';
 import { useUser } from '../../static/js/context_providers/auth_provider';
+import useWebSocket from '../webSocket';
+import { createInternalDispatch } from '..';
 
-const ChatContext = createContext(null);
 
-const ChatDispatchContext = createContext(null);
-
-export const ChatProvider = ({ children }) => {
+const ChatSlice = () => {
     const [chatStore, dispatch] = useImmerReducer(
         chatReducer,
         initialChat
     );
-    const asyncDispatch = chatThunk(chatStore, dispatch);
+    const internalDispatch = createInternalDispatch(dispatch)
+    const asyncDispatch = chatThunk(chatStore, internalDispatch);
 
     const { user } = useUser();
-    const ws = useWS();
+    const ws = useWebSocket();
 
     useEffect(() => {
         if(!ws) return
@@ -33,27 +32,14 @@ export const ChatProvider = ({ children }) => {
         })
     }, [user])
 
-    return (
-        <ChatContext.Provider value={chatStore}>
-            <ChatDispatchContext.Provider value={asyncDispatch}>
-                {children}
-            </ChatDispatchContext.Provider>
-        </ChatContext.Provider>
-    );
-}
-
-export const useChatStore = () => {
-    return useContext(ChatContext);
-}
-
-export const useChatDispatch = () => {
-    return useContext(ChatDispatchContext);
+    return [chatStore, asyncDispatch];
 }
 
 export const ChatAction = Object.freeze({
     START_LOADING: "chat/start",
 
     GET_METADATA: "chat/getMetadata",
+    GET_THUMB_IMAGE: "chat/getThumgImage",
     NEW_METADATA: "chat/newMetadata",
     IS_SEEN: "chat/isSeen",
     UNMATCH: "chat/unmatch",
@@ -61,3 +47,5 @@ export const ChatAction = Object.freeze({
     SEND_MESSAGE: "chat/sendMessage",
     NEW_CHAT: "chat/newChat"
 })
+
+export default ChatSlice

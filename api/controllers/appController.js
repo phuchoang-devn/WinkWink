@@ -4,7 +4,7 @@ import Chat from "../models/chat.js";
 import bcrypt from "bcrypt";
 import httpStatus from "http-status-codes";
 import { validateRequest } from "../helpers/validator.js";
-import { isValidObjectId } from "mongoose";
+import { Types, isValidObjectId } from "mongoose";
 import ChatMetadata from "../models/chatMetadata.js";
 import { SocketAction, authenticateConnection, deleteUnauthConnection } from "../web_socket/wsServer.js";
 import { sendSocketMessage } from "../web_socket/wsClient.js";
@@ -286,17 +286,13 @@ const appController = {
                 return next()
             }
 
-            const hasMatched = user.hasMatched.map(id => id.toString());
-            const hasUnmatched = user.hasUnmatched.map(id => id.toString());
-            const hasLiked = user.hasLiked.map(id => id.toString());
-            const hasDisliked = user.hasDisliked.map(id => id.toString());
-
             const suggestedFriends = [
-                ...except,
-                ...hasMatched,
-                ...hasLiked,
-                ...hasDisliked,
-                ...hasUnmatched
+                user._id,
+                ...except.map(id => new Types.ObjectId(id)),
+                ...user.hasMatched,
+                ...user.hasLiked,
+                ...user.hasDisliked,
+                ...user.hasUnmatched
             ];
 
             const newFriends = await User.aggregate().match({
@@ -426,12 +422,26 @@ const appController = {
 
     getImageProfile: async (req, res, next) => {
         try {
+            validateRequest(req, res)
+            const { id } = req.params;
             const account = res.locals.account;
 
             const user = account.user;
-            if (user) {
-                res.status(httpStatus.OK).sendFile(path.join(__dirname, "profile_image/avatar", user.profileImage));
-            } else res.status(httpStatus.BAD_REQUEST).send(`Profile of account ${account._id} doesn't exist`);
+
+            if(!id) {
+                if (user) {
+                    res.status(httpStatus.OK).sendFile(path.join(__dirname, "profile_image/avatar", user.profileImage));
+                } else res.status(httpStatus.BAD_REQUEST).send(`Profile of account ${account._id} doesn't exist`);
+            } else {
+                const friend = isValidObjectId(id) ? await User.findById(id).exec() : undefined;
+
+                if(friend) {
+                    res.status(httpStatus.OK).sendFile(path.join(__dirname, "profile_image/avatar", friend.profileImage));
+                } else res.status(httpStatus.BAD_REQUEST).send(`User with id ${id} doesn't exist`);
+            }
+
+            // WARNING: no next() after sendFile because of sending in chunk
+            // LOG: Have tried with await sendFile but the problem wasn't solved. -> better without next() and await
         } catch (error) {
             next(error)
         }

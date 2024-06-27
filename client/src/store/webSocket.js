@@ -1,12 +1,8 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useUser } from '../static/js/context_providers/auth_provider';
-import { ChatAction } from './chat/chatStore';
+import { ChatAction } from './chat/chatSlice';
 
-const WSContext = createContext(null);
-
-const WSResetContext = createContext(null);
-
-export const WSProvider = ({ children }) => {
+const useWebSocket = () => {
     const [ws, setWS] = useState(undefined);
 
     const { user } = useUser();
@@ -70,23 +66,7 @@ export const WSProvider = ({ children }) => {
         return () => ws.close()
     }, [user])
 
-    const resetValue = () => {
-        setWS(undefined)
-    }
-
-    return (
-        <WSContext.Provider value={ws}>
-            <WSResetContext.Provider value={resetValue}>
-                {children}
-            </WSResetContext.Provider>
-        </WSContext.Provider>
-    );
+    return ws;
 }
 
-export const useWS = () => {
-    return useContext(WSContext);
-}
-
-export const useWSReset = () => {
-    return useContext(WSResetContext);
-}
+export default useWebSocket

@@ -198,7 +198,8 @@ Response:
 400 - error message
 */
 apiRouter.get(
-  '/image/profile', 
+  '/image/profile/:id?', 
+  param("id").optional().isString(),
   appController.getImageProfile
 )
 

@@ -10,29 +10,27 @@ import {
 import NoPage from "./nopage";
 
 import { Route, Routes, useNavigate } from "react-router-dom";
+import { StoreProvider } from "../store";
 
 const Home = () => {
     const navigate = useNavigate();
     const { user } = useUser();
-    
+
     useEffect(() => {
-        if(!user) navigate("/profile") 
+        if (!user) navigate("/profile")
     }, [user])
 
     return (
-        <Routes>
-            <Route path="/" element={<HomeLayout />}>
-                <Route index
-                    element={
-                        <WSProvider>
-                            <HomeMain />
-                        </WSProvider>
-                    } />
-                <Route path="profile" element={<HomeProfile />} />
-                <Route path="setting" element={<HomeSetting />} />
-                <Route path="*" element={<NoPage />} />
-            </Route>
-        </Routes>
+        <StoreProvider>
+            <Routes>
+                <Route path="/" element={<HomeLayout />}>
+                    <Route index element={<HomeMain />} />
+                    <Route path="profile" element={<HomeProfile />} />
+                    <Route path="setting" element={<HomeSetting />} />
+                    <Route path="*" element={<NoPage />} />
+                </Route>
+            </Routes>
+        </StoreProvider>
     );
 }
 

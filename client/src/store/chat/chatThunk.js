@@ -1,11 +1,14 @@
-import { ChatAction } from "./chatStore";
+import { ChatAction } from "./chatSlice";
 
 export const chatThunk = (chatStore, dispatch) => async ({ type, payload }) => {
     if (chatStore.isLoading) return
 
-    dispatch({
+    await dispatch({
         type: ChatAction.START_LOADING
     })
+
+    const crossAsyncDispatch = chatThunk(chatStore, dispatch);
+
 
     switch (type) {
         case ChatAction.GET_METADATA: {
@@ -20,29 +23,48 @@ export const chatThunk = (chatStore, dispatch) => async ({ type, payload }) => {
                 const response = await fetch(url, { credentials: "include" });
 
                 if (response.ok) {
-                    const metadatas = await response.json();
-
-                    const metadatasWithImg = await Promise.all(metadatas.map(async mt => {
-                        const res = await fetch(`/api/image/chat/${mt.matchedUserId}`, { credentials: "include" });
-
-                        if (res.ok) {
-                            const blob = await res.blob();
-                            const imgUrl = URL.createObjectURL(blob);
-                            return {
-                                ...mt,
-                                image: imgUrl
-                            };
-                        } else throw Error(await res.text());
-                    }))
+                    var metadatas = await response.json();
 
                     dispatch({
                         type,
-                        payload: metadatasWithImg
+                        payload: metadatas
                     })
                 } else throw Error(await response.text());
             } catch (error) {
                 console.log(error.message)
             }
+
+            if (Array.isArray(metadatas))
+                metadatas.map(m => crossAsyncDispatch({
+                    type: ChatAction.GET_THUMB_IMAGE,
+                    payload: m.matchedUserId
+                }))
+
+            break;
+        }
+
+        case ChatAction.GET_THUMB_IMAGE: {
+            const id = payload
+
+            try {
+                const res = await fetch(`/api/image/chat/${id}`, { credentials: "include" });
+
+                if (res.ok) {
+                    const blob = await res.blob();
+                    const imgUrl = URL.createObjectURL(blob);
+
+                    dispatch({
+                        type,
+                        payload: {
+                            id,
+                            img: imgUrl
+                        }
+                    })
+                } else throw Error(await res.text())
+            } catch (error) {
+                console.log(error.message)
+            }
+
             break;
         }
 

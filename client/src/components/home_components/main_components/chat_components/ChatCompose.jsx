@@ -3,13 +3,14 @@ import { ReactComponent as Send } from "../../../../static/image/chat/send.svg"
 import { ReactComponent as Down } from "../../../../static/image/chat/down-circle.svg"
 import { ReactComponent as Winking } from "../../../../static/image/chat/winking.svg"
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { ChatAction, useChatDispatch, useChatStore } from "../../../../store/chat/chatStore";
+import { ChatAction } from "../../../../store/chat/chatSlice";
+import { useAppDispatch, useAppStore } from "../../../../store";
 
 const ChatCompose = ({ partnerId }) => {
-    const chatStore = useChatStore();
+    const { chatStore } = useAppStore();
     const metadata = chatStore.metadatas[partnerId];
     const chats = chatStore.chats[partnerId];
-    const dispatch = useChatDispatch();
+    const { chatDispatch } = useAppDispatch();
 
     const [newMessage, setNewMessage] = useState("");
     const contentRef = useRef(null);
@@ -47,7 +48,7 @@ const ChatCompose = ({ partnerId }) => {
         e.preventDefault();
         if (newMessage.length === 0) return
 
-        dispatch({
+        chatDispatch({
             type: ChatAction.SEND_MESSAGE,
             payload: {
                 matchedUserId: partnerId,
@@ -69,7 +70,7 @@ const ChatCompose = ({ partnerId }) => {
             const lineForLoadingMoreChats = (contentRef.current.clientHeight - contentRef.current.scrollHeight) + 200
             if (e.target.scrollTop < lineForLoadingMoreChats && !isLoadChatLocked) {
                 setIsLoadChatLocked(true)
-                await dispatch({
+                await chatDispatch({
                     type: ChatAction.LOAD_CHAT,
                     payload: partnerId
                 })
@@ -79,7 +80,7 @@ const ChatCompose = ({ partnerId }) => {
             setIsOnBottom(true);
 
             if (!metadata?.isSeen)
-                dispatch({
+                chatDispatch({
                     type: ChatAction.IS_SEEN,
                     payload: partnerId
                 })
@@ -92,7 +93,7 @@ const ChatCompose = ({ partnerId }) => {
 
     const handleSeen = async () => {
         if (!metadata?.isSeen && isOnBottom)
-            await dispatch({
+            await chatDispatch({
                 type: ChatAction.IS_SEEN,
                 payload: partnerId
             })

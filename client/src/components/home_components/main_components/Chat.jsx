@@ -4,31 +4,31 @@ import { ReactComponent as Collapse } from "../../../static/image/chat/collapse-
 import { ReactComponent as NoPartner } from "../../../static/image/chat/heart-padlock.svg"
 import MetadataCard from "./chat_components/MetadataCard"
 import ChatCompose from "./chat_components/ChatCompose"
-import { useChatStore } from "../../../store/chat/chatStore"
+import { useAppStore } from "../../../store"
 
 const Chat = () => {
-    const chatStore = useChatStore();
+    const { chatStore } = useAppStore();
     const [chatPartner, setChatPartner] = useState(undefined);
     const [isMetadataExpanded, setIsMetadataExpanded] = useState(false);
 
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     useEffect(() => {
         const handleResize = () => {
-          setWindowWidth(window.innerWidth);
+            setWindowWidth(window.innerWidth);
         };
-    
+
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-      }, []);
-    
-      const getWidth = () => {
+    }, []);
+
+    const getWidth = () => {
         if (windowWidth <= 430) {
-          return isMetadataExpanded ? "22.5rem" : "5rem";
+            return isMetadataExpanded ? "22.5rem" : "5rem";
         } else {
-          return isMetadataExpanded ? "25rem" : "5rem";
+            return isMetadataExpanded ? "25rem" : "5rem";
         }
-      };
-    
+    };
+
 
     useEffect(() => {
         if (chatPartner) setIsMetadataExpanded(false)

@@ -1,4 +1,4 @@
-import { ChatAction } from "./chatStore";
+import { ChatAction } from "./chatSlice";
 
 export const initialChat = {
     isLoading: false,
@@ -30,6 +30,8 @@ export const initialChat = {
 }
 
 export const chatReducer = (store, action) => {
+    if (!action.type.startsWith("chat/")) return
+
     switch (action.type) {
         case ChatAction.START_LOADING: {
             store.isLoading = true;
@@ -46,6 +48,13 @@ export const chatReducer = (store, action) => {
                 }
             });
 
+            break;
+        }
+
+        case ChatAction.GET_THUMB_IMAGE: {
+            const { id, img } = action.payload;
+
+            store.metadatas[id].image = img;
             break;
         }
 
@@ -134,5 +143,6 @@ export const chatReducer = (store, action) => {
             throw Error('Unknown action: ' + action.type);
     }
 
-    store.isLoading = false
+    if (action.type !== ChatAction.START_LOADING)
+        store.isLoading = false
 }
