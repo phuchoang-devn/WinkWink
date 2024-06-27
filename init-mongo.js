@@ -8,7 +8,7 @@ db.users.drop();
 db.createCollection('users');
 
 // Define the number of users to create
-const amountOfUsers = 100;
+const amountOfUsers = 150;
 
 // Helper functions to generate random values
 function getRandomInt(min, max) {
@@ -26,7 +26,7 @@ function generateRandomUser(id) {
     const lastNames = ['Smith', 'Johnson', 'Brown', 'Taylor', 'Anderson', 'Thomas', 'Jackson', 'White', 'Harris', 'Martin'];
     const countries = ["US", "CA", "GB", "AU", "DE", "FR", "ES", "IT", "NL", "SE"];
     const interestsList = ['reading', 'traveling', 'sports', 'music', 'cooking', 'hiking', 'gaming', 'art', 'dancing', 'photography'];
-    const languages = ["en", "sp", "fr", "ge", "ch", "jp", "ko", "ru", "po", "it","vi"];
+    const languages = ["sp", "fr", "ge", "ch", "jp", "ko", "ru", "po", "it","vi"];
 
     // Generate a random number between 0 and 99 for gender probability
     const genderProb = getRandomInt(0, 99);
@@ -51,7 +51,7 @@ function generateRandomUser(id) {
     const lastName = getRandomElement(lastNames);
     const country = getRandomElement(countries);
     const interests = `${getRandomElement(interestsList)}, ${getRandomElement(interestsList)}`;
-    const userLanguages = [getRandomElement(languages)];
+    const userLanguages = [getRandomElement(languages),"en" ];
     if (Math.random() > 0.5) {
         userLanguages.push(getRandomElement(languages));
     }
