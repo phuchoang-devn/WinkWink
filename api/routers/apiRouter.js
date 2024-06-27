@@ -236,7 +236,7 @@ apiRouter.post(
 );
 
 apiRouter.put(
-  '/user/:id',
+  '/user',
   [
     checkSchema({
       id: { isString: true },
