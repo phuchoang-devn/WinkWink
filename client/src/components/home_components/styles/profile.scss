@@ -36,11 +36,16 @@
                         height: 100%;
                         width: 100%;
                         border-radius: 50%;
-                        background-color: rgba(0, 0, 0, 0.75);
+                        background-color: rgba(238, 194, 196, 0.75);
+                        opacity: 0;
+                        transition: opacity 0.3s ease-in-out; // Transition for opacity
+                        &:hover{
+                            opacity: 1;
+                        }
                         > label{
                             height: 100%;
                             width: 100%;
-                            color: $colorWhite;
+                            color: $colorDark;
                             font-size: 1.5rem;
                             border-radius: 50%;
                             cursor: pointer;

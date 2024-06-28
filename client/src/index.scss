@@ -31,6 +31,7 @@ $chatComponentWidth: 28rem;
   --colorLight:#F8E7F6;
   --colorVeryDark:#1E1E1E;
   --colorError: #bc2d50;
+  --colorDarkPink:#c8474f;
 }
 *,
 *::before,
@@ -99,9 +100,7 @@ button {
 }
 
 html {
-
   height: 100%;
-
   scroll-behavior: smooth;
 }
 
@@ -255,3 +254,4 @@ a{
 @mixin scale ($faktor){
   transform: scale($faktor);
 }
+

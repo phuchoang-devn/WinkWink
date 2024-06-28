@@ -88,7 +88,7 @@ const HomeProfile = (props) => {
                             isError={validationStatus.sex === false}
                             currentValue={userInfo.sex ?? null}
                             label="Sex"
-                            options={["male", "female", "divers"]}
+                            options={["Male", "Female", "Non-Binary"]}
                             onSelect={handleChangeValue(UserInfoChange.SEX)} />
                     </div>
 

@@ -9,7 +9,6 @@ const HomeMain = (props) => {
           <ChatProvider>
             <Chat />
           </ChatProvider>
-          
           <Swiper />
       </div>
     );

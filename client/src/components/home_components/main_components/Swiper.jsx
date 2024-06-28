@@ -109,9 +109,9 @@ export const Swiper = () => {
         ))}
       </div>
       <div className='buttons'>
-        <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('left')}>Not today!</button>
-        <button style={{ backgroundColor: !canGoBack && '#c3c4d3' }} onClick={() => goBack()}>Undo swipe!</button>
-        <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('right')}>Wink-Wink!</button>
+        <button  onClick={() => swipe('left')}>Wink-Wink!</button>
+        <button className='undo-btn'  onClick={() => goBack()}>Undo swipe!</button>
+        <button  onClick={() => swipe('right')}>Not today!</button>
       </div>
     </div>
   )

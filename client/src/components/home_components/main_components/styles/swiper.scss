@@ -48,7 +48,7 @@
     width: 80vw;
     max-width: 260px;
     height: 400px;
-    box-shadow: 0px 0px 10px 0px $colorLightPink;
+    box-shadow: 0 0 10px 0 $colorLightPink;
     border-radius: 20px;
     background-size: cover;
     background-position: center;
@@ -65,13 +65,7 @@
   .swipe:last-of-type {
   
   }
-  
-  /* .card h3,span {
-    position: absolute;
-    bottom: 0;
-    margin: 10px;
-    color: #fff;
-  } */
+
   .card{
     .card-info{
         width: 100%;
@@ -93,6 +87,10 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    .undo-btn{
+      font-size: 14px;
+      border: none;
+    }
 
   }
   
@@ -137,7 +135,7 @@
     }
   }
   
-  @keyframes popup {
+  /*@keyframes popup {
     0%   { transform: scale(1,1) }
     10%  { transform: scale(1.1,1.1) }
     30%  { transform: scale(.9,.9) }
@@ -146,3 +144,4 @@
     64%  { transform: scale(1,1) }
     100% { transform: scale(1,1) }
   }
+*/
