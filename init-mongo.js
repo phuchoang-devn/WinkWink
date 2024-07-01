@@ -61,11 +61,11 @@ function generateRandomUser(id) {
     const preferencesSex = getRandomElement(['male', 'female', 'non-binary']);
 
     if (sex === 'male') {
-        gender_image = "dating-app/profile_image/men.jpg"
+        gender_image = "male.jpg"
     } else if (sex === 'female') {
-        gender_image = "dating-app/profile_image/woman.jpg"
+        gender_image = "female.jpg"
     } else { // For 'non-bynary' category
-        gender_image = "dating-app/profile_image/non-binary.jpg"
+        gender_image = "non-binary.jpg"
     }
 
     return {
