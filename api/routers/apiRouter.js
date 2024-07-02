@@ -95,6 +95,11 @@ Response:
 */
 apiRouter.delete(
   '/account',
+  checkExact(
+    checkSchema({
+      currentPassword: { isLength: { options: { min: 8 } } }
+    }, ['body'])
+  ),
   accountController.handleDelete
 );
 
@@ -106,7 +111,8 @@ apiRouter.put(
   '/account/password',
   checkExact(
     checkSchema({
-      password: { isLength: { options: { min: 8 } } },
+      currentPassword: { isLength: { options: { min: 8 } } },
+      newPassword: { isLength: { options: { min: 8 } } }
     }, ['body'])
   ),
   accountController.handleUpdatePassword
@@ -124,7 +130,7 @@ Response:
 }]
 */
 apiRouter.get(
-  '/chatmetadata/:time?', 
+  '/chatmetadata/:time?',
   param('time').optional().isISO8601(),
   appController.getChatMetadata
 )
@@ -135,7 +141,7 @@ Response:
 400 - error message
 */
 apiRouter.post(
-  '/chatmetadata/seen/:chatmetadataId', 
+  '/chatmetadata/seen/:chatmetadataId',
   checkExact(
     checkSchema({
       isSeen: { isBoolean: true },
@@ -155,7 +161,7 @@ Response:
 400 - error message
 */
 apiRouter.get(
-  '/chats/:matchedUserId/:chatOrder?', 
+  '/chats/:matchedUserId/:chatOrder?',
   param('chatOrder').optional().isInt().toInt(),
   appController.getChats
 )
@@ -170,12 +176,12 @@ Response:
 400 - error message
 */
 apiRouter.post(
-  '/chat/:receiverId', 
+  '/chat/:receiverId',
   checkExact(
     checkSchema({
-      content: { 
+      content: {
         isString: true,
-        isLength: { options: { min: 1 } } 
+        isLength: { options: { min: 1 } }
       },
     }, ['body'])
   ),
@@ -187,7 +193,7 @@ Response:
 200 - success message
 */
 apiRouter.post(
-  '/image/profile', 
+  '/image/profile',
   multer().single("avatar"),
   appController.uploadImage
 )
@@ -198,7 +204,7 @@ Response:
 400 - error message
 */
 apiRouter.get(
-  '/image/profile/:id?', 
+  '/image/profile/:id?',
   param("id").optional().isString(),
   appController.getImageProfile
 )
@@ -210,7 +216,7 @@ Response:
 400 - error message
 */
 apiRouter.get(
-  '/image/chat/:matchedUserId', 
+  '/image/chat/:matchedUserId',
   param("matchedUserId").exists().isString(),
   appController.getImageChat
 )
@@ -276,11 +282,11 @@ Response:
 400 - error message
 */
 apiRouter.post(
-  '/wink', 
+  '/wink',
   checkExact(
     checkSchema({
       id: { isString: true },
-      isWink: { isBoolean: true } 
+      isWink: { isBoolean: true }
     }, ['body'])
   ),
   appController.handleWink

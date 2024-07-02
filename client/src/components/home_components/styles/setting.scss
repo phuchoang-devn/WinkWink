@@ -1,0 +1,36 @@
+@import '../../../index.scss';
+
+.setting {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .setting-container {
+        border: 1px solid $colorDark;
+        border-radius: 10px;
+        box-shadow: 0 0 2px $colorDark;
+
+        padding: 50px 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+        .password-form,
+        .delete-form {
+            width: 350px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+
+            .hint-text {
+                font-size: 12px;
+            }
+        }
+
+        hr {
+            width: 100%;
+        }
+    }
+}

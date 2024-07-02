@@ -8,7 +8,7 @@ function GrowTransition(props) {
     return <Grow {...props} />;
 }
 
-export default function AlertSnackbar({ status }) {
+export default function AlertSnackbar({ status, errorMessage }) {
     const lastIsSuccess = useRef(status.isSuccess);
     const [open, setOpen] = useState(true);
 
@@ -56,7 +56,7 @@ export default function AlertSnackbar({ status }) {
                         error: <HeartBrokenIcon fontSize="inherit"/>
                     }}
                 >
-                    {lastIsSuccess.current ? "Successfully updated!" : "Something is missing!"}
+                    {lastIsSuccess.current ? "Successfully updated!" : errorMessage}
                 </Alert>
             </Snackbar>
         </div>

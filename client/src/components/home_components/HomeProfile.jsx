@@ -36,12 +36,12 @@ const HomeProfile = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const validationResult = validate(userInfo, image);
-        
-        if(!validationResult) return
+
+        if (!validationResult) return
 
         //TODO: fetch api for info and image
 
-        try{
+        try {
             const data = new FormData();
             data.append("avatar", image)
 
@@ -57,14 +57,14 @@ const HomeProfile = () => {
                     image
                 }))
             } else throw Error(await res.text());
-        } catch(error) {
+        } catch (error) {
             console.log(error.message)
         }
     }
 
     return (
         <div className="my-profile">
-        
+
             <form className="my-profile__form" onSubmit={handleSubmit}>
                 <div className="my-profile__left">
                     <div className="my-profile__left-top">
@@ -150,7 +150,8 @@ const HomeProfile = () => {
             <AlertSnackbar status={useMemo(() => ({
                 isOpen: typeof validationStatus.all !== "undefined",
                 isSuccess: validationStatus.all
-            }), [validationStatus])} />
+            }), [validationStatus])}
+                errorMessage={"Something is missing!"} />
         </div>
     );
 }
