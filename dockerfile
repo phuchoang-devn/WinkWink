@@ -17,11 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # Command to run the application
-CMD ["npm", "run", "dev"]
-
-
-#How to use
-#
-# run command docker-compose build
-#               docker-compose up
-
+CMD ["npm", "start"]

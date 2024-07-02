@@ -11,44 +11,42 @@ const userController = {
             next(error);
         }
     },
-
-    // Get a user by ID
-    getUser: async (req, res, next) => {
-        const userAccount = res.locals.account;
-        const user = userAccount.user;
-        console.log(user);
-            res.status(200).json(user.getResponseUser());
-            next();
-        }
-    ,
-
-    // Update a user by ID
-    updateUser: async (req, res, next) => {
-        try {
-            const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
-            if (!updatedUser) {
-                return res.status(404).json({ message: 'User not found' });
+        getUser: async (req, res, next) => {
+            try {
+                const userAccount = res.locals.account;
+                const user = userAccount.user;
+                console.log(user);
+                res.status(200).json(user.getResponseUser());
+            } catch (error) {
+                next(error);
             }
-            res.status(200).json(updatedUser);
-            next();
-        } catch (error) {
-            next(error);
-        }
-    },
-
-    // Delete a user by ID
-    deleteUser: async (req, res, next) => {
-        try {
-            const deletedUser = await User.findByIdAndDelete(req.params.id);
-            if (!deletedUser) {
-                return res.status(404).json({ message: 'User not found' });
+        },
+    
+        updateUser: async (req, res, next) => {
+            try {
+                const userAccount = res.locals.account;
+                const user = userAccount.user;
+                const updatedUser = await user.updateUser(req.params.id, req.body, { new: true });
+                if (!updatedUser) {
+                    return res.status(404).json({ message: 'User not found' });
+                }
+                res.status(200).json(updatedUser);
+            } catch (error) {
+                next(error);
             }
-            res.status(200).json({ message: 'User deleted successfully' });
-            next();
-        } catch (error) {
-            next(error);
+        },
+    
+        deleteUser: async (req, res, next) => {
+            try {
+                const userAccount = res.locals.account;
+                const user = userAccount.user;
+                await user.deleteUser();
+                res.status(204).end();
+            } catch (error) {
+                next(error);
+            }
         }
-    }
-};
+    };
 
+    
 export default userController;
