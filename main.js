@@ -6,7 +6,6 @@ import errorController from "./api/controllers/errorController.js"
 import dbConnect from "./api/models/index.js";
 import createWebSocketServer from "./api/web_socket/wsServer.js";
 import createWebSocketClient from "./api/web_socket/wsClient.js";
-require('dotenv').config({ path: '.dev.env' });
 import cors from "cors"
 
 const __filename = fileURLToPath(import.meta.url);
