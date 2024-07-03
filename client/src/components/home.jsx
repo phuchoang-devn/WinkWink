@@ -1,6 +1,3 @@
-import { useEffect } from "react";
-import { useUser } from "../static/js/context_providers/auth_provider";
-import { WSProvider } from "../store/webSocket";
 import {
     HomeLayout,
     HomeMain,
@@ -9,16 +6,10 @@ import {
 } from "./home_components";
 import NoPage from "./nopage";
 
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { StoreProvider } from "../store";
 
 const Home = () => {
-    const navigate = useNavigate();
-    const { user } = useUser();
-
-    useEffect(() => {
-        if (!user) navigate("/profile")
-    }, [user])
 
     return (
         <StoreProvider>

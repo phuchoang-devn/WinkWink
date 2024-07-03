@@ -4,7 +4,7 @@ import useImage from "../../static/js/hooks/useImage";
 import useUserInfo, { UserInfoChange } from "../../static/js/hooks/useUserInfo";
 import useUserInfoValidation from "../../static/js/hooks/useUserInfoValidation";
 import QuestionMarkFlag from "../../static/image/profile/flag-question-mark.svg"
-import { getSrcByCountryName } from "../../static/js/main/countries-languages";
+import { getSrcByCountryName, modifiedGetCountryCode, getLangCode } from "../../static/js/main/countries-languages";
 import {
     PrefSexRadio,
     AgeSlider,
@@ -39,24 +39,46 @@ const HomeProfile = () => {
 
         if (!validationResult) return
 
-        //TODO: fetch api for info and image
+        const infoData = {
+            ...userInfo,
+            country: modifiedGetCountryCode(userInfo.country),
+            language: userInfo.language.map(lang => getLangCode(lang))
+        }
 
         try {
-            const data = new FormData();
-            data.append("avatar", image)
-
-            const res = await fetch(`api/image/profile`, {
-                method: "POST",
-                body: data,
-                credentials: "include"
+            const response = await fetch(`api/user`, {
+                method: !user ? "POST" : "PUT",
+                credentials: "include",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(infoData)
             });
 
-            if (res.ok) {
+            if (response.ok) {
+                const json = await response.json()
                 setUser(state => ({
                     ...state,
-                    image
+                    ...json
                 }))
-            } else throw Error(await res.text());
+
+                const imageData = new FormData();
+                imageData.append("avatar", image)
+    
+                const res = await fetch(`api/image/profile`, {
+                    method: "POST",
+                    body: imageData,
+                    credentials: "include"
+                });
+    
+                if (res.ok) {
+                    setUser(state => ({
+                        ...state,
+                        image
+                    }))
+                } else throw Error(await res.text());
+            } else throw Error(await response.text());
+
         } catch (error) {
             console.log(error.message)
         }

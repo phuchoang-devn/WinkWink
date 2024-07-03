@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+var _ = require('lodash');
 
 const AuthContext = createContext(null);
 const UserContext = createContext(null);
@@ -9,13 +10,37 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     if (!document.cookie.includes("AuthToken")) return undefined
 
-    // TODO: replace this by fetch GET user
     const localUser = localStorage.getItem("winkwinkUser")
 
     if (localUser) return JSON.parse(localUser)
 
     return undefined
   });
+
+  useEffect(() => {
+    if(!user) return
+    
+    localStorage.setItem("winkwinkUser", JSON.stringify(_.omit(user, ['image'])))
+  }, [user])
+
+  useEffect(() => {
+    if (!isLoggedIn) return
+
+    fetch(`/api/user`)
+      .then(res => {
+        if (res.ok) {
+          return res.json()
+        } else throw new Error("Failed to fetch user info")
+      })
+      .then(json => {
+        if (!_.isEqual(_.omit(user, ['image']), json))
+          setUser(state => ({
+            ...state,
+            ...json
+          }))
+      })
+      .catch(err => console.log(err.message))
+  }, [])
 
   const navigate = useNavigate();
 

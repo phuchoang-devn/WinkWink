@@ -1,52 +1,66 @@
+import { validateRequest } from "../helpers/validator.js";
 import User from "../models/user.js";
+import httpStatus from "http-status-codes";
+
 const userController = {
-    // Create a new user
     createUser: async (req, res, next) => {
         try {
-            const newUser = new User(req.body);
-            await newUser.save();
-            res.status(201).json(newUser);
+            validateRequest(req, res)
+            const profile = req.body;
+            const account = res.locals.account;
+
+            if (account.user) {
+                res.status(httpStatus.BAD_REQUEST).send("This account already has a profile.")
+            } else {
+                const newUser = await User.create(profile)
+
+                account.user = newUser._id
+                await account.save()
+
+                res.status(httpStatus.OK).json(newUser.getResponseUser())
+            }
+
             next();
         } catch (error) {
             next(error);
         }
     },
-        getUser: async (req, res, next) => {
-            try {
-                const userAccount = res.locals.account;
-                const user = userAccount.user;
-                console.log(user);
-                res.status(200).json(user.getResponseUser());
-            } catch (error) {
-                next(error);
-            }
-        },
-    
-        updateUser: async (req, res, next) => {
-            try {
-                const userAccount = res.locals.account;
-                const user = userAccount.user;
-                const updatedUser = await user.updateUser(req.params.id, req.body, { new: true });
-                if (!updatedUser) {
-                    return res.status(404).json({ message: 'User not found' });
-                }
-                res.status(200).json(updatedUser);
-            } catch (error) {
-                next(error);
-            }
-        },
-    
-        deleteUser: async (req, res, next) => {
-            try {
-                const userAccount = res.locals.account;
-                const user = userAccount.user;
-                await user.deleteUser();
-                res.status(204).end();
-            } catch (error) {
-                next(error);
-            }
-        }
-    };
 
-    
+    getUser: async (req, res, next) => {
+        try {
+            const user = res.locals.account.user
+            
+            if (!user) {
+                res.status(httpStatus.BAD_REQUEST).send('User not found');
+            } else {
+                res.status(httpStatus.OK).json(user.getResponseUser());
+            }
+
+            next();
+        } catch (error) {
+            next(error);
+        }
+    },
+
+    updateUser: async (req, res, next) => {
+        try {
+            validateRequest(req, res)
+            const user = res.locals.account.user
+            const newProfile = req.body
+
+            if (!user) {
+                res.status(httpStatus.BAD_REQUEST).send('User not found');
+            } else {
+                const newUser = await User.findByIdAndUpdate(user._id, newProfile, { new: true }).exec()
+                res.status(httpStatus.OK).json(newUser.getResponseUser());
+            }
+
+            next()
+        } catch (error) {
+            next(error);
+        }
+    },
+};
+
+
 export default userController;

@@ -412,6 +412,9 @@ const appController = {
                 .resize(650, 650)
                 .jpeg({ quality: 100 })
                 .toFile(path.join(__dirname, "profile_image/avatar", picName));
+            
+            user.profileImage = picName
+            await user.save()
 
             res.status(httpStatus.OK).send("File Uploaded Successfully!")
             next()

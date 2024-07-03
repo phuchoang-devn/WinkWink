@@ -1,4 +1,5 @@
 import { countries, languages, getCountryCode } from "countries-list"
+import languageNames from 'countries-list/minimal/languages.native.min'
 
 export const modifiedGetCountryCode = (country) => {
     if (country === "Cocos Islands")
@@ -36,4 +37,11 @@ export const allCountries = Object.values(countries).map(country => {
     }
 });
 
-export const allLanguages = Object.values(languages).map(l => l.name);
+export const allLanguages = Object.keys(languageNames).map(l => languages[l].name);
+
+const langCodeRecord = Object.keys(languageNames).reduce((result, lang) => {
+    result[languages[lang].name] = lang
+    return result
+}, {})
+
+export const getLangCode = lang => langCodeRecord[lang]

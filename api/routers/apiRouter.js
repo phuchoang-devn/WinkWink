@@ -2,13 +2,34 @@ import { Router } from 'express';
 import transactionController from "../controllers/transactionController.js";
 import accountController from '../controllers/accountController.js';
 import errorController from '../controllers/errorController.js';
-import { checkExact, checkSchema, cookie, param, query } from 'express-validator';
+import { body, checkExact, checkSchema, cookie, param, query } from 'express-validator';
 import authController from '../controllers/authController.js';
 import userController from '../controllers/userController.js';
 import appController from '../controllers/appController.js';
 import cookieParser from 'cookie-parser';
 import multer from 'multer';
 
+const profileValidationChain = [
+  checkExact(
+    checkSchema({
+      "name.first": { isString: true },
+      "name.last": { isString: true },
+      age: { isInt: { options: { min: 18, max: 100 } } },
+      sex: { isIn: { options: [["male", "female", "non-binary"]] } },
+      country: { isISO31661Alpha2: true },
+      language: { isArray: { options: { min: 1, max: 3 } } },
+      "language.*": { isISO6391: true },
+      interests: { isLength: { options: { max: 125 } } },
+      "preferences.age.from": { isInt: { options: { min: 18 } } },
+      "preferences.age.to": { isInt: { options: { max: 100 } } },
+      "preferences.sex": { isIn: { options: [["male", "female", "non-binary"]] } }
+    }, ['body'])
+  ),
+  body("preferences.age.to").custom((value, { req }) => {
+    const from = req.body.preferences.age.from
+    return value > from
+  })
+]
 
 const apiRouter = Router();
 
@@ -226,35 +247,16 @@ apiRouter.get(
   , userController.getUser
 );
 
-
 apiRouter.post(
   '/user',
-  [
-    checkSchema({
-      id: { isString: true },
-      // Add more validation rules for other fields if necessary
-    }),
-  ],
-  (req, res) => {
-    // 'body' validation will automatically be handled by express-validator middleware
-    // Your logic to create a user based on req.body
-    userController.createUser(req, res);
-  }
+  profileValidationChain,
+  userController.createUser
 );
 
 apiRouter.put(
   '/user',
-  [
-    checkSchema({
-      id: { isString: true },
-      // Add more validation rules for other fields if necessary
-    }),
-  ],
-  (req, res) => {
-    // 'body' validation will automatically be handled by express-validator middleware
-    // Your logic to update a user based on req.body and req.params.id
-    userController.updateUser(req, res);
-  }
+  profileValidationChain,
+  userController.updateUser
 );
 
 /*
