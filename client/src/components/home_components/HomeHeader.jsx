@@ -2,42 +2,30 @@ import logo from "../../static/image/home/logoCollor.svg"
 import "../main-components/header/header.scss";
 import '../../index.scss'
 import { useAuth } from "../../static/js/context_providers/auth_provider";
-import { BrowserRouter as Router, Route, Switch, useLocation } from 'react-router-dom';
-import { useState } from "react"; 
+import { useNavigate } from 'react-router-dom';
 
 export const HomeHeader = () => {
     const { logout } = useAuth();
-    const location = useLocation();
-    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
-    const getNavText = () => {
-        switch (location.pathname) {
-            case '/profile':
-                return 'Settings';
-            case '/':
-            default:
-                return 'My Profile';
-        }
-    };
-    const handleSettingsClick = () => {
-        setIsDropdownVisible(!isDropdownVisible);
-    };
+    const navigate = useNavigate();
+    const navigateMain = () => navigate("/")
+    const navigateProfile = () => navigate("/profile")
+    const navigateSetting = () => navigate("/setting")
+
+
     return (
         <header className="home-header">
             <nav className="header__nav">
                 <ul className="header__nav-list">
-                    <li className="header__nav-list_item">
+                    <li className="header__nav-list_item"
+                        onClick={navigateMain}
+                    >
                         <img src={logo} alt="Wink-Wink logo" />
                     </li>
                 </ul>
                 <ul className="header__nav-list">
-                <li className="header__nav-list_item-text" onClick={handleSettingsClick}>{getNavText()}
-                    {getNavText() === 'Settings' && (
-                            <div className={`dropdown-menu ${isDropdownVisible ? 'visible' : ''}`}>
-                                <button>Change Password</button>
-                                <button className="btn-delete">Delete Account</button>
-                            </div>
-                        )}</li>
+                    <li className="header__nav-list_item-text" onClick={navigateProfile}>My Profile</li>
+                    <li className="header__nav-list_item-text" onClick={navigateSetting}>Setting</li>
                     <li>
                         <button className="btn-logout" onClick={logout}>Logout</button>
                     </li>

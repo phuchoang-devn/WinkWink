@@ -28,7 +28,7 @@ const AuthMain = (props) => {
                 <div className="home__info-heading">
                     <img src={logo} alt=""/>
                     <h1 className="heading">
-                        WINK-WINK
+                        WinkWink
                     </h1>
                 </div>
 

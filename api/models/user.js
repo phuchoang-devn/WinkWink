@@ -16,7 +16,6 @@ const userSchema = new Schema({
 
     profileImage: { 
         type: String, 
-        required: [true, "Account: 'age' is missing"] 
     },
 
     age: { 
@@ -40,7 +39,7 @@ const userSchema = new Schema({
 
     interests: {
         type: String,
-        required: [true, "Account: 'interests' is missing"]
+        default: ""
     },
 
     language: { 

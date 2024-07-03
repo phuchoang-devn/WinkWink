@@ -100,13 +100,13 @@ export const Swiper = () => {
                 <div className="card-info">
                   <h3>{userInfo.fullName}</h3>
                   <span>{userInfo.age}</span>
-                  <span>{countries[userInfo.country].name}</span>
+                  <span>{countries[userInfo.country]?.name}</span>
                   <img width="20" alt="" src={getSrcByCountryCode(userInfo.country)} />
 
                   <span>Languages: </span>
                   {
                     userInfo.language.map(l => (
-                      <span key={l}>{languages[l].name}</span>
+                      <span key={l}>{languages[l]?.name}</span>
                     ))
                   }
 
