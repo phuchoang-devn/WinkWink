@@ -109,7 +109,6 @@ html {
 body {
   background-color:$colorBack ;
   min-height: 100%;
-
   line-height: 1.5;
 }
 
@@ -144,7 +143,8 @@ a{
 }
 
 #root{
-  /*height: 100dvh;*/
+  height: 100dvh;
+  overflow: scroll;
   display: flex;
   flex-flow: column;
   justify-content: space-between;
