@@ -10,15 +10,22 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
+# Change the working directory to the client folder
+WORKDIR /app/client
+
+# Copy package.json and package-lock.json for the frontend
+COPY client/package*.json ./
+
+# Install frontend dependencies
+RUN npm install
+
+# Change the working directory back to the root
+WORKDIR /app
 # Copy the rest of the application code
 COPY . .
 
-<<<<<<< Updated upstream
-=======
 # Install Client dependencies
-RUN npm install --prefix client
 
->>>>>>> Stashed changes
 # Expose the port your app runs on
 EXPOSE 3000
 
