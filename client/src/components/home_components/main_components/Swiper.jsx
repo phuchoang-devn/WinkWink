@@ -137,7 +137,7 @@ export const Swiper = () => {
           disabled={!userId}
           onClick={swipe(Direction.LEFT)}
         >
-          Sprint
+          Squint
         </button>
 
         <button
