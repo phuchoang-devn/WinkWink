@@ -151,6 +151,68 @@ a{
   font-family: "Anonymous Pro", monospace;
 }
 
+.not-found{
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  color: $colorDark;
+  h1{
+    margin: 0;
+    padding: 0;
+    text-shadow: #bc2d50 1px 0 10px;
+    animation: schadow .9s linear infinite;
+  }
+  h3{
+    max-width: 40ch;
+    text-align: center;
+  }
+  button{
+    padding: 6px 8px;
+    @extend %button;
+    &:before{
+      @extend %button-before;
+      animation: glowing 20s linear infinite;
+    }
+    &:active{
+      @extend %button-active;
+    }
+    &:active::after{
+      @extend %button-active-after;
+    }
+    &:hover::before{
+      @extend %button-hover-before;
+    }
+    &:after{
+      @extend %button-after;
+    }
+
+
+  }
+}
+
+/*%button-active-after
+%button-hover-before
+%button-after*/
+
+@keyframes schadow {
+  0%{
+  text-shadow: $colorLightPink 5px 0 2px;
+  }
+  25%{
+    text-shadow: $colorPink 10px 2 1px;
+  }
+  50%{
+    text-shadow: $colorDarkPink 20px 5 12px;
+  }
+  75%{
+    text-shadow: $colorPink 10px 6 1px;
+  }
+  100%{
+    text-shadow: $colorLightPink 5px 2 2px;
+  }
+}
+
 /* -----buttons----- */
 
 %button{
@@ -221,6 +283,11 @@ a{
     50% { background-position: 400% 0; }
     100% { background-position: 0 0; }
   }
+}
+@keyframes glowing {
+  0% { background-position: 0 0; }
+  50% { background-position: 400% 0; }
+  100% { background-position: 0 0; }
 }
 
 /* ------------Underline Text------------ */
