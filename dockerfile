@@ -13,6 +13,12 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
+<<<<<<< Updated upstream
+=======
+# Install Client dependencies
+RUN npm install --prefix client
+
+>>>>>>> Stashed changes
 # Expose the port your app runs on
 EXPOSE 3000
 
