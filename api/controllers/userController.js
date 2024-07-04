@@ -1,3 +1,4 @@
+import { OS_IP_ADDRESS } from "../../main.js";
 import { validateRequest } from "../helpers/validator.js";
 import User from "../models/user.js";
 import httpStatus from "http-status-codes";
@@ -17,7 +18,10 @@ const userController = {
                 account.user = newUser._id
                 await account.save()
 
-                res.status(httpStatus.OK).json(newUser.getResponseUser())
+                res.status(httpStatus.OK).json({
+                    uInfo: newUser.getResponseUser(),
+                    ipAddr: OS_IP_ADDRESS
+                })
             }
 
             next();
@@ -33,7 +37,10 @@ const userController = {
             if (!user) {
                 res.status(httpStatus.BAD_REQUEST).send('User not found');
             } else {
-                res.status(httpStatus.OK).json(user.getResponseUser());
+                res.status(httpStatus.OK).json({
+                    uInfo: user.getResponseUser(),
+                    ipAddr: OS_IP_ADDRESS
+                });
             }
 
             next();
@@ -52,7 +59,9 @@ const userController = {
                 res.status(httpStatus.BAD_REQUEST).send('User not found');
             } else {
                 const newUser = await User.findByIdAndUpdate(user._id, newProfile, { new: true }).exec()
-                res.status(httpStatus.OK).json(newUser.getResponseUser());
+                res.status(httpStatus.OK).json({
+                    uInfo: newUser.getResponseUser()
+                });
             }
 
             next()

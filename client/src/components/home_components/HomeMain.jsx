@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../../static/js/context_providers/auth_provider";
+import { useUser } from "../../context_providers/auth_provider";
 import Chat from "./main_components/Chat";
 import { Swiper } from "./main_components/Swiper";
 import './main_components/styles/swiper.scss'
@@ -10,7 +10,6 @@ const HomeMain = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(user)
     if(!user) navigate("/profile")
   }, [])
 

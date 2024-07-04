@@ -2,7 +2,7 @@ import "./styles/setting.scss"
 import TextField from '@mui/material/TextField';
 import { AlertSnackbar, StyledButton } from './profile_components';
 import { useState } from "react";
-import { useAuth } from "../../static/js/context_providers/auth_provider";
+import { useAuth } from "../../context_providers/auth_provider";
 
 const textStyle = {
     '& .MuiInputBase-input': {

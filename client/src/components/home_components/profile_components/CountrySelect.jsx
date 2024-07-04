@@ -1,7 +1,7 @@
 import { Box, TextField, Autocomplete } from '@mui/material';
 import { styled } from "@mui/material/styles";
 import { v4 as uuidv4 } from 'uuid';
-import { allCountries, getSrcByCountryCode } from '../../../static/js/main/countries-languages';
+import { allCountries, getSrcByCountryCode } from '../../../static/js/countries-languages';
 
 const options = {
     shouldForwardProp: (prop) => prop !== 'isError',

@@ -1,10 +1,10 @@
 import "./styles/profile.scss";
 import "../../index.scss"
-import useImage from "../../static/js/hooks/useImage";
-import useUserInfo, { UserInfoChange } from "../../static/js/hooks/useUserInfo";
-import useUserInfoValidation from "../../static/js/hooks/useUserInfoValidation";
+import useImage from "../../hooks/useImage";
+import useUserInfo, { UserInfoChange } from "../../hooks/useUserInfo";
+import useUserInfoValidation from "../../hooks/useUserInfoValidation";
 import QuestionMarkFlag from "../../static/image/profile/flag-question-mark.svg"
-import { getSrcByCountryName, modifiedGetCountryCode, getLangCode } from "../../static/js/main/countries-languages";
+import { getSrcByCountryName, modifiedGetCountryCode, getLangCode } from "../../static/js/countries-languages";
 import {
     PrefSexRadio,
     AgeSlider,
@@ -17,11 +17,12 @@ import {
     AlertSnackbar
 } from "./profile_components";
 import { useMemo } from "react";
-import { useUser } from "../../static/js/context_providers/auth_provider";
+import { useAuth, useUser } from "../../context_providers/auth_provider";
 
 
 const HomeProfile = () => {
     const { user, setUser } = useUser();
+    const { setServerIp } = useAuth();
 
     const [image, setImage, profileImageDiv, isImageChanged] = useImage();
     const [userInfo, handleChangeValue, isInfoChanged] = useUserInfo();
@@ -56,21 +57,25 @@ const HomeProfile = () => {
             });
 
             if (response.ok) {
-                const json = await response.json()
+                const { uInfo, ipAddr } = await response.json()
+
+                if (!user && ipAddr)
+                    setServerIp(ipAddr)
+
                 setUser(state => ({
                     ...state,
-                    ...json
+                    ...uInfo
                 }))
 
                 const imageData = new FormData();
                 imageData.append("avatar", image)
-    
+
                 const res = await fetch(`api/image/profile`, {
                     method: "POST",
                     body: imageData,
                     credentials: "include"
                 });
-    
+
                 if (res.ok) {
                     setUser(state => ({
                         ...state,

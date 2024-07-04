@@ -36,15 +36,14 @@ const apiRouter = Router();
 apiRouter.use(cookieParser());
 apiRouter.use(transactionController.startTransaction);
 
-apiRouter.get(
-  '/test',
-  appController.createTestUser
-)
 
 /*
 Response:
 401 - error message
-200 - { token, user }
+200 - { 
+  uInfo: user-info,
+  ipAddr: server-ip
+}
 */
 apiRouter.post(
   '/login',
@@ -242,17 +241,40 @@ apiRouter.get(
   appController.getImageChat
 )
 
+/*
+Response:
+400 - error message
+200 - { 
+  uInfo: user-info,
+  ipAddr: server-ip
+}
+*/
 apiRouter.get(
   '/user'
   , userController.getUser
 );
 
+/*
+Response:
+400 - error message
+200 - { 
+  uInfo: user-info,
+  ipAddr: server-ip
+}
+*/
 apiRouter.post(
   '/user',
   profileValidationChain,
   userController.createUser
 );
 
+/*
+Response:
+400 - error message
+200 - { 
+  uInfo: user-info,
+}
+*/
 apiRouter.put(
   '/user',
   profileValidationChain,

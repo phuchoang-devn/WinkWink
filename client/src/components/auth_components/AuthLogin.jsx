@@ -1,6 +1,6 @@
 import './styles/authLogin.scss'
 import {useState, useCallback} from "react";
-import { useAuth } from '../../static/js/context_providers/auth_provider';
+import { useAuth } from '../../context_providers/auth_provider';
 
 
 const AuthLogin = ({ setShowDialog }) => {

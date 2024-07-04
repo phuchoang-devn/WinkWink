@@ -1,16 +1,25 @@
 import { useEffect, useState } from 'react';
-import { useUser } from '../static/js/context_providers/auth_provider';
+import { useAuth, useUser } from '../context_providers/auth_provider';
 import { ChatAction } from './chat/chatSlice';
 
 const useWebSocket = () => {
     const [ws, setWS] = useState(undefined);
 
     const { user } = useUser();
+    const { serverIp } = useAuth();
+    const [signalCreatingWS, setSignalCreatingWS] = useState(false);
 
     useEffect(() => {
         if (!user) return
 
-        const ws = new WebSocket('ws://localhost:8000');
+        if (!signalCreatingWS)
+            setSignalCreatingWS(true)
+    }, [user])
+
+    useEffect(() => {
+        if (!signalCreatingWS) return
+
+        const ws = new WebSocket(`ws://${serverIp}:8000`);
 
         ws.addEventListener("message", async (event) => {
             const message = JSON.parse(event.data);
@@ -64,7 +73,7 @@ const useWebSocket = () => {
         });
 
         return () => ws.close()
-    }, [user])
+    }, [signalCreatingWS])
 
     return ws;
 }

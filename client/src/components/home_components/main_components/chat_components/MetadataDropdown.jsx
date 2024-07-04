@@ -1,7 +1,7 @@
 import "./styles/dropdown.scss"
 import { v4 as uuidv4 } from 'uuid';
 import { ReactComponent as Option } from "../../../../static/image/chat/option-circle.svg"
-import useDropdownStatus from '../../../../static/js/hooks/useDropdown';
+import useDropdownStatus from '../../../../hooks/useDropdown';
 import { useEffect } from "react";
 
 

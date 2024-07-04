@@ -1,10 +1,10 @@
 import TinderCard from "react-tinder-card";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useRef } from "react";
 import './styles/swiper.scss'
 import { useAppDispatch, useAppStore } from "../../../store";
 import { WinkAction } from "../../../store/wink/winkSlice";
 import { countries, languages } from "countries-list";
-import { getSrcByCountryCode } from "../../../static/js/main/countries-languages";
+import { getSrcByCountryCode } from "../../../static/js/countries-languages";
 
 const Direction = {
   LEFT: "left",
@@ -32,13 +32,13 @@ export const Swiper = () => {
   const handleSwiped = (direction) => {
     if (!userId) return
 
-    winkDispatch({
+    setTimeout(() => winkDispatch({
       type: WinkAction.WINK,
       payload: {
         id: userId,
         isWink: Direction.isWink(direction)
       }
-    })
+    }), 500)
 
     containerRef.current.style.backgroundColor = "unset";
   };
@@ -60,10 +60,9 @@ export const Swiper = () => {
   }
 
   const handleCancelSwipe = () => {
-    const mouseup = document.addEventListener("mouseup", () => {
+    document.addEventListener("mouseup", () => {
       containerRef.current.style.backgroundColor = "unset";
-      document.removeEventListener("mouseup", mouseup);
-    });
+    }, { once: true });
   }
 
   const swipe = (direction) => async () => {
@@ -138,14 +137,14 @@ export const Swiper = () => {
           disabled={!userId}
           onClick={swipe(Direction.LEFT)}
         >
-          Not today!
+          Sprint
         </button>
 
         <button
           disabled={!userId}
           onClick={swipe(Direction.RIGHT)}
         >
-          Wink-Wink!
+          Wink
         </button>
       </div>
     </div>

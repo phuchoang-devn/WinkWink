@@ -41,6 +41,14 @@ export const winkReducer = (store, action) => {
             break;
         }
 
+        case WinkAction.REFRESH_USERS: {
+            store.userIds = []
+            store.userInfos = {}
+            store.userImages = {}
+
+            break;
+        }
+
         case WinkAction.GET_IMAGES: {
             const { userId, img } = action.payload
             store.userImages[userId] = img

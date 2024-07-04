@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import defauftImage from "../../image/profile/default-user-image.svg"
+import defauftImage from "../static/image/profile/default-user-image.svg"
 import { useUser } from "../context_providers/auth_provider";
 
 const useImage = () => {

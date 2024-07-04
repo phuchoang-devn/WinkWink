@@ -14,6 +14,7 @@ export const initialChat = {
             updatedAt,
             isUnmatched,
 
+            firstFetch: boolean,
             image
         }
     */},
@@ -44,7 +45,10 @@ export const chatReducer = (store, action) => {
             metadatas.forEach(m => {
                 if (!store.matchedUserIds.includes(m.matchedUserId)) {
                     store.matchedUserIds.push(m.matchedUserId);
-                    store.metadatas[m.matchedUserId] = m;
+                    store.metadatas[m.matchedUserId] = {
+                        ...m,
+                        firstFetch: false
+                    };
                 }
             });
 
@@ -63,7 +67,10 @@ export const chatReducer = (store, action) => {
 
             if (store.chats[matchedUserId])
                 store.chats[matchedUserId].push(...chats)
-            else store.chats[matchedUserId] = chats
+            else {
+                store.metadatas[matchedUserId].firstFetch = true
+                store.chats[matchedUserId] = chats
+            }
 
             break;
         }
@@ -126,7 +133,8 @@ export const chatReducer = (store, action) => {
 
             store.metadatas[matchedUserId] = {
                 image: store.metadatas[matchedUserId]?.image,
-                ...metadata
+                ...metadata,
+                firstFetch: false
             }
 
             break;

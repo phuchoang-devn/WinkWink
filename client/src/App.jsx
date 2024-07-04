@@ -1,6 +1,6 @@
 import { Home, Auth } from './components';
-import { AuthProvider, useAuth } from './static/js/context_providers/auth_provider';
-import { MyThemeProvider } from './static/js/context_providers/theme_provider';
+import { AuthProvider, useAuth } from './context_providers/auth_provider';
+import { MyThemeProvider } from './context_providers/theme_provider';
 
 import {
   BrowserRouter

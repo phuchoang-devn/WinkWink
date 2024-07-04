@@ -1,17 +1,20 @@
 import logo from "../../static/image/home/logoCollor.svg"
 import "../main-components/header/header.scss";
 import '../../index.scss'
-import { useAuth } from "../../static/js/context_providers/auth_provider";
+import { useAuth, useUser } from "../../context_providers/auth_provider";
 import { useNavigate } from 'react-router-dom';
 
 export const HomeHeader = () => {
     const { logout } = useAuth();
+    const { user } = useUser();
 
     const navigate = useNavigate();
-    const navigateMain = () => navigate("/")
     const navigateProfile = () => navigate("/profile")
     const navigateSetting = () => navigate("/setting")
-
+    const navigateMain = () => {
+        if (user)
+            navigate("/")
+    }
 
     return (
         <header className="home-header">

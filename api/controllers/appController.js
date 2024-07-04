@@ -1,7 +1,5 @@
-import User from "../models/user.js"
-import Account from "../models/account.js"
+import User from "../models/user.js";
 import Chat from "../models/chat.js";
-import bcrypt from "bcrypt";
 import httpStatus from "http-status-codes";
 import { validateRequest } from "../helpers/validator.js";
 import { Types, isValidObjectId } from "mongoose";
@@ -14,81 +12,6 @@ import sharp from "sharp";
 
 
 const appController = {
-    createTestUser: async (req, res, next) => {
-        const fakeUser = (first, last, sex) => ({
-            name: {
-                first,
-                last
-            },
-            profileImage: sex + ".jpg",
-            age: 30,
-            sex,
-            country: "DE",
-            interests: "I like...",
-            language: "en",
-            preferences: {
-                age: {
-                    from: 18,
-                    to: 100
-                },
-                sex: "non-binary"
-            }
-        })
-
-        const user1 = await User.create(fakeUser("Donald", "Trump", "non-binary"))
-        const user2 = await User.create(fakeUser("Joe", "Biden", "male"))
-
-        //user1.hasMatched.push(user2)
-        await user1.save()
-
-        //user2.hasMatched.push(user1)
-        await user2.save()
-
-        const account1 = {
-            email: "account1@gmail.com",
-            password: "12345678",
-            user: user1._id
-        }
-        const accountsWithSameEmail1 = await Account.findOne({ email: account1.email }).exec();
-        if (!accountsWithSameEmail1) {
-            const saltRounds = 10;
-            const hashPassword = await bcrypt.hash(account1.password, saltRounds)
-            await Account.create({
-                email: account1.email,
-                password: hashPassword,
-                user: user1._id
-            });
-        } else {
-            accountsWithSameEmail1.user = user1._id;
-            await accountsWithSameEmail1.save()
-        }
-
-        const account2 = {
-            email: "account2@gmail.com",
-            password: "12345678",
-            user: user2._id
-        }
-        const accountsWithSameEmail2 = await Account.findOne({ email: account2.email }).exec();
-        if (!accountsWithSameEmail2) {
-            const saltRounds = 10;
-            const hashPassword = await bcrypt.hash(account2.password, saltRounds)
-            await Account.create({
-                email: account2.email,
-                password: hashPassword,
-                user: user2._id
-            });
-        } else {
-            accountsWithSameEmail2.user = user2._id;
-            await accountsWithSameEmail2.save()
-        }
-
-        res.status(200).json({
-            account1,
-            account2
-        })
-        next()
-    },
-
     wsRegister: async (req, res, next) => {
         const { conn } = req.body;
         const userAccount = res.locals.account;

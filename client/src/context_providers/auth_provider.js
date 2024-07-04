@@ -16,10 +16,25 @@ export const AuthProvider = ({ children }) => {
 
     return undefined
   });
+  const [serverIp, setServerIp] = useState(() => {
+    if (!document.cookie.includes("AuthToken")) return undefined
+
+    const ipAddr = localStorage.getItem("winkwinkServer")
+
+    if (ipAddr) return JSON.parse(ipAddr)
+
+    return undefined
+  });
 
   useEffect(() => {
-    if(!user) return
-    
+    if (!serverIp) return
+
+    localStorage.setItem("winkwinkServer", JSON.stringify(serverIp))
+  }, [serverIp])
+
+  useEffect(() => {
+    if (!user) return
+
     localStorage.setItem("winkwinkUser", JSON.stringify(_.omit(user, ['image'])))
   }, [user])
 
@@ -30,10 +45,17 @@ export const AuthProvider = ({ children }) => {
       .then(res => {
         if (res.ok) {
           return res.json()
+        } else if (res.status === 400) {
+          throw new Error("Profile wasn't created.")
         } else throw new Error("Failed to fetch user info")
       })
       .then(json => {
-        if (!_.isEqual(_.omit(user, ['image']), json))
+        const { uInfo, ipAddr } = json
+
+        if (ipAddr !== serverIp)
+          setServerIp(ipAddr)
+
+        if (!_.isEqual(_.omit(user, ['image']), uInfo))
           setUser(state => ({
             ...state,
             ...json
@@ -57,9 +79,10 @@ export const AuthProvider = ({ children }) => {
       });
 
       if (response.ok) {
-        const resUser = await response.json();
-        localStorage.setItem("winkwinkUser", JSON.stringify(resUser))
-        setUser(resUser);
+        const { uInfo, ipAddr } = await response.json();
+
+        setServerIp(ipAddr);
+        setUser(uInfo);
         setLoggedIn(true);
 
         return ({
@@ -90,6 +113,7 @@ export const AuthProvider = ({ children }) => {
       .then(res => {
         if (res.ok) {
           localStorage.removeItem("winkwinkUser");
+          localStorage.removeItem("winkwinkServer");
           setLoggedIn(false)
           navigate("/")
         }
@@ -97,7 +121,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ serverIp, setServerIp, isLoggedIn, login, logout }}>
       <UserContext.Provider value={{ user, setUser }}>
         {children}
       </UserContext.Provider>

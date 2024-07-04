@@ -3,6 +3,8 @@ import bcrypt from "bcrypt";
 import httpStatus from "http-status-codes";
 import jwt from 'jsonwebtoken';
 import { validateRequest } from "../helpers/validator.js";
+import { OS_IP_ADDRESS } from "../../main.js";
+
 
 const authController = {
     handleLogin: async (req, res, next) => {
@@ -32,8 +34,11 @@ const authController = {
                     }*/);
 
                 res.cookie("AuthToken", token)
-                const responseValue = account.user ? account.user.getResponseUser() : null
-                res.status(httpStatus.OK).json(responseValue);
+                const responseUser = account.user ? account.user.getResponseUser() : null
+                res.status(httpStatus.OK).json({
+                    uInfo: responseUser,
+                    ipAddr: OS_IP_ADDRESS
+                });
             } else {
                 res.status(httpStatus.UNAUTHORIZED).json({
                     field: "password",

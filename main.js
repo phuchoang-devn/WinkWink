@@ -7,6 +7,9 @@ import dbConnect from "./api/models/index.js";
 import createWebSocketServer from "./api/web_socket/wsServer.js";
 import createWebSocketClient from "./api/web_socket/wsClient.js";
 import cors from "cors"
+import os from "node:os"
+
+export const OS_IP_ADDRESS = (os.networkInterfaces().wlp1s0)[0].address
 
 const __filename = fileURLToPath(import.meta.url);
 export const __dirname = dirname(__filename);
@@ -46,6 +49,6 @@ app.use(errorController.respondInternalError);
 
 app.listen(app.get("port"), () => {
 	console.log(
-		`Server running at http://localhost:${app.get("port")}`
+		`Server running at http://${OS_IP_ADDRESS}:${app.get("port")}`
 	);
 });

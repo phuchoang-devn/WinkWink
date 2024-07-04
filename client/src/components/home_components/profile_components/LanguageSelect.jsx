@@ -1,5 +1,5 @@
 import { useId } from 'react';
-import { allLanguages } from '../../../static/js/main/countries-languages';
+import { allLanguages } from '../../../static/js/countries-languages';
 import {
     FormHelperText,
     Chip,

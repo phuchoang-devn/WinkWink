@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useImmerReducer } from "use-immer";
 import { initialChat, chatReducer } from './chatReducer';
 import { chatThunk } from './chatThunk';
-import { useUser } from '../../static/js/context_providers/auth_provider';
+import { useUser } from '../../context_providers/auth_provider';
 import useWebSocket from '../webSocket';
 import { createInternalDispatch } from '..';
 

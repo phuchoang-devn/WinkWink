@@ -42,6 +42,15 @@ export const winkThunk = (winkStore, dispatch) => async ({ type, payload }) => {
             break;
         }
 
+        case WinkAction.REFRESH_USERS: {
+            dispatch({ type });
+            crossAsyncDispatch({
+                type: WinkAction.GET_USERS
+            })
+
+            break;
+        }
+
         case WinkAction.GET_IMAGES: {
             const id = payload
 
@@ -86,7 +95,7 @@ export const winkThunk = (winkStore, dispatch) => async ({ type, payload }) => {
 
                     if (isWink) {
                         const { isMatched, chatMetadata } = await response.json();
-                        
+
                         if (isMatched) {
                             const res = await fetch(`/api/image/chat/${chatMetadata.matchedUserId}`, { credentials: "include" });
 
