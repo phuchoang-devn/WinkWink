@@ -2,16 +2,19 @@
 FROM node:14
 
 # Set the working directory in the container
-WORKDIR /app
+WORKDIR /dating-app
 
-# Copy package.json and package-lock.json
+# Copy package.json and package-lock.json for the server
 COPY package*.json ./
 
-# Install dependencies
+# Install server dependencies
 RUN npm install
 
-# Copy the rest of the application code
+# Copy the rest of the server application code
 COPY . .
+
+# Install Client dependencies
+RUN npm install --prefix Client
 
 # Expose the port your app runs on
 EXPOSE 3000
