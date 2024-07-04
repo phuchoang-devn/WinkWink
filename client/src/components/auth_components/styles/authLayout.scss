@@ -31,12 +31,21 @@
                     width: 520px;
                     aspect-ratio: 1;
                     padding: 20px;
+                    animation: scale 6s ease-in-out infinite alternate;
+                }
+            }
+            @keyframes scale {
+                0%, 100% {
                     transform: scale(1);
-                    transition: transform .8s linear;
-                    &:hover{
-                        transform: scale(1.1);
-                    }
-                   
+                }
+                25% {
+                    transform: scale(1.1);
+                }
+                50% {
+                    transform: scale(1.05);
+                }
+                75% {
+                    transform: scale(1.2);
                 }
             }
             .home__info{
