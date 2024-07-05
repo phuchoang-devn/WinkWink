@@ -109,7 +109,6 @@ html {
 body {
   background-color:$colorBack ;
   min-height: 100%;
-
   line-height: 1.5;
 }
 
@@ -145,10 +144,48 @@ a{
 
 #root{
   height: 100dvh;
+  overflow: scroll;
   display: flex;
   flex-flow: column;
   justify-content: space-between;
   font-family: "Anonymous Pro", monospace;
+}
+
+.not-found{
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  color: $colorDark;
+  h1{
+    margin: 0;
+    padding: 0;
+    text-shadow: #bc2d50 1px 0 10px;
+  }
+  h3{
+    max-width: 40ch;
+    text-align: center;
+  }
+  button{
+    padding: 6px 8px;
+    @extend %button;
+    &:before{
+      @extend %button-before;
+      animation: glowing 20s linear infinite;
+    }
+    &:active{
+      @extend %button-active;
+    }
+    &:active::after{
+      @extend %button-active-after;
+    }
+    &:hover::before{
+      @extend %button-hover-before;
+    }
+    &:after{
+      @extend %button-after;
+    }
+  }
 }
 
 /* -----buttons----- */
@@ -177,7 +214,6 @@ a{
     filter: blur(5px);
     width: calc(100% + 4px);
     height: calc(100% + 4px);
-    /* animation: glowing 20s linear infinite; */
     opacity: 0;
     transition: opacity .3s ease-in-out;
     border-radius: 20px;
@@ -221,6 +257,11 @@ a{
     50% { background-position: 400% 0; }
     100% { background-position: 0 0; }
   }
+}
+@keyframes glowing {
+  0% { background-position: 0 0; }
+  50% { background-position: 400% 0; }
+  100% { background-position: 0 0; }
 }
 
 /* ------------Underline Text------------ */

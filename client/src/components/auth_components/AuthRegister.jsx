@@ -75,7 +75,7 @@ const AuthRegister = ({ setShowLogin, isSignUp }) => {
                         autoComplete="current-password"
                     />
                     <input
-                        type="password-check"
+                        type="password"
                         id="password-check"
                         name="password-check"
                         placeholder="Confirm password"

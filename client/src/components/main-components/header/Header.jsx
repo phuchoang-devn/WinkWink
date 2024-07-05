@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import logo from "../../../static/image/home/logoCollor.svg"
+import logo from "../../../static/image/home/logo.svg"
 
 import "./header.scss";
 
@@ -20,7 +20,7 @@ export const Header = () => {
                 </ul>
                 <ul className="header__nav-list">
                     <li className="header__nav-list_item-text">
-                        Contact us
+                        <a href="mailto:winkWink@gmail.com">Contact us</a>
                     </li>
                 </ul>
             </nav>
