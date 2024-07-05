@@ -19,7 +19,7 @@ const useWebSocket = () => {
     useEffect(() => {
         if (!signalCreatingWS) return
 
-        const ws = new WebSocket(`ws://${serverIp}:8000`);
+        const ws = new WebSocket(`ws://${serverIp}`);
 
         ws.addEventListener("message", async (event) => {
             const message = JSON.parse(event.data);

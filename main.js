@@ -7,12 +7,18 @@ import dbConnect from "./api/models/index.js";
 import createWebSocketServer from "./api/web_socket/wsServer.js";
 import createWebSocketClient from "./api/web_socket/wsClient.js";
 import cors from "cors"
-import os from "node:os"
+import ip from "ip"
 
-export const OS_IP_ADDRESS = (os.networkInterfaces().wlp1s0)[0].address
+
+export const OS_IP_ADDRESS = ip.address()
+
+export const SECRET_KEY = process.env.DEV_CLIENT | process.env.DEV_SERVER ?
+	process.env.AUTH_KEY
+	: "no_secret"
 
 const __filename = fileURLToPath(import.meta.url);
 export const __dirname = dirname(__filename);
+
 
 const app = express();
 dbConnect();
@@ -37,7 +43,7 @@ app.use(express.json()); // for parsing application/json
 
 app.use('/api', apiRouter);
 
-if (!process.env.DEV) {
+if (!process.env.DEV_CLIENT) {
 	const staticPath = "./client/build/";
 	app.use(express.static(staticPath));
 	app.get("*", (req, res) => {
