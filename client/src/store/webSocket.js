@@ -6,7 +6,7 @@ const useWebSocket = () => {
     const [ws, setWS] = useState(undefined);
 
     const { user } = useUser();
-    const { serverIp } = useAuth();
+    const { serverAddr } = useAuth();
     const [signalCreatingWS, setSignalCreatingWS] = useState(false);
 
     useEffect(() => {
@@ -19,7 +19,7 @@ const useWebSocket = () => {
     useEffect(() => {
         if (!signalCreatingWS) return
 
-        const ws = new WebSocket(`ws://${serverIp}`);
+        const ws = new WebSocket(`ws://${serverAddr}`);
 
         ws.addEventListener("message", async (event) => {
             const message = JSON.parse(event.data);

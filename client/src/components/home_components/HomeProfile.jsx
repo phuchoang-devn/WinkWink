@@ -22,7 +22,7 @@ import { useAuth, useUser } from "../../context_providers/auth_provider";
 
 const HomeProfile = () => {
     const { user, setUser } = useUser();
-    const { setServerIp } = useAuth();
+    const { setServerAddr } = useAuth();
 
     const [image, setImage, profileImageDiv, isImageChanged] = useImage();
     const [userInfo, handleChangeValue, isInfoChanged] = useUserInfo();
@@ -60,7 +60,7 @@ const HomeProfile = () => {
                 const { uInfo, ipAddr } = await response.json()
 
                 if (!user && ipAddr)
-                    setServerIp(ipAddr)
+                    setServerAddr(ipAddr)
 
                 setUser(state => ({
                     ...state,

@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
 
     return undefined
   });
-  const [serverIp, setServerIp] = useState(() => {
+  const [serverAddr, setServerAddr] = useState(() => {
     if (!document.cookie.includes("AuthToken")) return undefined
 
     const ipAddr = localStorage.getItem("winkwinkServer")
@@ -27,10 +27,10 @@ export const AuthProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    if (!serverIp) return
+    if (!serverAddr) return
 
-    localStorage.setItem("winkwinkServer", JSON.stringify(serverIp))
-  }, [serverIp])
+    localStorage.setItem("winkwinkServer", JSON.stringify(serverAddr))
+  }, [serverAddr])
 
   useEffect(() => {
     if (!user) return
@@ -52,8 +52,8 @@ export const AuthProvider = ({ children }) => {
       .then(json => {
         const { uInfo, ipAddr } = json
 
-        if (ipAddr !== serverIp)
-          setServerIp(ipAddr)
+        if (ipAddr !== serverAddr)
+          setServerAddr(ipAddr)
 
         if (!_.isEqual(_.omit(user, ['image']), uInfo))
           setUser(state => ({
@@ -81,7 +81,7 @@ export const AuthProvider = ({ children }) => {
       if (response.ok) {
         const { uInfo, ipAddr } = await response.json();
 
-        setServerIp(ipAddr);
+        setServerAddr(ipAddr);
         setUser(uInfo);
         setLoggedIn(true);
 
@@ -121,7 +121,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ serverIp, setServerIp, isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ serverAddr, setServerAddr, isLoggedIn, login, logout }}>
       <UserContext.Provider value={{ user, setUser }}>
         {children}
       </UserContext.Provider>
