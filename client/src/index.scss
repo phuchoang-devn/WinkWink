@@ -143,14 +143,16 @@ a{
 }
 
 #root{
-  height: 100dvh;
+  /*height: 100dvh;*/
   overflow: scroll;
   display: flex;
   flex-flow: column;
   justify-content: space-between;
   font-family: "Anonymous Pro", monospace;
 }
-
+h1,h2,h3,h4,h5,h6,p,div,ul,li{
+  font-family: "Anonymous Pro", monospace;
+}
 .not-found{
   display: flex;
   flex-flow: column;
