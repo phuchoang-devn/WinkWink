@@ -1,7 +1,7 @@
-import { OS_IP_ADDRESS } from "../../main.js";
 import { validateRequest } from "../helpers/validator.js";
 import User from "../models/user.js";
 import httpStatus from "http-status-codes";
+import ip from "ip"
 
 const userController = {
     createUser: async (req, res, next) => {
@@ -20,7 +20,7 @@ const userController = {
 
                 res.status(httpStatus.OK).json({
                     uInfo: newUser.getResponseUser(),
-                    ipAddr: `${OS_IP_ADDRESS || "localhost"}:${process.env.WS_PORT || 8000}`
+                    ipAddr: `${ip.address() || "localhost"}:${process.env.WS_PORT || 8000}`
                 })
             }
 
@@ -39,7 +39,7 @@ const userController = {
             } else {
                 res.status(httpStatus.OK).json({
                     uInfo: user.getResponseUser(),
-                    ipAddr: `${OS_IP_ADDRESS || "localhost"}:${process.env.WS_PORT || 8000}`
+                    ipAddr: `${ip.address() || "localhost"}:${process.env.WS_PORT || 8000}`
                 });
             }
 

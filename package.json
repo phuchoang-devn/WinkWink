@@ -8,8 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cd client && npm run build && cd .. && node --env-file=.env main.js",
     "build": "cd client && npm run build",
-    "dev-client": "DEV_CLIENT=true node --env-file=.dev.env main.js & cd client && npm start",
-    "dev-server": "DEV_SERVER=true node --env-file=.dev.env main.js"
+    "dev-client": "DEV_CLIENT=true node --env-file=.env main.js & cd client && npm start",
+    "dev-server": "DEV_SERVER=true node --env-file=.env main.js"
   },
   "author": "Team 01 - IMI - Agile Web Development",
   "contributors": [

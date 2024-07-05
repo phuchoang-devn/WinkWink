@@ -1,7 +1,6 @@
 import WebSocket from "ws";
 import jwt from 'jsonwebtoken';
 import { SocketAction } from "./wsServer.js";
-import { SECRET_KEY } from "../../main.js";
 
 let ws = undefined;
 
@@ -17,11 +16,8 @@ const createWebSocketClient = () => {
 
         const token = jwt.sign(
             { conn },
-            SECRET_KEY,
-		/* TODO: after finish with docker
-		{ 
-			algorithm: 'RS256' 
-		}*/);
+            process.env.AUTH_KEY
+        );
 
         sendSocketMessage({
             type: SocketAction.AUTH_SERVER,

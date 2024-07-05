@@ -1,7 +1,6 @@
 import { WebSocketServer } from "ws";
 import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
-import { SECRET_KEY } from "../../main.js";
 
 const SocketAction = {
     AUTH_SERVER: "auth-server",
@@ -60,7 +59,7 @@ const createWebSocketServer = () => {
 
             if (message.type === SocketAction.AUTH_SERVER) {
                 try {
-                    const decoded = jwt.verify(message.token, SECRET_KEY);
+                    const decoded = jwt.verify(message.token, process.env.AUTH_KEY);
 
                     if (unauthenticatedConn[decoded.conn]) {
                         delete unauthenticatedConn[decoded.conn];

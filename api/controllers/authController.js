@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import httpStatus from "http-status-codes";
 import jwt from 'jsonwebtoken';
 import { validateRequest } from "../helpers/validator.js";
-import { OS_IP_ADDRESS, SECRET_KEY } from "../../main.js";
+import ip from "ip"
 
 
 const authController = {
@@ -27,17 +27,14 @@ const authController = {
                     {
                         account: account._id
                     },
-                    SECRET_KEY,
-                    /* TODO: after finish with docker
-                    { 
-                        algorithm: 'RS256' 
-                    }*/);
+                    process.env.AUTH_KEY
+                );
 
                 res.cookie("AuthToken", token)
                 const responseUser = account.user ? account.user.getResponseUser() : null
                 res.status(httpStatus.OK).json({
                     uInfo: responseUser,
-                    ipAddr: `${OS_IP_ADDRESS || "localhost"}:${process.env.WS_PORT || 8000}`
+                    ipAddr: `${ip.address() || "localhost"}:${process.env.WS_PORT || 8000}`
                 });
             } else {
                 res.status(httpStatus.UNAUTHORIZED).json({
@@ -50,7 +47,7 @@ const authController = {
         }
     },
 
-    handleLogout: async(req, res) => {
+    handleLogout: async (req, res) => {
         res.clearCookie('AuthToken')
         res.status(httpStatus.OK).send("Logout successfully")
     },
@@ -63,7 +60,7 @@ const authController = {
         try {
             validateRequest(req, res);
             const token = req.cookies.AuthToken;
-            const decoded = jwt.verify(token, SECRET_KEY);
+            const decoded = jwt.verify(token, process.env.AUTH_KEY);
             const account = await Account.findById(decoded.account).populate("user").exec();
 
             if (!account) throw new jwt.JsonWebTokenError;

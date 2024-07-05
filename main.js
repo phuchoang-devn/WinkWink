@@ -10,12 +10,6 @@ import cors from "cors"
 import ip from "ip"
 
 
-export const OS_IP_ADDRESS = ip.address()
-
-export const SECRET_KEY = process.env.DEV_CLIENT | process.env.DEV_SERVER ?
-	process.env.AUTH_KEY
-	: "no_secret"
-
 const __filename = fileURLToPath(import.meta.url);
 export const __dirname = dirname(__filename);
 
@@ -55,6 +49,6 @@ app.use(errorController.respondInternalError);
 
 app.listen(app.get("port"), () => {
 	console.log(
-		`Server running at http://${OS_IP_ADDRESS}:${app.get("port")}`
+		`Server running at http://${ip.address()}:${app.get("port")}`
 	);
 });
