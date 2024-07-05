@@ -16,6 +16,16 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        .close-btn{
+            position: relative;
+            width: 100%;
+            left: 100%;
+            img{
+                width: 30px;
+                aspect-ratio: 1;
+            }
+        }
+
         
         .password-form,
         .delete-form {

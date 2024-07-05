@@ -3,6 +3,8 @@ import TextField from '@mui/material/TextField';
 import { AlertSnackbar, StyledButton } from './profile_components';
 import { useState } from "react";
 import { useAuth } from "../../context_providers/auth_provider";
+import close from '../../static/image/close.svg'
+import {useNavigate} from "react-router-dom";
 
 const textStyle = {
     '& .MuiInputBase-input': {
@@ -91,91 +93,94 @@ const HomeSetting = () => {
         }
     }
 
+    const navigate = useNavigate();
+
     return (
         <>
             <div className='setting'>
                 <div className='setting-container'>
+                    <button className='close-btn' onClick={() => navigate('/')}><img src={close} alt='close-icon'/></button>
                     <form className='password-form' onSubmit={handleChangePassword}>
                         <div>
                             <div className="hint-text"
-                                style={getHintStyle(isAtLeast8Char)}
+                                 style={getHintStyle(isAtLeast8Char)}
                             >
                                 Passwords must have at least 8 characters.
                             </div>
 
                             <div className="hint-text"
-                                style={getHintStyle(isNewPassDifferent)}
+                                 style={getHintStyle(isNewPassDifferent)}
                             >
                                 New password must be different.
                             </div>
 
                             <div className="hint-text"
-                                style={getHintStyle(isConfirmPassValid)}
+                                 style={getHintStyle(isConfirmPassValid)}
                             >
                                 Confirm and new passwords must be the same.
                             </div>
                         </div>
 
                         <TextField sx={textStyle}
-                            color="colorDark"
-                            type='password'
-                            placeholder="Current Password"
-                            variant="outlined"
-                            size='small'
-                            value={currentPass}
-                            onChange={e => setCurrentPass(e.target.value)}
+                                   color="colorDark"
+                                   type='password'
+                                   placeholder="Current Password"
+                                   variant="outlined"
+                                   size='small'
+                                   value={currentPass}
+                                   onChange={e => setCurrentPass(e.target.value)}
                         />
 
                         <TextField sx={textStyle}
-                            color="colorDark"
-                            type='password'
-                            placeholder="New Password"
-                            variant="outlined"
-                            size='small'
-                            value={newPass}
-                            onChange={e => setNewPass(e.target.value)}
+                                   color="colorDark"
+                                   type='password'
+                                   placeholder="New Password"
+                                   variant="outlined"
+                                   size='small'
+                                   value={newPass}
+                                   onChange={e => setNewPass(e.target.value)}
                         />
 
                         <TextField sx={textStyle}
-                            color="colorDark"
-                            type='password'
-                            placeholder="Confirm New Password"
-                            variant="outlined"
-                            size='small'
-                            value={confirmPass}
-                            onChange={e => setConfirmPass(e.target.value)}
+                                   color="colorDark"
+                                   type='password'
+                                   placeholder="Confirm New Password"
+                                   variant="outlined"
+                                   size='small'
+                                   value={confirmPass}
+                                   onChange={e => setConfirmPass(e.target.value)}
                         />
 
                         <StyledButton type="submit"
-                            ortherProps={{ disabled: !(isAtLeast8Char && isNewPassDifferent && isConfirmPassValid) }}
+                                      ortherProps={{disabled: !(isAtLeast8Char && isNewPassDifferent && isConfirmPassValid)}}
                         >
                             CHANGE PASSWORD
                         </StyledButton>
                     </form>
 
-                    <hr />
+                    <hr/>
 
                     <form className="delete-form" onSubmit={handleDeleteAccount}>
                         <StyledButton type="submit"
-                            ortherProps={{ disabled: passForDelete.length < 8 }}
+                                      ortherProps={{disabled: passForDelete.length < 8}}
                         >
                             DELETE ACCOUNT
                         </StyledButton>
 
                         <TextField sx={textStyle}
-                            color="colorDark"
-                            type='password'
-                            placeholder="Enter Password to confirm delete"
-                            variant="outlined"
-                            size='small'
-                            value={passForDelete}
-                            onChange={e => setPassForDelete(e.target.value)}
+                                   color="colorDark"
+                                   type='password'
+                                   placeholder="Enter Password to confirm delete"
+                                   variant="outlined"
+                                   size='small'
+                                   value={passForDelete}
+                                   onChange={e => setPassForDelete(e.target.value)}
                         />
                     </form>
                 </div>
             </div>
             <AlertSnackbar status={submitStatus}
-                errorMessage={"Current Password is wrong!"} />
+                           errorMessage={"Current Password is wrong!"} />
         </>
     );
 }

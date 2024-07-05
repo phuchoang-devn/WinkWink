@@ -6,6 +6,7 @@ import { WinkAction } from "../../../store/wink/winkSlice";
 import { countries, languages } from "countries-list";
 import { getSrcByCountryCode } from "../../../static/js/countries-languages";
 
+
 const Direction = {
   LEFT: "left",
   RIGHT: "right",
@@ -28,6 +29,7 @@ export const Swiper = () => {
   const cardRef = useRef(null);
   const imgRef = useRef(null);
   const containerRef = useRef(null);
+  const cardContainerRef = useRef(null);
 
   const handleSwiped = (direction) => {
     if (!userId) return
@@ -53,10 +55,10 @@ export const Swiper = () => {
     const middleOfCard = (img.right + img.left) / 2
 
     if (middleOfCard > middlePoint + 50)
-      containerRef.current.style.backgroundColor = "green";
+      cardContainerRef.current.style.boxShadow = "0px 4px 10px #e096a3";
     else if (middleOfCard < middlePoint - 50)
-      containerRef.current.style.backgroundColor = "red";
-    else containerRef.current.style.backgroundColor = "unset";
+      cardContainerRef.current.style.boxShadow = "0px 4px 10px #1E1E1E";
+    else cardContainerRef.current.style.boxShadow = "none";
   }
 
   const handleCancelSwipe = () => {
@@ -78,7 +80,7 @@ export const Swiper = () => {
       className="swiper-container"
       ref={containerRef}
     >
-      <div className='cardContainer'>
+      <div className='cardContainer' ref={cardContainerRef}>
         {
           userId ?
             <TinderCard
@@ -99,15 +101,18 @@ export const Swiper = () => {
                 <div className="card-info">
                   <h3>{userInfo.fullName}</h3>
                   <span>{userInfo.age}</span>
-                  <span>{countries[userInfo.country]?.name}</span>
-                  <img width="20" alt="" src={getSrcByCountryCode(userInfo.country)} />
+                  <span className='country'>{countries[userInfo.country]?.name}<img width="20" alt=""
+                                                                                    src={getSrcByCountryCode(userInfo.country)}/></span>
+                  <span className='languages'>
+                    <span>Languages: </span>
+                    {
+                      userInfo.language.map(l => (
+                          <span key={l}>{languages[l]?.name}</span>
+                      ))
+                    }
+                  </span>
 
-                  <span>Languages: </span>
-                  {
-                    userInfo.language.map(l => (
-                      <span key={l}>{languages[l]?.name}</span>
-                    ))
-                  }
+
 
                   <span>{userInfo.interests}</span>
                 </div>

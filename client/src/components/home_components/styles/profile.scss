@@ -2,8 +2,20 @@
 /* in home profile page maybe background contrast */
 
 @import '../../../index';
-
+.main-home-container{
+    height: 100vh;
+    overflow: scroll;
+}
 .my-profile {
+   height: 100%;
+    overflow: scroll;
+
+    display: flex;
+    justify-content: center;
+    /*display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;*/
     .my-profile__form {
         margin-top: 25px;
         margin-bottom: 20px;

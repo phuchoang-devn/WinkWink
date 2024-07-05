@@ -1,6 +1,7 @@
 import './styles/authLogin.scss'
 import {useState, useCallback} from "react";
 import { useAuth } from '../../context_providers/auth_provider';
+import {useNavigate} from "react-router-dom";
 
 
 const AuthLogin = ({ setShowDialog }) => {
@@ -8,7 +9,9 @@ const AuthLogin = ({ setShowDialog }) => {
     const [password, setPassword] = useState(null);
     const [error, setError] = useState(null);
     const { login } = useAuth();
+    const navigate = useNavigate();
 
+    const navigateMain = () => navigate("/")
 
     const handleClick = useCallback(() => {
         setShowDialog(false);
@@ -17,7 +20,11 @@ const AuthLogin = ({ setShowDialog }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const loginResult = await login(email, password);
-        if(!loginResult.isSuccessful) setError(loginResult.message)
+        if (!loginResult.isSuccessful) {
+            setError(loginResult.message);
+        } else {
+            navigateMain();
+        }
     };
 
     return (
@@ -48,7 +55,7 @@ const AuthLogin = ({ setShowDialog }) => {
                         onChange={(e) => setPassword(e.target.value)}
                         autoComplete="current-password"
                     />
-                    <button type="submit">Submit</button>
+                    <button className='submit-btn' type="submit">Submit</button>
                     <p>{error}</p>
                 </form>
             </div>

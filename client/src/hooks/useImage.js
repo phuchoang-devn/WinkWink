@@ -33,6 +33,8 @@ const useImage = () => {
             return
         }
 
+        console.log(image)
+
         const fileReader = new FileReader();
 
         fileReader.onload = () => {

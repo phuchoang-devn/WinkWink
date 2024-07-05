@@ -18,11 +18,13 @@
     justify-content: center;
     align-items: center;
     height: 100%;
+  width: 100%;
     position: fixed;
-    left: 40%;
+    /*left: 40%;*/
+    border-radius: 30%;
     margin-inline: 10px;
      @media screen and (max-width:500px) {
-        left: 30%;
+        left: 10%;
     } 
 
     
@@ -37,6 +39,7 @@
     max-width: 260px;
     height: 400px;
     overflow: hidden;
+    border-radius: 20px;
     @media screen and (max-width:500px) {
         max-width: 240px;
     }
@@ -48,7 +51,7 @@
     width: 80vw;
     max-width: 260px;
     height: 400px;
-    box-shadow: 0px 0px 10px 0px $colorLightPink;
+    box-shadow: 0 0 10px 0 $colorLightPink;
     border-radius: 20px;
     background-size: cover;
     background-position: center;
@@ -74,16 +77,34 @@
   } */
   .card{
     .card-info{
+        background-color: rgb(75, 22, 76, 0.9);
+        border-bottom-right-radius: 20px;
+        border-bottom-left-radius: 20px;
         width: 100%;
         color: $colorLight;
         position: absolute;
         bottom: 0;
-        text-align: center;
+        justify-content: center;
+        align-items: center;
         display: flex;
         flex-flow: column;
+      span{
+        font-size: 14px;
+      }
+        .country{
+          display: flex;
+          flex-flow: row;
+          gap: 7px;
+        }
+      .languages{
+        display: flex;
+        flex-flow: row wrap;
+        gap: 7px;
+      }
         h3{
             margin: 0;
             padding: 0;
+          font-size: 16px;
         }
 
     }
